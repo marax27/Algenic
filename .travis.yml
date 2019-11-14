@@ -1,0 +1,10 @@
+language: csharp
+solution: Algenic.sln
+mono: none
+dotnet: 2.2.104
+install:
+  - nuget restore Algenic.sln
+  - nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
+script:
+  - msbuild /p:Configuration=Development Algenic.sln  #/p:Configuration=Release
+  - dotnet ./testrunner/xunit.runner.console.2.4.1/tools/xunit.console.exe ./Algenic.UnitTests/bin/Release/Algenic.UnitTests.dll

@@ -1,35 +1,22 @@
-using System;
+using Algenic.FunctionalTests.Setup;
 using FluentAssertions;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
 using Xunit;
 
 namespace Algenic.FunctionalTests
 {
-    public class SampleFunctionalTest : IDisposable
+    public class SampleFunctionalTest : BaseFunctionalTest
     {
-        private readonly IWebDriver _driver;
-
-        public SampleFunctionalTest()
-        {
-            _driver = new FirefoxDriver(".");
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-        }
-
-        public void Dispose()
-        {
-            _driver.Quit();
-            _driver.Dispose();
-        }
+        public SampleFunctionalTest(DriverFixture driverFixture)
+            : base(driverFixture) { }
 
         [Fact]
         public void IndexTitleTest()
         {
-            _driver.Navigate()
-                .GoToUrl(@"http://localhost:5000");
+            var expectedTitle = "Home page - Algenic";
 
-            _driver.Title.Should().Be("Home page - Algenic");
+            _driver.Navigate().GoToUrl(_indexUrl);
+
+            _driver.Title.Should().Be(expectedTitle);
         }
     }
 }

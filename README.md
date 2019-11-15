@@ -1,3 +1,7 @@
+![Travis (.org)](https://img.shields.io/travis/marax27/Algenic)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/marax27/Algenic)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 # Algenic
 Web application for online programming competitions
 

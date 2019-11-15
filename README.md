@@ -18,3 +18,4 @@ Recommended workflow:
 3. The application should now be available at *http://localhost:5000*.
 4. In Visual Studio, run tests.
 5. Whenever you edit source files (only *.cs*, it seems), the application will restart. Then you can run the tests again.
+6. Functional tests will use a browser specified in *testSettings.json*. Change `TestBrowser` setting to choose your favourite browser ("Firefox", "Chrome", "Opera", ...), but try not to commit updated setting to the repository.

@@ -4,4 +4,4 @@ mono: none
 dotnet: 2.2.104
 script:
   - dotnet restore Algenic.sln
-  - dotnet test Algenic.sln
+  - dotnet test Algenic.UnitTests  #omitting functional tests, for now

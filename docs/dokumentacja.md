@@ -27,7 +27,7 @@
 ## Definicje przypadków użycia
 
 **Przypadek użycia:** Rejestracja  
-**Aktorzy:** Użytkownik
+**Aktorzy:** Użytkownik  
 **Zakres:** Serwis z konkursami algorytmicznymi Algenic  
 **Cel (story):** Użytkownik chce się zarejestrować  
 **Warunki początkowe:** Użytkownik nie jest zarejestrowany  
@@ -78,13 +78,11 @@
 1. Serwis wielokrotnie kompiluje plik z rozwiązaniem z różnymi danymi wejściowymi
 1. Serwis porównuje dane wyjściowe kompilacji z poprawnymi rozwiązaniami zadania
 1. Serwis zapisuje plik oraz wynik kompilacji (sukces/treść błędu) w historii
-1. Serwis zwraca wiadomość o poprawności wykonania zadania. Koniec przypadku użycia.
+1. Serwis zwraca wiadomość o poprawności wykonania zadania (ilości zaliczonych testów). Koniec przypadku użycia.
   
 **Rozszerzenia scenariusza głównego:**   
 5a. Kompilacja nie powiodła się  
-5a1. Serwis zwraca wiadomość o niepowodzeniu kompilacji wraz z treścią błędu. Koniec przypadku użycia  .
-6a. Dane wyjściowe kompilacji nie stanowią poprawnego rozwiązania zadania  
-6a1. Serwis zwraca wiadomość o niepoprawnym rozwiązaniu zadania. Koniec przypadku użycia.
+5a1. Serwis zwraca wiadomość o niepowodzeniu kompilacji wraz z treścią błędu. Koniec przypadku użycia.
 
 **Przypadek użycia:** Utwórz konkurs  
 **Aktorzy:** Organizator konkursów  
@@ -120,3 +118,25 @@
 **Rozszerzenia scenariusza głównego:**  
 4a. Formularz został wypełniony nieprawidłowo  
 4a1. Zostaje wyświetlony komunikat o niepowodzeniu. Koniec przypadku użycia.
+
+## Architektura systemu
+
+### Podział na moduły
+
+
+
+### Główna część aplikacji (???)
+
+W celu efektywnego odseparowania logiki aplikacji programu od interfejsu graficznego, zdecydowaliśmy się na użycie wzorca MVVM. Pozwala on na rozdzielenie aplikacji części:
+
+1. Model -  stanowi reprezentację danych przechowywanych przez serwis
+1. View  - nasz interfejs graficzny, wyświetla dane reprezentowane przez Model
+1. Viewmodel - reprezentuje obecny stan Modelu, udostepnia dane dla View
+
+Szczególną cechą tego wzorca w porównaniu do jemu podobnych (MVC, MVP), jest to, że Viewmodel docelowo nie wie o istnieniu View. Do wyświetlenia obecnego stanu programu w View wykorzystywany jest data binding - elementy GUI są zsynchronizowane z danymi udostępnianymi przez Viewmodel. Zmiany następujące w Modelu powodują zmiany w interfejsie graficznym użytkownika.
+
+Docelowo, Model zostanie wygenerowany na podstawie wcześniej utworzonej bazy danych za pomocą funkcji Scaffolding należącej do Entity Framework Core.  
+Do stworzenia View zostanie zastosowany ASP.NET Razor Pages - przystępny framework do tworzenia stron internetowych.  
+Każda strona Razor Pages będzie miała własną klasę, która odpowiada za udostępnianie jej danych modelu (tzw. code behind). Jest to wcześniej wspomniany ViewModel.
+
+Rozdzielenie aplikacji na powyższe trzy części zdecydowanie pomoże w unikaniu silnych powiązań w kodzie podczas implementacji.

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic", "Algenic\Algenic.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic.UnitTests", "Algenic.UnitTests\Algenic.UnitTests.csproj", "{479001C4-4514-49E5-8B87-8A42C33FB196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algenic.FunctionalTests", "Algenic.FunctionalTests\Algenic.FunctionalTests.csproj", "{1BC80B0B-113F-4CD1-813A-6B6BDDFE84A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic.FunctionalTests", "Algenic.FunctionalTests\Algenic.FunctionalTests.csproj", "{1BC80B0B-113F-4CD1-813A-6B6BDDFE84A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

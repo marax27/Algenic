@@ -27,6 +27,7 @@ namespace Algenic
             services.ConfigureCookiePolicy()
                     .ConfigureDatabaseConnection(Configuration)
                     .AddDefaultIdentity<IdentityUser>()
+                    .AddRoles<IdentityRole>()
                     .AddDefaultUI(UIFramework.Bootstrap4)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -34,6 +35,12 @@ namespace Algenic
             {
                 services.ConfigureSimplePasswordPolicy();
             }
+
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("MustBeAdmin", policy =>
+                    policy.RequireRole("Admin"));
+            });
 
             services.ConfigureMvc();
         }

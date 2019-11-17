@@ -27,6 +27,7 @@ namespace Algenic
             services.ConfigureCookiePolicy()
                     .ConfigureDatabaseConnection(Configuration)
                     .AddDefaultIdentity<IdentityUser>()
+                    .AddRoles<IdentityRole>()
                     .AddDefaultUI(UIFramework.Bootstrap4)
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 

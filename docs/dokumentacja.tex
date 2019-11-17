@@ -259,6 +259,13 @@ do konkursu
 	\caption{Diagram modułów}
 \end{figure}
 
+\subsection{Opis interfejsów}
+Do połączenia z~bazą danych zostanie wykorzystany \textbf{Entity Framework Core}, służący do~mapowania obiektowo-relacyjnego. Pozwala on~na~wygenerowanie klas będących podstawą komunikacji z~bazą danych. Tworzenie zapytań do~bazy danych jest w~nim możliwe przy użyciu zapytań LINQ (Language Integrated Query).
+
+Kompilacja plików będzie się odbywała za~pomocą JDoodle. Udostępnia on~API pozwalające na~zdalną kompilację. Odbywa się to~poprzez przesłanie zapytania POST w~formacie JSON na~konkretny, stały adres. W~zapytaniu powinny znajdować się m.in.~język oraz kod źródłowy programu. W~zamian, API zwraca wynik kompilacji.
+
+Do utworzenia GUI posłuży framework ASP.NET Core wykorzystujący Razor Pages. Razor Pages bazuje na wzorcu architektonicznym MVVM.
+
 %------------------------------------------------------------
 \section{Technologia i~narzędzia}
 

@@ -36,6 +36,12 @@ namespace Algenic
                 services.ConfigureSimplePasswordPolicy();
             }
 
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("MustBeAdmin", policy =>
+                    policy.RequireRole("Admin"));
+            });
+
             services.ConfigureMvc();
         }
 

@@ -30,7 +30,7 @@
 	\vskip0.5em}%
 }
 
-\title{Dokumentacja \\ Algenic -- serwis z~konkursami algorytmicznymi}
+\title{Algenic -- serwis z~konkursami algorytmicznymi}
 \subtitle{Akademia Górniczo-Hutnicza im. Stanisława Staszica w Krakowie\\
 	Wydział Elektrotechniki, Automatyki,\\
 	Informatyki i Inżynierii Biomedycznej}
@@ -239,7 +239,7 @@ do konkursu
 
 %------------------------------------------------------------
 \newpage
-\section{Diagramy}
+\section{Baza danych}
 
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{entityDiagram.eps}
@@ -281,6 +281,21 @@ Testy wchodzące w~skład projektu możemy podzielić na~testy jednostkowe i~fun
 Celem testów jednostkowych jest weryfikacja działania możliwie małych, odizolowanych od~siebie elementów kodu. Mija się z~celem jednak testowanie np.~każdej metody z~osobna, gdyż wymuszałoby to~uczynienie wszystkich metod publicznymi. Zamiast tego proponujemy, aby~klasy upubliczniały absolutne minimum funkcjonalności. Ów~publiczny interfejs będziemy poddawać testom jednostkowym.
 
 Użytkownik przeważnie nie jest jednak zainteresowany działaniem pojedynczych elementów składowych aplikacji, stąd pomysł wprowadzenia testów funkcjonalnych, które testują znaczną część aplikacji z~punktu widzenia użytkownika. W~naszym przypadku testy funkcjonalne opierają się na~realizacji szeregu zautomatyzowanych operacji w~przeglądarce internetowej i~sprawdzeniu, czy odpowiedź aplikacji spełnia nasze oczekiwania.
+
+%------------------------------------------------------------
+\section{Analiza ryzyka}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.5\linewidth]{macierz_ryzyka.png}
+	\caption{Macierz ryzyka}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.95\linewidth]{lista_ryzyk.png}
+	\caption{Lista ryzyk}
+\end{figure}
 
 
 \end{document}

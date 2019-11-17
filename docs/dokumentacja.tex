@@ -11,6 +11,7 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{graphicx}
 
 \usepackage{listings}
 \usepackage{color}
@@ -143,7 +144,6 @@ Pozostałe wymagania:
 \end{enumerate}
 
 
-\newpage
 \subsection{Dodaj zadanie do istniejącego konkursu}
 
 \textbf{Aktorzy:} Organizator konkursów  
@@ -239,6 +239,14 @@ do konkursu
 
 %------------------------------------------------------------
 \newpage
+\section{Diagramy}
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{entityDiagram.eps}
+	\caption{Diagram bazy danych}
+\end{figure}
+
+%------------------------------------------------------------
 \section{Technologia i~narzędzia}
 
 \textbf{Język programowania:} C\#
@@ -249,13 +257,21 @@ do konkursu
 
 \textbf{Platforma:} GitHub
 
+\textbf{Serwis do testów automatycznych:} Travis CI
+
+\textbf{Zdalna kompilacja:} JDoodle
+
 Projekt został oparty o~framework ASP.NET~Core ze~względu na~jego popularność, wieloplatformowość i~fakt bycia oprogramowiem typu open source. Zrezygnowaliśmy z~sięgnięcia po~najnowszą wersję frameworka,~3.0, na~rzecz bardziej dojrzałej i~potencjalnie stabilniejszej wersji~2.2.
 
-Rozważyliśmy wykorzystanie usługi Azure, co~pozwoliłoby na~skupienie większości aspektów pracy nad~programem w~jednym miejscu (począwszy od~przechowywania plików projektu, poprzez zarządzanie bazą danych projektu, skończywszy na~automatycznym testowaniu zmian i~wdrażaniu aktualnej wersji aplikacji w~chmurze Azure). Stosunkowo długie czasy testowania i~wdrażania w~chmurze, a~także względnie niewielka złożoność naszego projektu sprawiły, że~zdecydowaliśmy się na~uruchamianie~i~testowanie aplikacji lokalnie, wraz z~lokalną bazą danych w~technologii SQL Server.
+Rozważyliśmy wykorzystanie usługi Azure, co~pozwoliłoby na~skupienie większości aspektów pracy nad~programem w~jednym miejscu (począwszy od~przechowywania plików projektu, poprzez zarządzanie bazą danych projektu, skończywszy na~automatycznym testowaniu zmian i~wdrażaniu aktualnej wersji aplikacji w~chmurze Azure). Stosunkowo długie czasy testowania i~wdrażania w~chmurze, a~także względnie niewielka złożoność naszego projektu sprawiły, że~zdecydowaliśmy się na~uruchamianie~i~testowanie aplikacji lokalnie, wraz z~lokalną bazą danych w~technologii SQL~Server.
 
 Ostatecznie wybraliśmy platformę GitHub m.in.~ze~względu na~wbudowane narzędzia do~zarządzania projektem, takie jak tablica zadań, które ułatwią systematyzację zadań związanym z~etapem implementacji i~przydzielanie owych zadań członkom zespołu. Jako element praktyki \emph{Continuous Integration}, zmiany dodawane do~głównego repozytorium są~automatycznie testowane na~platformie \textbf{Travis~CI}.
 
 Na~późniejszym etapie prac nad projektem możemy ponownie rozważyć wykorzystanie Azure, chociażby w~celu uruchomienia wspólnej, trwałej bazy danych w~chmurze.
+
+W~celu kompilowania kodów przysyłanych przez użytkowników wykorzystamy serwis \textbf{JDoodle}, oferujący REST-owe API do~zdalnej kompilacji. Kompilowanie niezaufanego kodu na~serwerze niosłoby poważne zagrożenie, o~ile nie podjęlibyśmy specjalnych środków bezpieczeństwa. Użycie istniejącej usługi jak JDoodle redukuje potencjalne problemy z~bezpieczeństwem.
+
+W~darmowym wariancie JDoodle pozwala na~przeprowadzenie ok.~200 kompilacji dziennie. Może być to~zbyt mała wartość podczas intensywnego testowania, jednak prostota użycia i~bogata ilość dostępnych języków programowania przekonuje nas ostatecznie do~owego rozwiązania.
 
 %------------------------------------------------------------
 \section{Testy}

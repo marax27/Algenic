@@ -121,10 +121,6 @@
 
 ## Architektura systemu
 
-### Podział na moduły
-
-
-
 ### Główna część aplikacji (???)
 
 W celu efektywnego odseparowania logiki aplikacji programu od interfejsu graficznego, zdecydowaliśmy się na użycie wzorca MVVM. Pozwala on na rozdzielenie aplikacji części:
@@ -140,3 +136,11 @@ Do stworzenia View zostanie zastosowany ASP.NET Razor Pages - przystępny framew
 Każda strona Razor Pages będzie miała własną klasę, która odpowiada za udostępnianie jej danych modelu (tzw. code behind). Jest to wcześniej wspomniany ViewModel.
 
 Rozdzielenie aplikacji na powyższe trzy części zdecydowanie pomoże w unikaniu silnych powiązań w kodzie podczas implementacji.
+
+### Opis interfejsów
+
+Do połączenia z bazą danych zostanie wykorzystany Entity Framework Core, służący do mapowania obiektowo-relacyjnego. Pozwala on na wygenerowanie klas będących podstawą komunikacji z bazą danych. Tworzenie zapytań do bazy danych jest w nim możliwe przy użyciu zapytań LINQ (Language Integrated Query).
+
+Kompilacja plików będzie się odbywała za pomocą JDoodle. Udostępnia on API pozwalające na zdalną kompilację. Odbywa się to poprzez przesłanie zapytania POST w formacie JSON na konkretny, stały adres. W zapytaniu powinny znajdować się m.in. język oraz kod źródłowy programu. W zamian, API zwraca przede wszystkim wynik kompilacji.
+
+Do utworzenia GUI posłuży framework ASP.NET Razor Pages, który bazuje na wzorcu architektonicznym MVVM. Znacząco ułatwia on tworzenie stron przy pomocy HTML.

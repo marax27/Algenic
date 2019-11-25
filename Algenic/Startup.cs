@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Algenic.Data;
+using Algenic.Data.Initializers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -46,12 +47,14 @@ namespace Algenic
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, UserManager<IdentityUser> userManager)
         {
             if (_environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage()
                    .UseDatabaseErrorPage();
+
+                IdentityUserInitializer.SeedUsers(userManager);
             }
             else
             {

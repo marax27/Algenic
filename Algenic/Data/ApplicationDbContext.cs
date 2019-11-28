@@ -1,4 +1,5 @@
-﻿using Algenic.Data.Initializers;
+﻿using Algenic.Data.Configuration;
+using Algenic.Data.Initializers;
 using Algenic.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -25,13 +26,22 @@ namespace Algenic.Data
             base.OnModelCreating(builder);
 
             builder.ApplyDefaultRoles();
-            builder.Entity<Solution>().ToTable(nameof(Solution));
-            builder.Entity<Task>().ToTable(nameof(Task));
-            builder.Entity<CompilationResult>().ToTable(nameof(CompilationResult));
-            builder.Entity<Test>().ToTable(nameof(Test));
-            builder.Entity<Contest>().ToTable(nameof(Contest));
-            builder.Entity<ScorePolicy>().ToTable(nameof(ScorePolicy));
-            builder.Entity<ScoreRule>().ToTable(nameof(ScoreRule));
+
+            builder.ApplyConfiguration(new CompilationResultConfiguration());
+            builder.ApplyConfiguration(new ContestConfiguration());
+            builder.ApplyConfiguration(new ScorePolicyConfiguration());
+            builder.ApplyConfiguration(new ScoreRuleConfiguration());
+            builder.ApplyConfiguration(new SolutionConfiguration());
+            builder.ApplyConfiguration(new TaskConfiguration());
+            builder.ApplyConfiguration(new TestConfiguration());
+
+            builder.Entity<Solution>().ToTable(nameof(Solutions));
+            builder.Entity<Task>().ToTable(nameof(Tasks));
+            builder.Entity<CompilationResult>().ToTable(nameof(CompilationResults));
+            builder.Entity<Test>().ToTable(nameof(Tests));
+            builder.Entity<Contest>().ToTable(nameof(Contests));
+            builder.Entity<ScorePolicy>().ToTable(nameof(ScorePolicies));
+            builder.Entity<ScoreRule>().ToTable(nameof(ScoreRules));
         }
     }
 }

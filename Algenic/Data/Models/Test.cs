@@ -14,7 +14,6 @@ namespace Algenic.Data.Models
         public string Input { get; set; }
         public string ExpectedOutput { get; set; }
 
-        [ForeignKey(nameof(TaskId))]
         public virtual Task Task { get; set; }
     }
 }

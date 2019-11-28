@@ -12,7 +12,6 @@ namespace Algenic.Data.Models
         public decimal Threshold { get; set; }
         public int Score { get; set; }
 
-        [ForeignKey(nameof(ScorePolicyId))]
         public virtual ScorePolicy ScorePolicy { get; set; }
     }
 }

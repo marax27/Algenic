@@ -13,7 +13,7 @@ namespace Algenic.Data.Models
         public int TaskId { get; set; }
         public int? CompilationResultId { get; set; }
         public string SourceCode { get; set; }
-        public decimal PointCount { get; set; }
+        public decimal? PointCount { get; set; }
         public DateTime TimeStamp { get; set; }
 
         public virtual Task Task { get; set; }

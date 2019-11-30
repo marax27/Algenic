@@ -69,8 +69,8 @@ namespace Algenic.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Status = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Status = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,7 +83,7 @@ namespace Algenic.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -224,8 +224,8 @@ namespace Algenic.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ContestId = table.Column<int>(nullable: false),
                     ScorePolicyId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -252,8 +252,8 @@ namespace Algenic.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TaskId = table.Column<int>(nullable: false),
                     CompilationResultId = table.Column<int>(nullable: true),
-                    SourceCode = table.Column<string>(nullable: true),
-                    PointCount = table.Column<decimal>(nullable: false),
+                    SourceCode = table.Column<string>(nullable: false),
+                    PointCount = table.Column<decimal>(nullable: true),
                     TimeStamp = table.Column<DateTime>(nullable: false),
                     IdentityUserId = table.Column<string>(nullable: true)
                 },
@@ -287,9 +287,9 @@ namespace Algenic.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TaskId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Input = table.Column<string>(nullable: true),
-                    ExpectedOutput = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    Input = table.Column<string>(nullable: false),
+                    ExpectedOutput = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -305,17 +305,17 @@ namespace Algenic.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "90a91351-f3ab-42cb-aac8-04f398d4b4d2", "d0b329b4-04e4-4cf8-ba30-acc66c2f5c61", "Admin", "ADMIN" });
+                values: new object[] { "8600b8f8-bd0a-451c-92c1-ec11d75b11c1", "0e5ab6bb-6875-4c59-ad11-fd06a095b0ba", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "8daec1cf-72ca-4774-b3b2-8c9cda2ef8cf", "c5c292ae-c1c8-4a9a-ae32-7288da77b8c9", "Examiner", "EXAMINER" });
+                values: new object[] { "843ca07e-2c2a-4504-bfc1-4ed0a626c78c", "51f451ff-9112-4143-aa31-e7ff8a985532", "Examiner", "EXAMINER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0ca9a174-b7db-409d-aee6-a86da9fd84f4", "4c205a14-7ce0-41e4-8615-e604b07913b2", "Regular", "REGULAR" });
+                values: new object[] { "e8f8e214-3ad9-4c8b-bdcd-2551914a6047", "6fe6a045-1db1-41c4-a597-b548f9612de4", "Regular", "REGULAR" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

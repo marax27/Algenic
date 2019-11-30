@@ -14,13 +14,8 @@ namespace Algenic.Data.Configuration
         {
             builder.HasKey(s => s.Id);
 
-            builder.HasMany(s => s.Tasks)
-                .WithOne(t => t.ScorePolicy)
-                .HasForeignKey(t => t.ScorePolicyId);
-
-            builder.HasMany(s => s.ScoreRules)
-                .WithOne(sr => sr.ScorePolicy)
-                .HasForeignKey(sr => sr.ScorePolicyId);
+            builder.Property(s => s.Name)
+                .IsRequired();
         }
     }
 }

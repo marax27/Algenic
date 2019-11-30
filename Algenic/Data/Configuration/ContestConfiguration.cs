@@ -1,10 +1,12 @@
 ﻿using Algenic.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Algenic.Data.Models.Contest;
 
 namespace Algenic.Data.Configuration
 {
@@ -14,9 +16,11 @@ namespace Algenic.Data.Configuration
         {
             builder.HasKey(c => c.Id);
 
-            builder.HasMany(c => c.Tasks)
-                .WithOne(t => t.Contest)
-                .HasForeignKey(t => t.ContestId);
+            builder.Property(c => c.Status)
+                .HasConversion(new EnumToStringConverter<ContestState>());
+
+            builder.Property(c => c.Name)
+                .IsRequired();
         }
     }
 }

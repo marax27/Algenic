@@ -17,6 +17,15 @@ namespace Algenic.Data.Configuration
             builder.HasOne(t => t.Task)
                 .WithMany(tsk => tsk.Tests)
                 .HasForeignKey(t => t.TaskId);
+
+            builder.Property(t => t.Name)
+                .IsRequired();
+
+            builder.Property(t => t.Input)
+                .IsRequired();
+
+            builder.Property(t => t.ExpectedOutput)
+                .IsRequired();
         }
     }
 }

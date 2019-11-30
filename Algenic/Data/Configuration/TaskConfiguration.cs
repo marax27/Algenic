@@ -17,17 +17,15 @@ namespace Algenic.Data.Configuration
                 .WithMany(c => c.Tasks)
                 .HasForeignKey(t => t.ContestId);
 
-            /*builder.HasOne(t => t.ScorePolicy)
+            builder.HasOne(t => t.ScorePolicy)
                 .WithMany(s => s.Tasks)
-                .HasForeignKey(t => t.ScorePolicyId);*/
+                .HasForeignKey(t => t.ScorePolicyId);
 
-            builder.HasMany(t => t.Solutions)
-                .WithOne(s => s.Task)
-                .HasForeignKey(s => s.TaskId);
+            builder.Property(t => t.Name)
+                .IsRequired();
 
-            builder.HasMany(t => t.Tests)
-                .WithOne(ts => ts.Task)
-                .HasForeignKey(ts => ts.TaskId);
+            builder.Property(t => t.Description)
+                .IsRequired();
         }
     }
 }

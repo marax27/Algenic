@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Algenic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191130144126_Initial")]
+    [Migration("20191130193713_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,9 +46,11 @@ namespace Algenic.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -63,7 +65,8 @@ namespace Algenic.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -93,9 +96,10 @@ namespace Algenic.Migrations
 
                     b.Property<string>("IdentityUserId");
 
-                    b.Property<decimal>("PointCount");
+                    b.Property<decimal?>("PointCount");
 
-                    b.Property<string>("SourceCode");
+                    b.Property<string>("SourceCode")
+                        .IsRequired();
 
                     b.Property<int>("TaskId");
 
@@ -122,9 +126,11 @@ namespace Algenic.Migrations
 
                     b.Property<int>("ContestId");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int>("ScorePolicyId");
 
@@ -143,11 +149,14 @@ namespace Algenic.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ExpectedOutput");
+                    b.Property<string>("ExpectedOutput")
+                        .IsRequired();
 
-                    b.Property<string>("Input");
+                    b.Property<string>("Input")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int>("TaskId");
 
@@ -184,22 +193,22 @@ namespace Algenic.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "90a91351-f3ab-42cb-aac8-04f398d4b4d2",
-                            ConcurrencyStamp = "d0b329b4-04e4-4cf8-ba30-acc66c2f5c61",
+                            Id = "8600b8f8-bd0a-451c-92c1-ec11d75b11c1",
+                            ConcurrencyStamp = "0e5ab6bb-6875-4c59-ad11-fd06a095b0ba",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8daec1cf-72ca-4774-b3b2-8c9cda2ef8cf",
-                            ConcurrencyStamp = "c5c292ae-c1c8-4a9a-ae32-7288da77b8c9",
+                            Id = "843ca07e-2c2a-4504-bfc1-4ed0a626c78c",
+                            ConcurrencyStamp = "51f451ff-9112-4143-aa31-e7ff8a985532",
                             Name = "Examiner",
                             NormalizedName = "EXAMINER"
                         },
                         new
                         {
-                            Id = "0ca9a174-b7db-409d-aee6-a86da9fd84f4",
-                            ConcurrencyStamp = "4c205a14-7ce0-41e4-8615-e604b07913b2",
+                            Id = "e8f8e214-3ad9-4c8b-bdcd-2551914a6047",
+                            ConcurrencyStamp = "6fe6a045-1db1-41c4-a597-b548f9612de4",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         });

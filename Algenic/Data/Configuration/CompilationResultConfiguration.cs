@@ -14,9 +14,9 @@ namespace Algenic.Data.Configuration
         {
             builder.HasKey(c => c.SolutionId);
 
-            /*builder.HasOne(c => c.Solution)
+            builder.HasOne(c => c.Solution)
                 .WithOne(s => s.CompilationResult)
-                .HasForeignKey<CompilationResult>(c => c.SolutionId);*/
+                .HasForeignKey<CompilationResult>(c => c.SolutionId);
         }
     }
 }

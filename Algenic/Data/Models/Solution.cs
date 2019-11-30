@@ -11,7 +11,7 @@ namespace Algenic.Data.Models
     {
         public int Id { get; set; }
         public int TaskId { get; set; }
-        public int CompilationResultId { get; set; }
+        public int? CompilationResultId { get; set; }
         public string SourceCode { get; set; }
         public decimal PointCount { get; set; }
         public DateTime TimeStamp { get; set; }

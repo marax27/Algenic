@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Algenic.Data.Migrations
+namespace Algenic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -21,7 +21,7 @@ namespace Algenic.Data.Migrations
 
             modelBuilder.Entity("Algenic.Data.Models.CompilationResult", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SolutionId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -33,9 +33,7 @@ namespace Algenic.Data.Migrations
 
                     b.Property<string>("Output");
 
-                    b.Property<int>("SolutionId");
-
-                    b.HasKey("Id");
+                    b.HasKey("SolutionId");
 
                     b.ToTable("CompilationResults");
                 });
@@ -89,7 +87,7 @@ namespace Algenic.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompilationResultId");
+                    b.Property<int?>("CompilationResultId");
 
                     b.Property<string>("IdentityUserId");
 
@@ -101,12 +99,11 @@ namespace Algenic.Data.Migrations
 
                     b.Property<DateTime>("TimeStamp");
 
-                    b.Property<int>("UserId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompilationResultId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CompilationResultId] IS NOT NULL");
 
                     b.HasIndex("IdentityUserId");
 
@@ -185,22 +182,22 @@ namespace Algenic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "227cfeba-55dd-4aa8-9332-b91d3c6929f5",
-                            ConcurrencyStamp = "e5568362-527e-48d1-aed7-19e81ee5fa58",
+                            Id = "90a91351-f3ab-42cb-aac8-04f398d4b4d2",
+                            ConcurrencyStamp = "d0b329b4-04e4-4cf8-ba30-acc66c2f5c61",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7b3885e0-9fb6-4797-9dde-0f3c59c11db1",
-                            ConcurrencyStamp = "34764608-00d3-400e-9721-358dfc255864",
+                            Id = "8daec1cf-72ca-4774-b3b2-8c9cda2ef8cf",
+                            ConcurrencyStamp = "c5c292ae-c1c8-4a9a-ae32-7288da77b8c9",
                             Name = "Examiner",
                             NormalizedName = "EXAMINER"
                         },
                         new
                         {
-                            Id = "6b081e0e-0a2b-4152-abef-ce967fc1c289",
-                            ConcurrencyStamp = "1203a216-a69e-4a88-8f11-df509a4ebedf",
+                            Id = "0ca9a174-b7db-409d-aee6-a86da9fd84f4",
+                            ConcurrencyStamp = "4c205a14-7ce0-41e4-8615-e604b07913b2",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         });
@@ -359,8 +356,7 @@ namespace Algenic.Data.Migrations
                 {
                     b.HasOne("Algenic.Data.Models.CompilationResult", "CompilationResult")
                         .WithOne("Solution")
-                        .HasForeignKey("Algenic.Data.Models.Solution", "CompilationResultId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("Algenic.Data.Models.Solution", "CompilationResultId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()

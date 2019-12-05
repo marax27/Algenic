@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Algenic.Data.Migrations
+namespace Algenic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -18,6 +18,152 @@ namespace Algenic.Data.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Algenic.Data.Models.CompilationResult", b =>
+                {
+                    b.Property<int>("SolutionId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CpuTime");
+
+                    b.Property<bool>("ExecutionSuccessful");
+
+                    b.Property<string>("MemoryUsage");
+
+                    b.Property<string>("Output");
+
+                    b.HasKey("SolutionId");
+
+                    b.ToTable("CompilationResults");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Contest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("Status")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contests");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.ScorePolicy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ScorePolicies");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.ScoreRule", b =>
+                {
+                    b.Property<int>("ScorePolicyId");
+
+                    b.Property<decimal>("Threshold");
+
+                    b.Property<int>("Score");
+
+                    b.HasKey("ScorePolicyId", "Threshold", "Score");
+
+                    b.ToTable("ScoreRules");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Solution", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CompilationResultId");
+
+                    b.Property<string>("IdentityUserId");
+
+                    b.Property<decimal?>("PointCount");
+
+                    b.Property<string>("SourceCode")
+                        .IsRequired();
+
+                    b.Property<int>("TaskId");
+
+                    b.Property<DateTime>("TimeStamp");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompilationResultId")
+                        .IsUnique()
+                        .HasFilter("[CompilationResultId] IS NOT NULL");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("Solutions");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Task", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ContestId");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("ScorePolicyId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContestId");
+
+                    b.HasIndex("ScorePolicyId");
+
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ExpectedOutput")
+                        .IsRequired();
+
+                    b.Property<string>("Input")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("TaskId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("Tests");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -45,22 +191,22 @@ namespace Algenic.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3cba363c-950c-4105-a03f-f57bd25065e6",
-                            ConcurrencyStamp = "dbc338c1-c85d-419b-a4dc-bee4c766aaa9",
+                            Id = "8600b8f8-bd0a-451c-92c1-ec11d75b11c1",
+                            ConcurrencyStamp = "0e5ab6bb-6875-4c59-ad11-fd06a095b0ba",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f7ec9271-a741-4fae-a059-158756346279",
-                            ConcurrencyStamp = "b7719396-2b36-446e-9d63-bd6fa5a2ede0",
+                            Id = "843ca07e-2c2a-4504-bfc1-4ed0a626c78c",
+                            ConcurrencyStamp = "51f451ff-9112-4143-aa31-e7ff8a985532",
                             Name = "Examiner",
                             NormalizedName = "EXAMINER"
                         },
                         new
                         {
-                            Id = "1a3cd665-b368-4452-ac3b-cabb8538a1fd",
-                            ConcurrencyStamp = "4c7fe0c1-e2e5-41dc-b441-9f4bce824542",
+                            Id = "e8f8e214-3ad9-4c8b-bdcd-2551914a6047",
+                            ConcurrencyStamp = "6fe6a045-1db1-41c4-a597-b548f9612de4",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         });
@@ -205,6 +351,51 @@ namespace Algenic.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.ScoreRule", b =>
+                {
+                    b.HasOne("Algenic.Data.Models.ScorePolicy", "ScorePolicy")
+                        .WithMany("ScoreRules")
+                        .HasForeignKey("ScorePolicyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Solution", b =>
+                {
+                    b.HasOne("Algenic.Data.Models.CompilationResult", "CompilationResult")
+                        .WithOne("Solution")
+                        .HasForeignKey("Algenic.Data.Models.Solution", "CompilationResultId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("Algenic.Data.Models.Task", "Task")
+                        .WithMany("Solutions")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Task", b =>
+                {
+                    b.HasOne("Algenic.Data.Models.Contest", "Contest")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ContestId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Algenic.Data.Models.ScorePolicy", "ScorePolicy")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ScorePolicyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Test", b =>
+                {
+                    b.HasOne("Algenic.Data.Models.Task", "Task")
+                        .WithMany("Tests")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

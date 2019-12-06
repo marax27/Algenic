@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic.UnitTests", "Algeni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic.FunctionalTests", "Algenic.FunctionalTests\Algenic.FunctionalTests.csproj", "{1BC80B0B-113F-4CD1-813A-6B6BDDFE84A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algenic.Compilation", "Algenic.Compilation\Algenic.Compilation.csproj", "{BC79FF98-8FB3-4D8C-83CE-997D03A81465}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1BC80B0B-113F-4CD1-813A-6B6BDDFE84A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BC80B0B-113F-4CD1-813A-6B6BDDFE84A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BC80B0B-113F-4CD1-813A-6B6BDDFE84A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC79FF98-8FB3-4D8C-83CE-997D03A81465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC79FF98-8FB3-4D8C-83CE-997D03A81465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC79FF98-8FB3-4D8C-83CE-997D03A81465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC79FF98-8FB3-4D8C-83CE-997D03A81465}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

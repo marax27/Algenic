@@ -6,5 +6,7 @@ namespace Algenic.Compilation.Utilities
 {
     class JDoodleError
     {
+        public string error { get; set; }
+        public string statusCode { get; set; }
     }
 }

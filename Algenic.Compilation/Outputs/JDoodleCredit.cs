@@ -6,5 +6,6 @@ namespace Algenic.Compilation.Utilities
 {
     class JDoodleCredit
     {
+        public string used { get; set; }
     }
 }

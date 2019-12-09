@@ -61,7 +61,7 @@ namespace Algenic.Areas.Contests.Pages
 
             ContestName = "";
 
-            return Page();
+            return RedirectToPage("Index");
         }
 
         public async Task<IActionResult> OnPostEditAsync(int contestId)

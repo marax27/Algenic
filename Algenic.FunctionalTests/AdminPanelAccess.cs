@@ -19,9 +19,10 @@ namespace Algenic.FunctionalTests
             var guid = Guid.NewGuid();
             var email = $"{guid}@example.com";
             var password = "123456";
+            var testUser = new UserCredentials {Email = email, Password = password};
 
-            _driver.RegisterUser(_indexUrl, email, password);
-            _driver.LoginAs(_indexUrl, email, password);
+            _driver.RegisterUser(_indexUrl, testUser);
+            _driver.LoginAs(_indexUrl, testUser);
             _driver.Navigate().GoToUrl(new Uri(_indexUrl, "/Admin"));
 
             _driver.PageSource.Should().Contain("Access denied");

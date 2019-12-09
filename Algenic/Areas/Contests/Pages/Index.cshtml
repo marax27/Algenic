@@ -24,7 +24,7 @@
             </div>
         }
         <table class="table">
-            @foreach (var contest in Model.ActiveContests ?? new List<Algenic.Data.Models.Contest>())
+            @foreach (var contest in Model.Contests ?? new List<Algenic.Data.Models.Contest>())
             {
                 <tr>
                     <td width="80%">

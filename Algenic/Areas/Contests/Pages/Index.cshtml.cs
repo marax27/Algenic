@@ -18,7 +18,7 @@ namespace Algenic.Areas.Contests.Pages
         [BindProperty]
         public string ContestName { get; set; }
         [BindProperty]
-        public IEnumerable<Contest> ActiveContests { get; set; }
+        public IEnumerable<Contest> Contests { get; set; }
 
         public IndexModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
@@ -28,8 +28,7 @@ namespace Algenic.Areas.Contests.Pages
 
         public async System.Threading.Tasks.Task OnGetAsync()
         {
-            ActiveContests = _context.Contests.Where(c => c.Status == Contest.ContestState.InProgress)
-                .ToList();
+            Contests = _context.Contests;
         }
 
 

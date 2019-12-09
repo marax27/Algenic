@@ -32,7 +32,8 @@ namespace Algenic.Areas.Contests.Pages
 
         public async System.Threading.Tasks.Task OnGetAsync(int id)
         {
-            Id = id;
+            Id = id; 
+            TempData.Keep(nameof(Id));
             var contest = await _context.Contests.FindAsync(id);
             ContestName = contest.Name;
         }
@@ -43,7 +44,7 @@ namespace Algenic.Areas.Contests.Pages
             contest.Name = ContestName;
             await _context.SaveChangesAsync();
 
-            return Page();
+            return RedirectToPage(Id);
         }
     }
 }

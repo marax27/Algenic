@@ -13,7 +13,7 @@
         @if (User.IsInRole(admin) || User.IsInRole(examiner))
         {
             <div class="col-6" style="margin-bottom: 30px;">
-                <form asp-page-handler="create" method="post">
+                <form asp-page-handler="create" method="post" id="form-add-group">
                     <h6>Create a new contest</h6>
                     <div class="form-group">
                         <label>Contest Name</label>

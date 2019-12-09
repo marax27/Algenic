@@ -16,13 +16,10 @@ namespace Algenic.FunctionalTests
         [Fact]
         public void AccessAdminPanel_RegularUser_AccessDenied()
         {
-            var guid = Guid.NewGuid();
-            var email = $"{guid}@example.com";
-            var password = "123456";
-            var testUser = new UserCredentials {Email = email, Password = password};
-
+            var testUser = RandomRegularUser.Generate();
             _driver.RegisterUser(_indexUrl, testUser);
             _driver.LoginAs(_indexUrl, testUser);
+
             _driver.Navigate().GoToUrl(new Uri(_indexUrl, "/Admin"));
 
             _driver.PageSource.Should().Contain("Access denied");

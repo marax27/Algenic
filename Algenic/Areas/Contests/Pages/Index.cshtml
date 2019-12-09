@@ -2,15 +2,13 @@
 @model Algenic.Areas.Contests.Pages.IndexModel
 @{
     Layout = "/Pages/Shared/_Layout.cshtml";
-    var admin = "Admin";
-    var examiner = "Examiner";
 }
 
 <div class="row">
     <div class="col-12">
         <h4>Contests</h4>
         <hr />
-        @if (User.IsInRole(admin) || User.IsInRole(examiner))
+        @if (Model.CanAddContest)
         {
             <div class="col-6" style="margin-bottom: 30px;">
                 <form asp-page-handler="create" method="post" id="form-add-group">
@@ -24,19 +22,19 @@
             </div>
         }
         <table class="table">
-            @foreach (var contest in Model.Contests ?? new List<Algenic.Data.Models.Contest>())
+            @foreach (var contest in Model.Contests)
             {
                 <tr>
                     <td width="80%">
                         @contest.Name
                     </td>
-                    @if (User.Identity.IsAuthenticated && !Model.IsCurrentUsersContest(contest.Id))
+                    @if (contest.CanJoin)
                     {
                         <td width="20%">
                             <button class="btn btn-outline-dark">Join</button>
                         </td>
                     }
-                    @if (Model.IsCurrentUsersContest(contest.Id))
+                    @if (contest.CanEdit)
                     {
                         <td width="20%">
                             <form asp-page-handler="edit" method="post">

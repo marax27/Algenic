@@ -10,6 +10,15 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Algenic.Areas.Contests.Pages
 {
+    public class ContestViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Author { get; set; }
+        public bool CanJoin { get; set; }
+        public bool CanEdit { get; set; }
+    }
+
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -17,8 +26,12 @@ namespace Algenic.Areas.Contests.Pages
 
         [BindProperty]
         public string ContestName { get; set; }
+        
         [BindProperty]
-        public IEnumerable<Contest> Contests { get; set; }
+        public ICollection<ContestViewModel> Contests { get; set; }
+
+        [BindProperty]
+        public bool CanAddContest { get; set; }
 
         public IndexModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
@@ -28,7 +41,8 @@ namespace Algenic.Areas.Contests.Pages
 
         public async System.Threading.Tasks.Task OnGetAsync()
         {
-            Contests = _context.Contests;
+            CanAddContest = User.IsInRole("Admin") || User.IsInRole("Examiner");
+            Contests = _context.Contests.AsEnumerable().Select(MapToViewModel).ToList();
         }
 
 
@@ -55,15 +69,24 @@ namespace Algenic.Areas.Contests.Pages
             return RedirectToPage("Edit", new { id = contestId });
         }
 
-        public bool IsCurrentUsersContest(int contestId)
+        private ContestViewModel MapToViewModel(Contest contest)
         {
-            var contestsUserId = _context.Contests.Where(c => c.Id == contestId)
-                .Single()
+            bool isOwner = IsCurrentUsersContest(contest.Id);
+            return new ContestViewModel()
+            {
+                CanEdit = User.Identity.IsAuthenticated && isOwner,
+                CanJoin = !isOwner,
+                Name = contest.Name,
+                Id = contest.Id
+            };
+        }
+
+        private bool IsCurrentUsersContest(int contestId)
+        {
+            var contestsUserId = _context.Contests.Single(c => c.Id == contestId)
                 .IdentityUser.Id;
 
-            var userId = _userManager.GetUserId(User);
-
-            return contestsUserId == userId;
+            return contestsUserId == _userManager.GetUserId(User);
         }
     }
 }

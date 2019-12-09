@@ -19,12 +19,20 @@
     <Compile Remove="Migrations\20191130144126_Initial.Designer.cs" />
     <Compile Remove="Migrations\20191130191213_Initial.cs" />
     <Compile Remove="Migrations\20191130191213_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191130193713_Initial.cs" />
+    <Compile Remove="Migrations\20191130193713_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191207191850_Initial.cs" />
+    <Compile Remove="Migrations\20191207191850_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191209114709_Initial.cs" />
+    <Compile Remove="Migrations\20191209114709_Initial.Designer.cs" />
   </ItemGroup>
 
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
   </ItemGroup>
 
   <ItemGroup>

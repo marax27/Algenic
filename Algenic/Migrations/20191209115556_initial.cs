@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Algenic.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,20 +61,6 @@ namespace Algenic.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompilationResults", x => x.SolutionId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Status = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,6 +184,27 @@ namespace Algenic.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    IdentityUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contests_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ScoreRules",
                 columns: table => new
                 {
@@ -305,17 +312,17 @@ namespace Algenic.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "8600b8f8-bd0a-451c-92c1-ec11d75b11c1", "0e5ab6bb-6875-4c59-ad11-fd06a095b0ba", "Admin", "ADMIN" });
+                values: new object[] { "159be99b-fbec-49c3-b919-585fed505d40", "31347c4d-3566-4a65-adaf-cd4f3f111f63", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "843ca07e-2c2a-4504-bfc1-4ed0a626c78c", "51f451ff-9112-4143-aa31-e7ff8a985532", "Examiner", "EXAMINER" });
+                values: new object[] { "23b4d357-46d2-4f31-9112-ba48da551022", "e5937065-4ed8-4132-b8a2-1046b9bd2bae", "Examiner", "EXAMINER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "e8f8e214-3ad9-4c8b-bdcd-2551914a6047", "6fe6a045-1db1-41c4-a597-b548f9612de4", "Regular", "REGULAR" });
+                values: new object[] { "36a7bc45-5960-46e6-bf5f-419e0ec63c28", "1903238d-f32f-4358-94da-e9a09f2decb0", "Regular", "REGULAR" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -355,6 +362,11 @@ namespace Algenic.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contests_IdentityUserId",
+                table: "Contests",
+                column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Solutions_CompilationResultId",
@@ -422,9 +434,6 @@ namespace Algenic.Migrations
                 name: "CompilationResults");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Tasks");
 
             migrationBuilder.DropTable(
@@ -432,6 +441,9 @@ namespace Algenic.Migrations
 
             migrationBuilder.DropTable(
                 name: "ScorePolicies");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

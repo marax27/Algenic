@@ -7,9 +7,24 @@ namespace Algenic.Data.Initializers
         private static readonly string AdminEmail = "admin@admin";
         private static readonly string AdminPassword = "Paramount71Security";
 
+        // Sample examiner
+        private static readonly string ExaminerEmail = "examiner@examiner";
+        private static readonly string ExaminerPassword = "Paramount71Security";
+
+        // Sample regular user
+        private static readonly string RegularEmail = "regular@regular";
+        private static readonly string RegularPassword = "Paramount71Security";
+
         public static void SeedUsers(UserManager<IdentityUser> userManager)
         {
-            var locatedUser = userManager.FindByEmailAsync(AdminEmail).Result;
+            SeedUser(userManager, AdminEmail, AdminPassword, "Admin");
+            SeedUser(userManager, ExaminerEmail, ExaminerPassword, "Examiner");
+            SeedUser(userManager, RegularEmail, RegularPassword, "Regular");
+        }
+
+        private static void SeedUser(UserManager<IdentityUser> userManager, string email, string password, string role)
+        {
+            var locatedUser = userManager.FindByEmailAsync(email).Result;
             if (locatedUser != null)
             {
                 return;
@@ -17,14 +32,14 @@ namespace Algenic.Data.Initializers
 
             var user = new IdentityUser
             {
-                UserName = AdminEmail,
-                Email = AdminEmail
+                UserName = email,
+                Email = email
             };
 
-            var result = userManager.CreateAsync(user, AdminPassword).Result;
+            var result = userManager.CreateAsync(user, password).Result;
             if (result.Succeeded)
             {
-                userManager.AddToRoleAsync(user, "Admin").Wait();
+                userManager.AddToRoleAsync(user, role).Wait();
             }
         }
     }

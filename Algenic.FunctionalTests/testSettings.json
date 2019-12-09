@@ -1,4 +1,8 @@
 {
 	"ApplicationIndexUrl": "http://localhost:5000",
-	"TestBrowser": "Firefox"
+	"TestBrowser": "Opera",
+	"Examiner": {
+		"Email": "examiner@examiner",
+		"Password": "Paramount71Security"
+	}
 }

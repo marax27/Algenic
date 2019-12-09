@@ -1,0 +1,35 @@
+﻿@page "{id:int}"
+@model Algenic.Areas.Contests.Pages.EditModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h4>Edit Contest</h4>
+        <hr />
+        <div class="col-6" style="margin-bottom: 30px;">
+            <form asp-page-handler="save" method="post">
+                <div class="form-group">
+                    <label>Contest Name</label>
+                    <input asp-for="ContestName" class="form-control" />
+                    <!--<input type="hidden" asp-for="Id" />-->
+                </div>
+                <input type="submit" value="Save" class="btn btn-outline-dark" />
+            </form>
+        </div>
+        <div class="col-12">
+            <h6>Tasks</h6>
+            <table class="table">
+                @foreach (var task in Model.ContestTasks ?? new List<Algenic.Data.Models.Task>())
+                {
+                    <tr>
+                        <td width="80%">
+                            @task.Name
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

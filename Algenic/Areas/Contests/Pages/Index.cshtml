@@ -1,0 +1,52 @@
+﻿@page
+@model Algenic.Areas.Contests.Pages.IndexModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    var admin = "Admin";
+    var examiner = "Examiner";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h4>Contests</h4>
+        <hr />
+        @if (User.IsInRole(admin) || User.IsInRole(examiner))
+        {
+            <div class="col-6" style="margin-bottom: 30px;">
+                <form asp-page-handler="create" method="post" id="form-add-group">
+                    <h6>Create a new contest</h6>
+                    <div class="form-group">
+                        <label>Contest Name</label>
+                        <input asp-for="ContestName" class="form-control" />
+                    </div>
+                    <input type="submit" value="Send" class="btn btn-outline-dark" />
+                </form>
+            </div>
+        }
+        <table class="table">
+            @foreach (var contest in Model.Contests ?? new List<Algenic.Data.Models.Contest>())
+            {
+                <tr>
+                    <td width="80%">
+                        @contest.Name
+                    </td>
+                    @if (User.Identity.IsAuthenticated && !Model.IsCurrentUsersContest(contest.Id))
+                    {
+                        <td width="20%">
+                            <button class="btn btn-outline-dark">Join</button>
+                        </td>
+                    }
+                    @if (Model.IsCurrentUsersContest(contest.Id))
+                    {
+                        <td width="20%">
+                            <form asp-page-handler="edit" method="post">
+                                <input type="submit" value="Edit" class="btn btn-outline-dark" />
+                                <input type="hidden" name="contestId" value="@contest.Id" />
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+</div>

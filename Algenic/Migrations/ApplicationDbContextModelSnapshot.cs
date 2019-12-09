@@ -44,6 +44,8 @@ namespace Algenic.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("IdentityUserId");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -51,6 +53,8 @@ namespace Algenic.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Contests");
                 });
@@ -191,22 +195,22 @@ namespace Algenic.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8600b8f8-bd0a-451c-92c1-ec11d75b11c1",
-                            ConcurrencyStamp = "0e5ab6bb-6875-4c59-ad11-fd06a095b0ba",
+                            Id = "159be99b-fbec-49c3-b919-585fed505d40",
+                            ConcurrencyStamp = "31347c4d-3566-4a65-adaf-cd4f3f111f63",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "843ca07e-2c2a-4504-bfc1-4ed0a626c78c",
-                            ConcurrencyStamp = "51f451ff-9112-4143-aa31-e7ff8a985532",
+                            Id = "23b4d357-46d2-4f31-9112-ba48da551022",
+                            ConcurrencyStamp = "e5937065-4ed8-4132-b8a2-1046b9bd2bae",
                             Name = "Examiner",
                             NormalizedName = "EXAMINER"
                         },
                         new
                         {
-                            Id = "e8f8e214-3ad9-4c8b-bdcd-2551914a6047",
-                            ConcurrencyStamp = "6fe6a045-1db1-41c4-a597-b548f9612de4",
+                            Id = "36a7bc45-5960-46e6-bf5f-419e0ec63c28",
+                            ConcurrencyStamp = "1903238d-f32f-4358-94da-e9a09f2decb0",
                             Name = "Regular",
                             NormalizedName = "REGULAR"
                         });
@@ -351,6 +355,13 @@ namespace Algenic.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Contest", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
                 });
 
             modelBuilder.Entity("Algenic.Data.Models.ScoreRule", b =>

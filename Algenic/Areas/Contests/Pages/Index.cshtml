@@ -31,7 +31,10 @@
                     @if (contest.CanJoin)
                     {
                         <td width="20%">
-                            <button class="btn btn-outline-dark">Join</button>
+                            <form asp-page-handler="join" method="post">
+                                <input type="submit" value="Join" class="btn btn-outline-dark" />
+                                <input type="hidden" name="contestId" value="@contest.Id" />
+                            </form>
                         </td>
                     }
                     @if (contest.CanEdit)

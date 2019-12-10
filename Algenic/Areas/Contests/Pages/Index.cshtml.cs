@@ -26,7 +26,7 @@ namespace Algenic.Areas.Contests.Pages
 
         [BindProperty]
         public string ContestName { get; set; }
-        
+
         [BindProperty]
         public ICollection<ContestViewModel> Contests { get; set; }
 
@@ -67,6 +67,11 @@ namespace Algenic.Areas.Contests.Pages
         public async Task<IActionResult> OnPostEditAsync(int contestId)
         {
             return RedirectToPage("Edit", new { id = contestId });
+        }
+
+        public async Task<IActionResult> OnPostJoinAsync(int contestId)
+        {
+            return RedirectToPage("View", new { id = contestId });
         }
 
         private ContestViewModel MapToViewModel(Contest contest)

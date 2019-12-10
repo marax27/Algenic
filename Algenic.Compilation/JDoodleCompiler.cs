@@ -44,8 +44,12 @@ namespace Algenic.Compilation
 
             var response = await _httpClient.PostAsync(new Uri(apiUrl), content);
             var jsonCode = response.Content.ReadAsStringAsync();
-            //JDoodleOutput output = JsonConvert.DeserializeObject<JDoodleOutput>(jsonCode.Result);
-            return jsonCode.Result;
+            return procesResponse(jsonCode.Result);
+        }
+        private string procesResponse(string resultJson)
+        {
+            JDoodleOutput output = JsonConvert.DeserializeObject<JDoodleOutput>(resultJson);
+            return output.Output;
         }
     }
 }

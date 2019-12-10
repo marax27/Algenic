@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Algenic.FunctionalTests.Setup;
 using FluentAssertions;
-using OpenQA.Selenium;
 using Xunit;
 
 namespace Algenic.FunctionalTests.AdminPanelAccess

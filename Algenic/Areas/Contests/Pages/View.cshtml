@@ -1,0 +1,31 @@
+﻿@page "{id:int}"
+@model Algenic.Areas.Contests.Pages.ViewModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h4>@Model.Contest.Name</h4>
+        <hr />
+        <div class="col-12">
+            <h6>Tasks</h6>
+            <table class="table">
+                @foreach (var task in Model.Contest.Tasks ?? new List<Algenic.Data.Models.Task>())
+                {
+                    <tr>
+                        <td width="80%">
+                            @task.Name
+                        </td>
+                        <td width="20%">
+                            <form asp-page-handler="solve" method="post">
+                                <input type="submit" value="Solve" class="btn btn-outline-dark" />
+                                <input type="hidden" value="@task.Id" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

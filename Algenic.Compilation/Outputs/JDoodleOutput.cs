@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Algenic.Compilation.Outputs
 {
-    class JDoodleOutput
+    public class JDoodleOutput
     {
-        public string output { get; set; }
-        public string statusCode { get; set; }
-        public string memory { get; set; }
-        public string cpuTime { get; set; }
+        public string Output { get; set; }
+        public string StatusCode { get; set; }
+        public string Memory { get; set; }
+        public string CpuTime { get; set; }
     }
 }

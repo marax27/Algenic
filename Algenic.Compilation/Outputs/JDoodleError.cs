@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Algenic.Compilation.Outputs
 {
-    class JDoodleError
+    public class JDoodleError
     {
-        public string error { get; set; }
-        public string statusCode { get; set; }
+        public string Error { get; set; }
+        public string StatusCode { get; set; }
     }
 }

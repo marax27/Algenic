@@ -10,7 +10,7 @@ namespace Algenic.FunctionalTests.Setup
     {
         public IWebDriver WebDriver { get; }
         public string IndexUrl { get; }
-        public UserCredentials ExaminerCredentials { get; } = new UserCredentials();
+        public PredefinedUsers PredefinedUsers { get; } = new PredefinedUsers();
 
         private readonly IConfiguration _configuration;
 
@@ -22,7 +22,9 @@ namespace Algenic.FunctionalTests.Setup
 
             WebDriver = CreateWebDriver(_configuration["TestBrowser"]);
             IndexUrl = _configuration["ApplicationIndexUrl"];
-            _configuration.GetSection("Examiner").Bind(ExaminerCredentials);
+            _configuration.GetSection("Admin").Bind(PredefinedUsers.Admin);
+            _configuration.GetSection("Examiner").Bind(PredefinedUsers.Examiner);
+            _configuration.GetSection("RegularUser").Bind(PredefinedUsers.RegularUser);
         }
 
         private IWebDriver CreateWebDriver(string browserName)

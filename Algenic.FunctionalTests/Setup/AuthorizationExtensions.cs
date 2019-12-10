@@ -21,20 +21,6 @@ namespace Algenic.FunctionalTests.Setup
             });
         }
 
-        internal static void RegisterUser(this IWebDriver driver, Uri baseUrl, UserCredentials user)
-        {
-            var registerUrl = new Uri(baseUrl, "/Identity/Account/Register");
-            driver.Navigate().GoToUrl(registerUrl);
-
-            var registerForm = driver.FindElements(By.TagName("form")).Single();
-            FillForm(registerForm, new Dictionary<string, string>
-            {
-                { "Input_Email", user.Email },
-                { "Input_Password", user.Password },
-                { "Input_ConfirmPassword", user.Password }
-            });
-        }
-
         internal static void FillForm(IWebElement formElement, IDictionary<string, string> fieldValues)
         {
             foreach (var pair in fieldValues)

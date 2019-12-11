@@ -25,7 +25,7 @@ namespace Algenic.Compilation
             _httpClient = new HttpClient();
         }
 
-        public async void Compile(string sourceCode, ProgrammingLanguage programmingLanguage)
+        public async Task Compile(string sourceCode, ProgrammingLanguage programmingLanguage)
         {
             var compilationRequest = new CompilationRequestBuilder()
                 .WithClient(_clientConfiguration)

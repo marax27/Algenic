@@ -8,16 +8,18 @@ namespace Algenic.FunctionalTests.Contests
 {
     public class RegularUserCannotAddContest : BaseFunctionalTest
     {
+        public UserCredentials RegularUser { get; }
+
         public RegularUserCannotAddContest(DriverFixture driverFixture)
             : base(driverFixture)
-        { }
+        {
+            RegularUser = driverFixture.PredefinedUsers.RegularUser;
+        }
 
         [Fact]
         public void ContestPage_RegularUser_NoContestAddingForm()
         {
-            var testUser = RandomRegularUser.Generate();
-            _driver.RegisterUser(_indexUrl, testUser);
-            _driver.LoginAs(_indexUrl, testUser);
+            _driver.LoginAs(_indexUrl, RegularUser);
 
             GoToContestPage();
             var formsOnPage = _driver.FindElements(By.Id("form-add-group"));

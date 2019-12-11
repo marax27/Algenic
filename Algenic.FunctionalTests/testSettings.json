@@ -4,5 +4,13 @@
 	"Examiner": {
 		"Email": "examiner@examiner",
 		"Password": "Paramount71Security"
+	},
+	"RegularUser": {
+		"Email": "regular@regular",
+		"Password": "Paramount71Security"
+	},
+	"Admin": {
+		"Email": "admin@admin",
+		"Password": "Paramount71Security"
 	}
 }

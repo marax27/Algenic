@@ -13,7 +13,7 @@ namespace Algenic.FunctionalTests.Contests
         public ExaminerHasAddContestFormAvailable(DriverFixture driverFixture)
             : base(driverFixture)
         {
-            ExaminerCredentials = driverFixture.ExaminerCredentials;
+            ExaminerCredentials = driverFixture.PredefinedUsers.Examiner;
         }
 
         [Fact]

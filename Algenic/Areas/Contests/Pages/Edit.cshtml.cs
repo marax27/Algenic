@@ -7,8 +7,8 @@ using Algenic.Data.Models;
 using Algenic.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-
-// URL will be (...)/Edit?id=x, if you want (...) /Edit/x, change @page to @page "{id:int}" in Edit.cshtml
+using Microsoft.AspNetCore.Authorization;
+using Algenic.Routing;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -30,12 +30,25 @@ namespace Algenic.Areas.Contests.Pages
             _userManager = userManager;
         }
 
-        public async System.Threading.Tasks.Task OnGetAsync(int id)
+        public async System.Threading.Tasks.Task<IActionResult> OnGetAsync(int id)
         {
+            var defaultRedirections = new DefaultRedirections(this);
+
+            if (!User.Identity.IsAuthenticated)
+                return defaultRedirections.ToLoginPage(HttpContext.Request.Path);
+
+            var contest = await _context.Contests.FindAsync(id);
+            var contestOwnerId = contest.IdentityUser.Id;
+            var currentUserId = _userManager.GetUserId(User);
+
+            if (currentUserId != contestOwnerId)
+                return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
+
             Id = id; 
             TempData.Keep(nameof(Id));
-            var contest = await _context.Contests.FindAsync(id);
             ContestName = contest.Name;
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostSaveAsync()

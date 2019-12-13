@@ -25,12 +25,18 @@
             @foreach (var contest in Model.Contests)
             {
                 <tr>
-                    <td width="80%">
+                    <td width="60%">
                         @contest.Name
+                    </td>
+                    <td width="20%">
+                        @contest.Author
+                    </td>
+                    <td width="10%">
+                        @contest.Status.ToString()
                     </td>
                     @if (contest.CanJoin)
                     {
-                        <td width="20%">
+                        <td width="10%">
                             <form asp-page-handler="join" method="post">
                                 <input type="submit" value="Join" class="btn btn-outline-dark" />
                                 <input type="hidden" name="contestId" value="@contest.Id" />
@@ -39,7 +45,7 @@
                     }
                     @if (contest.CanEdit)
                     {
-                        <td width="20%">
+                        <td width="10%">
                             <form asp-page-handler="edit" method="post">
                                 <input type="submit" value="Edit" class="btn btn-outline-dark" />
                                 <input type="hidden" name="contestId" value="@contest.Id" />

@@ -1,28 +1,42 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Algenic.Data.Models;
 using Algenic.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Algenic.Routing;
+using Algenic.Data.Models;
+using System;
+using System.ComponentModel;
+using static Algenic.Data.Models.Contest;
 
 namespace Algenic.Areas.Contests.Pages
 {
+    public class EditContestViewModel
+    { 
+        public string Name { get; set; }
+        public string Status { get; set; }
+    }
+
+    public class StatusButtonViewModel
+    {
+        public string Label { get; set; }
+        public ContestState NewState { get; set; }
+    }
+
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
         [TempData]
-        public int Id { get; set; }
+        public int ContestId { get; set; }
         [BindProperty]
-        public string ContestName { get; set; }
+        public EditContestViewModel ContestViewModel { get; set; }
         [BindProperty]
         public IEnumerable<Algenic.Data.Models.Task> ContestTasks { get; set; }
+        [BindProperty]
+        public IEnumerable<StatusButtonViewModel> StatusButtons { get; set; }
 
         public EditModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
@@ -44,20 +58,62 @@ namespace Algenic.Areas.Contests.Pages
             if (currentUserId != contestOwnerId)
                 return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
 
-            Id = id; 
-            TempData.Keep(nameof(Id));
-            ContestName = contest.Name;
+            ContestViewModel = CreateContestViewModel(contest);
+            StatusButtons = CreateStatusButtons(contest.Status);
+
+            ContestId = id; 
+            TempData.Keep(nameof(ContestId));
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostSaveAsync()
+        public async Task<IActionResult> OnPostRenameAsync()
         {
-            var contest = await _context.Contests.FindAsync(Id);
-            contest.Name = ContestName;
+            var contest = await _context.Contests.FindAsync(ContestId);
+            contest.Name = ContestViewModel.Name;
             await _context.SaveChangesAsync();
 
-            return RedirectToPage(Id);
+            return RedirectToPage(ContestId);
         }
+
+        public async Task<IActionResult> OnPostChangeStatusAsync(ContestState newStatus)
+        {
+            var contest = await _context.Contests.FindAsync(ContestId);
+            contest.Status = newStatus;
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(ContestId);
+        }
+
+        private IEnumerable<StatusButtonViewModel> CreateStatusButtons(ContestState contestStatus)
+        {
+            switch (contestStatus)
+            {
+                case ContestState.NotStarted:
+                    return new[]
+                    {
+                        new StatusButtonViewModel {Label = "Start", NewState = ContestState.InProgress}
+                    };
+                case ContestState.InProgress:
+                    return new[]
+                    {
+                        new StatusButtonViewModel {Label = "Complete", NewState = ContestState.Completed},
+                        new StatusButtonViewModel {Label = "Cancel", NewState = ContestState.NotStarted}
+                    };
+                case ContestState.Completed:
+                    return new[]
+                    {
+                        new StatusButtonViewModel {Label = "Restart", NewState = ContestState.InProgress}
+                    };
+                default: throw new InvalidEnumArgumentException(contestStatus.ToString());
+            }
+        }
+
+        private EditContestViewModel CreateContestViewModel(Contest contest)
+            => new EditContestViewModel
+            {
+                Name = contest.Name,
+                Status = ContestStatusNames.GetReadableName(contest.Status)
+            };
     }
 }

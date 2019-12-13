@@ -39,4 +39,8 @@
     <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Algenic.Compilation\Algenic.Compilation.csproj" />
+  </ItemGroup>
+
 </Project>

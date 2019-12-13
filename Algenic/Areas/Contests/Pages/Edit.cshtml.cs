@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Algenic.Routing;
 using Algenic.Data.Models;
 using System;
+using System.ComponentModel;
+using static Algenic.Data.Models.Contest;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -14,6 +16,12 @@ namespace Algenic.Areas.Contests.Pages
     { 
         public string Name { get; set; }
         public string Status { get; set; }
+    }
+
+    public class StatusButtonViewModel
+    {
+        public string Label { get; set; }
+        public ContestState NewState { get; set; }
     }
 
     public class EditModel : PageModel
@@ -27,6 +35,8 @@ namespace Algenic.Areas.Contests.Pages
         public EditContestViewModel ContestViewModel { get; set; }
         [BindProperty]
         public IEnumerable<Algenic.Data.Models.Task> ContestTasks { get; set; }
+        [BindProperty]
+        public IEnumerable<StatusButtonViewModel> StatusButtons { get; set; }
 
         public EditModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
@@ -49,19 +59,13 @@ namespace Algenic.Areas.Contests.Pages
                 return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
 
             ContestViewModel = CreateContestViewModel(contest);
+            StatusButtons = CreateStatusButtons(contest.Status);
 
             ContestId = id; 
             TempData.Keep(nameof(ContestId));
 
             return Page();
         }
-
-        private EditContestViewModel CreateContestViewModel(Contest contest)
-            => new EditContestViewModel
-            {
-                Name = contest.Name,
-                Status = ContestStatusNames.GetName(contest.Status)
-            };
 
         public async Task<IActionResult> OnPostRenameAsync()
         {
@@ -71,5 +75,45 @@ namespace Algenic.Areas.Contests.Pages
 
             return RedirectToPage(ContestId);
         }
+
+        public async Task<IActionResult> OnPostChangeStatusAsync(ContestState newStatus)
+        {
+            var contest = await _context.Contests.FindAsync(ContestId);
+            contest.Status = newStatus;
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage(ContestId);
+        }
+
+        private IEnumerable<StatusButtonViewModel> CreateStatusButtons(ContestState contestStatus)
+        {
+            switch (contestStatus)
+            {
+                case ContestState.NotStarted:
+                    return new[]
+                    {
+                        new StatusButtonViewModel {Label = "Start", NewState = ContestState.InProgress}
+                    };
+                case ContestState.InProgress:
+                    return new[]
+                    {
+                        new StatusButtonViewModel {Label = "Complete", NewState = ContestState.Completed},
+                        new StatusButtonViewModel {Label = "Cancel", NewState = ContestState.NotStarted}
+                    };
+                case ContestState.Completed:
+                    return new[]
+                    {
+                        new StatusButtonViewModel {Label = "Restart", NewState = ContestState.InProgress}
+                    };
+                default: throw new InvalidEnumArgumentException(contestStatus.ToString());
+            }
+        }
+
+        private EditContestViewModel CreateContestViewModel(Contest contest)
+            => new EditContestViewModel
+            {
+                Name = contest.Name,
+                Status = ContestStatusNames.GetReadableName(contest.Status)
+            };
     }
 }

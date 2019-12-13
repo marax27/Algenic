@@ -22,7 +22,7 @@ namespace Algenic.Data.Models
 
     public static class ContestStatusNames
     {
-        public static string GetName(Contest.ContestState state)
+        public static string GetReadableName(Contest.ContestState state)
         {
             switch (state)
             {

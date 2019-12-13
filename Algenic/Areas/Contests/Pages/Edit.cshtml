@@ -26,7 +26,16 @@
             </div>
 
             <div class="col-6">
-                Status: <strong>@Model.ContestViewModel.Status</strong>
+	            Status: <strong>@Model.ContestViewModel.Status</strong>
+	            <div class="row">
+					@foreach (var statusButton in Model.StatusButtons)
+					{
+						<form method="post" asp-page="Edit" style="display:inline">
+							<input type="hidden" name="newStatus" value="@statusButton.NewState"/>
+							<input type="submit" value="@statusButton.Label" asp-page-handler="ChangeStatus" class="btn btn-outline-dark"/>
+						</form>
+					}
+	            </div>
             </div>
         </div>
 

@@ -1,4 +1,4 @@
-@page "{id:int}"
+﻿@page "{id:int}"
 @model Algenic.Areas.Contests.Pages.EditModel
 @{
     Layout = "/Pages/Shared/_Layout.cshtml";
@@ -21,7 +21,7 @@
                         <input asp-for="ContestViewModel.Name" class="form-control" />
                         <!--<input type="hidden" asp-for="ContestId" />-->
                     </div>
-                    <input type="submit" value="Save" class="btn btn-outline-dark" />
+                    <input type="submit" value="Save" asp-page-handler="Rename" class="btn btn-outline-dark" />
                 </form>
             </div>
 

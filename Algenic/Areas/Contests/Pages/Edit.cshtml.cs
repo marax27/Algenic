@@ -63,6 +63,7 @@ namespace Algenic.Areas.Contests.Pages
                 Status = ContestStatusNames.GetName(contest.Status)
             };
 
+        public async Task<IActionResult> OnPostRenameAsync()
         {
             var contest = await _context.Contests.FindAsync(ContestId);
             contest.Name = ContestViewModel.Name;

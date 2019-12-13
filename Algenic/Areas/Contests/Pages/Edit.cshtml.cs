@@ -12,15 +12,21 @@ using Algenic.Routing;
 
 namespace Algenic.Areas.Contests.Pages
 {
+    public class EditContestViewModel
+    { 
+        public string Name { get; set; }
+        public string Status { get; set; }
+    }
+
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
         [TempData]
-        public int Id { get; set; }
+        public int ContestId { get; set; }
         [BindProperty]
-        public string ContestName { get; set; }
+        public EditContestViewModel ContestViewModel { get; set; } = new EditContestViewModel();
         [BindProperty]
         public IEnumerable<Algenic.Data.Models.Task> ContestTasks { get; set; }
 
@@ -44,20 +50,20 @@ namespace Algenic.Areas.Contests.Pages
             if (currentUserId != contestOwnerId)
                 return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
 
-            Id = id; 
-            TempData.Keep(nameof(Id));
-            ContestName = contest.Name;
+            ContestId = id; 
+            TempData.Keep(nameof(ContestId));
+            ContestViewModel.Name = contest.Name;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostSaveAsync()
         {
-            var contest = await _context.Contests.FindAsync(Id);
-            contest.Name = ContestName;
+            var contest = await _context.Contests.FindAsync(ContestId);
+            contest.Name = ContestViewModel.Name;
             await _context.SaveChangesAsync();
 
-            return RedirectToPage(Id);
+            return RedirectToPage(ContestId);
         }
     }
 }

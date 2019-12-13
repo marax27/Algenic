@@ -18,8 +18,8 @@
                 <form asp-page-handler="save" method="post">
                     <div class="form-group">
                         <label>Contest Name</label>
-                        <input asp-for="ContestName" class="form-control" />
-                        <!--<input type="hidden" asp-for="Id" />-->
+                        <input asp-for="ContestViewModel.Name" class="form-control" />
+                        <!--<input type="hidden" asp-for="ContestId" />-->
                     </div>
                     <input type="submit" value="Save" class="btn btn-outline-dark" />
                 </form>

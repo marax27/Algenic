@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Algenic.Data.Models;
 using Algenic.Data;
 using Microsoft.AspNetCore.Identity;
+using static Algenic.Data.Models.Contest;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -17,6 +18,7 @@ namespace Algenic.Areas.Contests.Pages
         public string Author { get; set; }
         public bool CanJoin { get; set; }
         public bool CanEdit { get; set; }
+        public ContestState Status { get; set; }
     }
 
     public class IndexModel : PageModel
@@ -42,7 +44,14 @@ namespace Algenic.Areas.Contests.Pages
         public async System.Threading.Tasks.Task OnGetAsync()
         {
             CanAddContest = User.IsInRole("Admin") || User.IsInRole("Examiner");
-            Contests = _context.Contests.AsEnumerable().Select(MapToViewModel).ToList();
+            Contests = _context.Contests.Select(MapToViewModel)
+                .OrderBy(c => 
+                c.Status == ContestState.NotStarted && c.CanEdit ? 1:
+                c.Status == ContestState.InProgress && c.CanEdit ? 2:
+                c.Status == ContestState.InProgress && c.CanJoin ? 3:
+                c.Status == ContestState.NotStarted && c.CanJoin ? 4:
+                c.Status == ContestState.Completed && c.CanEdit ? 5: 6)
+                .ToList();
         }
 
 
@@ -79,10 +88,12 @@ namespace Algenic.Areas.Contests.Pages
             bool isOwner = IsCurrentUsersContest(contest.Id);
             return new ContestViewModel()
             {
-                CanEdit = User.Identity.IsAuthenticated && isOwner,
+                CanEdit = isOwner,
                 CanJoin = !isOwner,
                 Name = contest.Name,
-                Id = contest.Id
+                Id = contest.Id,
+                Author = contest.IdentityUser.UserName,
+                Status = contest.Status
             };
         }
 

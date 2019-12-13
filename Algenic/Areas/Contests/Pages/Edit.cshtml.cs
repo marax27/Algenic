@@ -1,13 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Algenic.Data.Models;
 using Algenic.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Algenic.Routing;
 
 namespace Algenic.Areas.Contests.Pages

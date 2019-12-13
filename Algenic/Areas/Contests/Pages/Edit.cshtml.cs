@@ -5,6 +5,8 @@ using Algenic.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Algenic.Routing;
+using Algenic.Data.Models;
+using System;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -22,7 +24,7 @@ namespace Algenic.Areas.Contests.Pages
         [TempData]
         public int ContestId { get; set; }
         [BindProperty]
-        public EditContestViewModel ContestViewModel { get; set; } = new EditContestViewModel();
+        public EditContestViewModel ContestViewModel { get; set; }
         [BindProperty]
         public IEnumerable<Algenic.Data.Models.Task> ContestTasks { get; set; }
 
@@ -46,14 +48,21 @@ namespace Algenic.Areas.Contests.Pages
             if (currentUserId != contestOwnerId)
                 return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
 
+            ContestViewModel = CreateContestViewModel(contest);
+
             ContestId = id; 
             TempData.Keep(nameof(ContestId));
-            ContestViewModel.Name = contest.Name;
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostSaveAsync()
+        private EditContestViewModel CreateContestViewModel(Contest contest)
+            => new EditContestViewModel
+            {
+                Name = contest.Name,
+                Status = ContestStatusNames.GetName(contest.Status)
+            };
+
         {
             var contest = await _context.Contests.FindAsync(ContestId);
             contest.Name = ContestViewModel.Name;

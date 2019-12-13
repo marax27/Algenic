@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,7 +61,7 @@ namespace Algenic.Areas.Contests.Pages
             {
                 Name = ContestName,
                 IdentityUser = user,
-                Status = Contest.ContestState.NotStarted
+                Status = ContestState.NotStarted
             };
 
             await _context.Contests.AddAsync(contest);

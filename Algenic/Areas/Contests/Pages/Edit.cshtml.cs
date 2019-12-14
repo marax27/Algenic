@@ -8,7 +8,10 @@ using Algenic.Routing;
 using Algenic.Data.Models;
 using System;
 using System.ComponentModel;
+using System.Linq;
+using Algenic.Mappers;
 using static Algenic.Data.Models.Contest;
+using Task = System.Threading.Tasks.Task;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -24,6 +27,19 @@ namespace Algenic.Areas.Contests.Pages
         public ContestState NewState { get; set; }
     }
 
+    public class AddTaskViewModel
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class DisplayTaskViewModel
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+    }
+
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -34,7 +50,9 @@ namespace Algenic.Areas.Contests.Pages
         [BindProperty]
         public EditContestViewModel ContestViewModel { get; set; }
         [BindProperty]
-        public IEnumerable<Algenic.Data.Models.Task> ContestTasks { get; set; }
+        public AddTaskViewModel FormTask { get; set; }
+        [BindProperty]
+        public IEnumerable<DisplayTaskViewModel> TasksToDisplay { get; set; }
         [BindProperty]
         public IEnumerable<StatusButtonViewModel> StatusButtons { get; set; }
 
@@ -60,6 +78,8 @@ namespace Algenic.Areas.Contests.Pages
 
             ContestViewModel = CreateContestViewModel(contest);
             StatusButtons = CreateStatusButtons(contest.Status);
+            FormTask = new AddTaskViewModel();
+            TasksToDisplay = contest.Tasks.Select(MapToDisplayViewModel).ToList();
 
             ContestId = id; 
             TempData.Keep(nameof(ContestId));
@@ -82,6 +102,17 @@ namespace Algenic.Areas.Contests.Pages
             contest.Status = newStatus;
             await _context.SaveChangesAsync();
 
+            return RedirectToPage(ContestId);
+        }
+
+        public async Task<IActionResult> OnPostAddTask()
+        {
+            var mapper = new TaskMapper(FormTask);
+            var taskModel = mapper.Map();
+
+            var contest = await _context.Contests.FindAsync(ContestId);
+            contest.Tasks.Add(taskModel);
+            await _context.SaveChangesAsync();
             return RedirectToPage(ContestId);
         }
 
@@ -114,6 +145,13 @@ namespace Algenic.Areas.Contests.Pages
             {
                 Name = contest.Name,
                 Status = ContestStatusNames.GetReadableName(contest.Status)
+            };
+
+        private DisplayTaskViewModel MapToDisplayViewModel(Data.Models.Task model)
+            => new DisplayTaskViewModel
+            {
+                Name = model.Name,
+                Description = model.Description
             };
     }
 }

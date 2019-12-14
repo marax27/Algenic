@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Algenic.Data.Models;
 using Algenic.Data;
+using Algenic.Queries.ContestOwner;
 using Microsoft.AspNetCore.Identity;
 using static Algenic.Data.Models.Contest;
 
@@ -25,9 +26,9 @@ namespace Algenic.Areas.Contests.Pages
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
         private readonly ICommandHandler<CreateContestCommand> _createContestCommandHandler;
+        private readonly IQueryHandler<ContestOwnerQuery, ContestOwnerResult> _contestOwnerQueryHandler;
 
         [BindProperty]
         public string ContestName { get; set; }
@@ -38,11 +39,13 @@ namespace Algenic.Areas.Contests.Pages
         [BindProperty]
         public bool CanAddContest { get; set; }
 
-        public IndexModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public IndexModel(ApplicationDbContext context, 
+            ICommandHandler<CreateContestCommand> createContestCommandHandler,
+            IQueryHandler<ContestOwnerQuery, ContestOwnerResult> contestOwnerQueryHandler)
         {
             _context = context;
-            _userManager = userManager;
-            _createContestCommandHandler = new CreateContestCommandHandler(context, userManager);
+            _createContestCommandHandler = createContestCommandHandler;
+            _contestOwnerQueryHandler = contestOwnerQueryHandler;
         }
 
         public async System.Threading.Tasks.Task OnGetAsync()
@@ -80,7 +83,10 @@ namespace Algenic.Areas.Contests.Pages
 
         private ContestViewModel MapToViewModel(Contest contest)
         {
-            bool isOwner = IsCurrentUsersContest(contest.Id);
+            var query = ContestOwnerQuery.Create(contest.Id, User);
+            var queryResult = _contestOwnerQueryHandler.HandleAsync(query).Result;
+            bool isOwner = queryResult.IsOwner; 
+
             return new ContestViewModel
             {
                 CanEdit = isOwner,
@@ -90,14 +96,6 @@ namespace Algenic.Areas.Contests.Pages
                 Author = contest.IdentityUser.UserName,
                 Status = contest.Status
             };
-        }
-
-        private bool IsCurrentUsersContest(int contestId)
-        {
-            var contestsUserId = _context.Contests.Single(c => c.Id == contestId)
-                .IdentityUser.Id;
-
-            return contestsUserId == _userManager.GetUserId(User);
         }
     }
 }

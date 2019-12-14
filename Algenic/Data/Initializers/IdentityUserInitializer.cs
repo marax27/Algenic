@@ -19,10 +19,10 @@ namespace Algenic.Data.Initializers
         {
             SeedUser(userManager, AdminEmail, AdminPassword, "Admin");
             SeedUser(userManager, ExaminerEmail, ExaminerPassword, "Examiner");
-            SeedUser(userManager, RegularEmail, RegularPassword, "Regular");
+            SeedUser(userManager, RegularEmail, RegularPassword);
         }
 
-        private static void SeedUser(UserManager<IdentityUser> userManager, string email, string password, string role)
+        private static void SeedUser(UserManager<IdentityUser> userManager, string email, string password, string role=null)
         {
             var locatedUser = userManager.FindByEmailAsync(email).Result;
             if (locatedUser != null)
@@ -37,7 +37,7 @@ namespace Algenic.Data.Initializers
             };
 
             var result = userManager.CreateAsync(user, password).Result;
-            if (result.Succeeded)
+            if (result.Succeeded && role != null)
             {
                 userManager.AddToRoleAsync(user, role).Wait();
             }

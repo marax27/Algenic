@@ -20,7 +20,7 @@
                         <td width="20%">
                             <form asp-page-handler="solve" method="post">
                                 <input type="submit" value="Solve" class="btn btn-outline-dark" />
-                                <input type="hidden" value="@task.Id" />
+                                <input type="hidden" name="taskId" value="@task.Id" />
                             </form>
                         </td>
                     </tr>

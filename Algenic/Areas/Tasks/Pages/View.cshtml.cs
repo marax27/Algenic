@@ -1,12 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Algenic.Data;
 using Algenic.Data.Models;
 using Algenic.Routing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Algenic.Areas.Contests.Pages
+namespace Algenic.Areas.Pages.Tasks
 {
     public class ViewModel : PageModel
     {
@@ -14,7 +18,10 @@ namespace Algenic.Areas.Contests.Pages
         private readonly UserManager<IdentityUser> _userManager;
 
         [BindProperty]
-        public Contest Contest { get; set; }
+        public Data.Models.Task Task { get; set; }
+
+        [BindProperty]
+        public IFormFile SourceCodeFile { get; set; }
 
         public ViewModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
@@ -22,27 +29,27 @@ namespace Algenic.Areas.Contests.Pages
             _userManager = userManager;
         }
 
-        public async System.Threading.Tasks.Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             var defaultRedirections = new DefaultRedirections(this);
 
             if (!User.Identity.IsAuthenticated)
                 return defaultRedirections.ToLoginPage(HttpContext.Request.Path);
 
-            Contest = await _context.Contests.FindAsync(id);
+            Task = await _context.Tasks.FindAsync(id);
 
-            var contestOwnerId = Contest.IdentityUser.Id;
+            var taskCreatorId = Task.Contest.IdentityUser.Id;
             var currentUserId = _userManager.GetUserId(User);
 
-            if (currentUserId == contestOwnerId)
+            if (currentUserId == taskCreatorId)
                 return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostSolveAsync(int taskId)
+        public async Task<IActionResult> OnPostAsync()
         {
-            return RedirectToPage("View", new { area = "Tasks", id = taskId });
+            throw new NotImplementedException();
         }
     }
 }

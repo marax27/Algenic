@@ -21,5 +21,11 @@ namespace Algenic.Commons.DesignByContract
             if(collection == null || collection.Count == 0)
                 throw new DesignByContractException(message);
         }
+
+        public static void IfNullOrEmpty(string value, string message = "Fail.IfNullOrEmpty failed")
+        {
+            if(string.IsNullOrEmpty(value))
+                throw new DesignByContractException(message);
+        }
     }
 }

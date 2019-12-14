@@ -1,4 +1,4 @@
-@page "{id:int}"
+﻿@page "{id:int}"
 @model Algenic.Areas.Contests.Pages.EditModel
 @{
     Layout = "/Pages/Shared/_Layout.cshtml";
@@ -31,16 +31,16 @@
             </div>
 
             <div class="col-6">
-	            Status: <strong>@Model.ContestViewModel.Status</strong>
-	            <div class="row multiple-choices-row">
-					@foreach (var statusButton in Model.StatusButtons)
-					{
-						<form method="post" asp-page="Edit">
-							<input type="hidden" name="newStatus" value="@statusButton.NewState"/>
-							<input type="submit" value="@statusButton.Label" asp-page-handler="ChangeStatus" class="btn btn-outline-dark"/>
-						</form>
-					}
-	            </div>
+                Status: <strong>@Model.ContestViewModel.Status</strong>
+                <div class="row multiple-choices-row">
+                    @foreach (var statusButton in Model.StatusButtons)
+                    {
+                        <form method="post" asp-page="Edit">
+                            <input type="hidden" name="newStatus" value="@statusButton.NewState"/>
+                            <input type="submit" value="@statusButton.Label" asp-page-handler="ChangeStatus" class="btn btn-outline-dark"/>
+                        </form>
+                    }
+                </div>
             </div>
         </div>
         

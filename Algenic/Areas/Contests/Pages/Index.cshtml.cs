@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Algenic.Commands.CreateContest;
+using Algenic.Commons;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Algenic.Data.Models;
@@ -25,6 +27,8 @@ namespace Algenic.Areas.Contests.Pages
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
+        private readonly ICommandHandler<CreateContestCommand> _createContestCommandHandler;
+
         [BindProperty]
         public string ContestName { get; set; }
 
@@ -38,6 +42,7 @@ namespace Algenic.Areas.Contests.Pages
         {
             _context = context;
             _userManager = userManager;
+            _createContestCommandHandler = new CreateContestCommandHandler(context, userManager);
         }
 
         public async System.Threading.Tasks.Task OnGetAsync()
@@ -56,19 +61,10 @@ namespace Algenic.Areas.Contests.Pages
 
         public async Task<IActionResult> OnPostCreateAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var contest = new Contest()
-            {
-                Name = ContestName,
-                IdentityUser = user,
-                Status = ContestState.NotStarted
-            };
-
-            await _context.Contests.AddAsync(contest);
-            await _context.SaveChangesAsync();
+            var command = CreateContestCommand.Create(ContestName, User);
+            await _createContestCommandHandler.HandleAsync(command);
 
             ContestName = "";
-
             return RedirectToPage("Index");
         }
 
@@ -85,7 +81,7 @@ namespace Algenic.Areas.Contests.Pages
         private ContestViewModel MapToViewModel(Contest contest)
         {
             bool isOwner = IsCurrentUsersContest(contest.Id);
-            return new ContestViewModel()
+            return new ContestViewModel
             {
                 CanEdit = isOwner,
                 CanJoin = !isOwner,

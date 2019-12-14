@@ -28,7 +28,7 @@ namespace Algenic.Areas.Contests.Pages
         private readonly ApplicationDbContext _context;
 
         private readonly ICommandHandler<CreateContestCommand> _createContestCommandHandler;
-        private readonly IQueryHandler<ContestOwnerQuery, ContestOwnerResult> _contestAuthorQueryHandler;
+        private readonly IQueryHandler<ContestOwnerQuery, ContestOwnerResult> _contestOwnerQueryHandler;
 
         [BindProperty]
         public string ContestName { get; set; }
@@ -39,11 +39,13 @@ namespace Algenic.Areas.Contests.Pages
         [BindProperty]
         public bool CanAddContest { get; set; }
 
-        public IndexModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public IndexModel(ApplicationDbContext context, 
+            ICommandHandler<CreateContestCommand> createContestCommandHandler,
+            IQueryHandler<ContestOwnerQuery, ContestOwnerResult> contestOwnerQueryHandler)
         {
             _context = context;
-            _createContestCommandHandler = new CreateContestCommandHandler(context, userManager);
-            _contestAuthorQueryHandler = new ContestOwnerQueryHandler(context, userManager);
+            _createContestCommandHandler = createContestCommandHandler;
+            _contestOwnerQueryHandler = contestOwnerQueryHandler;
         }
 
         public async System.Threading.Tasks.Task OnGetAsync()
@@ -82,7 +84,7 @@ namespace Algenic.Areas.Contests.Pages
         private ContestViewModel MapToViewModel(Contest contest)
         {
             var query = ContestOwnerQuery.Create(contest.Id, User);
-            var queryResult = _contestAuthorQueryHandler.HandleAsync(query).Result;
+            var queryResult = _contestOwnerQueryHandler.HandleAsync(query).Result;
             bool isOwner = queryResult.IsOwner; 
 
             return new ContestViewModel

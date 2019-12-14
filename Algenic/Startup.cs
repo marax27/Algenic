@@ -1,3 +1,5 @@
+using Algenic.Commands.CreateContest;
+using Algenic.Commons;
 using Algenic.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -5,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Algenic.Data;
 using Algenic.Data.Initializers;
+using Algenic.Queries.ContestOwner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -44,6 +47,10 @@ namespace Algenic
             });
 
             services.ConfigureMvc();
+
+            services.AddTransient<ICommandHandler<CreateContestCommand>, CreateContestCommandHandler>();
+
+            services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

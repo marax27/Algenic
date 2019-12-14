@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Algenic.Commons\Algenic.Commons.csproj" />
     <ProjectReference Include="..\Algenic.Compilation\Algenic.Compilation.csproj" />
   </ItemGroup>
 

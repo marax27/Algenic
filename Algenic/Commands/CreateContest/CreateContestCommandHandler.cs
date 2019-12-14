@@ -17,11 +17,6 @@ namespace Algenic.Commands.CreateContest
             _userManager = userManager;
         }
 
-        public void Handle(CreateContestCommand command)
-        {
-            HandleAsync(command).Wait();
-        }
-
         public async Task HandleAsync(CreateContestCommand command)
         {
             var user = await _userManager.GetUserAsync(command.User);

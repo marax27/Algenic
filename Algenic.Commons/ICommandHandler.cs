@@ -1,7 +1,9 @@
-﻿namespace Algenic.Commons
+﻿using System.Threading.Tasks;
+
+namespace Algenic.Commons
 {
     public interface ICommandHandler<in TCommand>
     {
-        void Handle(TCommand command);
+        Task HandleAsync(TCommand command);
     }
 }

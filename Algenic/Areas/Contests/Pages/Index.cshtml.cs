@@ -62,7 +62,7 @@ namespace Algenic.Areas.Contests.Pages
         public async Task<IActionResult> OnPostCreateAsync()
         {
             var command = CreateContestCommand.Create(ContestName, User);
-            _createContestCommandHandler.Handle(command);
+            await _createContestCommandHandler.HandleAsync(command);
 
             ContestName = "";
             return RedirectToPage("Index");

@@ -15,6 +15,7 @@ namespace Algenic.Data
         public DbSet<Contest> Contests { get; set; }
         public DbSet<ScorePolicy> ScorePolicies { get; set; }
         public DbSet<ScoreRule> ScoreRules { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,6 +35,7 @@ namespace Algenic.Data
             builder.ApplyConfiguration(new SolutionConfiguration());
             builder.ApplyConfiguration(new TaskConfiguration());
             builder.ApplyConfiguration(new TestConfiguration());
+            builder.ApplyConfiguration(new LogConfiguration());
 
             builder.Entity<Solution>().ToTable(nameof(Solutions));
             builder.Entity<Task>().ToTable(nameof(Tasks));
@@ -42,6 +44,7 @@ namespace Algenic.Data
             builder.Entity<Contest>().ToTable(nameof(Contests));
             builder.Entity<ScorePolicy>().ToTable(nameof(ScorePolicies));
             builder.Entity<ScoreRule>().ToTable(nameof(ScoreRules));
+            builder.Entity<Log>().ToTable(nameof(Logs));
         }
     }
 }

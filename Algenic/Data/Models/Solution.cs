@@ -12,6 +12,7 @@ namespace Algenic.Data.Models
         public int Id { get; set; }
         public int TaskId { get; set; }
         public int? CompilationResultId { get; set; }
+        public int? LogId { get; set; }
         public string SourceCode { get; set; }
         public decimal? PointCount { get; set; }
         public DateTime TimeStamp { get; set; }
@@ -21,5 +22,6 @@ namespace Algenic.Data.Models
         public virtual IdentityUser IdentityUser { get; set; }
 
         public virtual CompilationResult CompilationResult { get; set; }
+        public virtual Log Log { get; set; }
     }
 }

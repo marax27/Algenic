@@ -25,6 +25,8 @@
     <Compile Remove="Migrations\20191207191850_Initial.Designer.cs" />
     <Compile Remove="Migrations\20191209114709_Initial.cs" />
     <Compile Remove="Migrations\20191209114709_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20191214182300_AddLogTable.cs" />
+    <Compile Remove="Migrations\20191214182300_AddLogTable.Designer.cs" />
   </ItemGroup>
 
 

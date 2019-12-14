@@ -33,8 +33,13 @@
         <h5>Add Solution</h5>
         <div class="row">
             <form method="post" enctype="multipart/form-data">
-                <input type="file" asp-for="SourceCodeFile" />
-                <input type="submit" value="Send" />
+                <div class="form-group">
+                    <label class="btn btn-outline-dark">
+                        Choose file
+                        <input type="file" asp-for="SourceCodeFile" style="display: none;" />
+                    </label>
+                </div>
+                <input type="submit" class="btn btn-outline-dark" value="Send" />
             </form>
         </div>
     </div>

@@ -7,57 +7,78 @@
 <style>
     .page-section { margin-bottom: 30px; }
 
-	.multiple-choices-row > * {
-		display: inline;
-		margin: 0 10px;
-	}
+    .multiple-choices-row > * {
+        display: inline;
+        margin: 0 10px;
+    }
 </style>
 
-<div class="row">
-    <div class="col-12">
-        <h4>Edit Contest</h4>
-        <hr />
-        
-        <div class="row page-section">
-            <div class="col-6">
-                <form asp-page-handler="save" method="post">
-                    <div class="form-group">
-                        <label>Contest Name</label>
-                        <input asp-for="ContestViewModel.Name" class="form-control" />
-                        <!--<input type="hidden" asp-for="ContestId" />-->
-                    </div>
-                    <input type="submit" value="Save" asp-page-handler="Rename" class="btn btn-outline-dark" />
-                </form>
-            </div>
+<div class="col-12">
+    <h4>Edit Contest</h4>
+    <hr />
 
-            <div class="col-6">
-	            Status: <strong>@Model.ContestViewModel.Status</strong>
-	            <div class="row multiple-choices-row">
-					@foreach (var statusButton in Model.StatusButtons)
-					{
-						<form method="post" asp-page="Edit">
-							<input type="hidden" name="newStatus" value="@statusButton.NewState"/>
-							<input type="submit" value="@statusButton.Label" asp-page-handler="ChangeStatus" class="btn btn-outline-dark"/>
-						</form>
-					}
-	            </div>
-            </div>
+    <div class="row page-section">
+        <div class="col-6">
+            <form asp-page-handler="save" method="post">
+                <div class="form-group">
+                    <label>Contest Name</label>
+                    <input asp-for="ContestViewModel.Name" class="form-control" />
+                    <!--<input type="hidden" asp-for="ContestId" />-->
+                </div>
+                <input type="submit" value="Save" asp-page-handler="Rename" class="btn btn-outline-dark" />
+            </form>
         </div>
 
-        <div class="row page-section">
-            <h6>Tasks</h6>
-            <div class="col-12">
-                <table class="table">
-                    @foreach (var task in Model.ContestTasks ?? new List<Algenic.Data.Models.Task>())
-                    {
-                        <tr>
-                            <td width="80%">
-                                @task.Name
-                            </td>
-                        </tr>
-                    }
-                </table>
+        <div class="col-6">
+            Status: <strong>@Model.ContestViewModel.Status</strong>
+            <div class="row multiple-choices-row">
+                @foreach (var statusButton in Model.StatusButtons)
+                {
+                    <form method="post" asp-page="Edit">
+                        <input type="hidden" name="newStatus" value="@statusButton.NewState" />
+                        <input type="submit" value="@statusButton.Label" asp-page-handler="ChangeStatus" class="btn btn-outline-dark" />
+                    </form>
+                }
             </div>
         </div>
+    </div>
+
+    <h4>Tasks</h4>
+    <div class="col-12 page-section">
+        <h5>Add a new task</h5>
+        <div class="row">
+            <form asp-page-handler="AddTask" method="post">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input asp-for="FormTask.Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea asp-for="FormTask.Description" class="form-control" cols="40" rows="5"></textarea>
+                </div>
+                <input type="submit" value="Add" class="btn btn-outline-dark" />
+            </form>
+        </div>
+    </div>
+
+    <div class="col-12 page-section">
+        <table class="table">
+            <tr>
+                <th width="30%">Name</th>
+                <th width="50%">Description</th>
+            </tr>
+
+            @foreach (var task in Model.TasksToDisplay)
+            {
+                <tr>
+                    <td width="30%">
+                        @task.Name
+                    </td>
+                    <td width="50%">
+                        @task.Description
+                    </td>
+                </tr>
+            }
+        </table>
     </div>
 </div>

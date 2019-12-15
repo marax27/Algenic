@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Algenic.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,22 +45,6 @@ namespace Algenic.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompilationResults",
-                columns: table => new
-                {
-                    SolutionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Output = table.Column<string>(nullable: true),
-                    CpuTime = table.Column<string>(nullable: true),
-                    MemoryUsage = table.Column<string>(nullable: true),
-                    ExecutionSuccessful = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompilationResults", x => x.SolutionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,7 +214,7 @@ namespace Algenic.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ContestId = table.Column<int>(nullable: false),
-                    ScorePolicyId = table.Column<int>(nullable: false),
+                    ScorePolicyId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false)
                 },
@@ -248,7 +232,7 @@ namespace Algenic.Migrations
                         column: x => x.ScorePolicyId,
                         principalTable: "ScorePolicies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -258,8 +242,8 @@ namespace Algenic.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TaskId = table.Column<int>(nullable: false),
-                    CompilationResultId = table.Column<int>(nullable: true),
                     SourceCode = table.Column<string>(nullable: false),
+                    Language = table.Column<string>(nullable: true),
                     PointCount = table.Column<decimal>(nullable: true),
                     TimeStamp = table.Column<DateTime>(nullable: false),
                     IdentityUserId = table.Column<string>(nullable: true)
@@ -267,12 +251,6 @@ namespace Algenic.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Solutions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Solutions_CompilationResults_CompilationResultId",
-                        column: x => x.CompilationResultId,
-                        principalTable: "CompilationResults",
-                        principalColumn: "SolutionId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Solutions_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
@@ -309,20 +287,73 @@ namespace Algenic.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "159be99b-fbec-49c3-b919-585fed505d40", "31347c4d-3566-4a65-adaf-cd4f3f111f63", "Admin", "ADMIN" });
+            migrationBuilder.CreateTable(
+                name: "CompilationResults",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    SolutionId = table.Column<int>(nullable: false),
+                    TestId = table.Column<int>(nullable: false),
+                    Output = table.Column<string>(nullable: true),
+                    CpuTime = table.Column<string>(nullable: true),
+                    MemoryUsage = table.Column<string>(nullable: true),
+                    ExecutionSuccessful = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompilationResults", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompilationResults_Solutions_SolutionId",
+                        column: x => x.SolutionId,
+                        principalTable: "Solutions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CompilationResults_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    SolutionId = table.Column<int>(nullable: false),
+                    TestId = table.Column<int>(nullable: false),
+                    ErrorMessage = table.Column<string>(nullable: true),
+                    StatusCode = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Logs_Solutions_SolutionId",
+                        column: x => x.SolutionId,
+                        principalTable: "Solutions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Logs_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "23b4d357-46d2-4f31-9112-ba48da551022", "e5937065-4ed8-4132-b8a2-1046b9bd2bae", "Examiner", "EXAMINER" });
+                values: new object[] { "94f677aa-e487-4f78-b7df-4bb77032936a", "56f4f7d8-7411-489f-8935-3af6db23718e", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "36a7bc45-5960-46e6-bf5f-419e0ec63c28", "1903238d-f32f-4358-94da-e9a09f2decb0", "Regular", "REGULAR" });
+                values: new object[] { "c2465a25-c198-441c-8a05-dd1c63dca511", "2879422b-5361-4aea-9d02-324a17068210", "Examiner", "EXAMINER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -364,16 +395,29 @@ namespace Algenic.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompilationResults_SolutionId",
+                table: "CompilationResults",
+                column: "SolutionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompilationResults_TestId",
+                table: "CompilationResults",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contests_IdentityUserId",
                 table: "Contests",
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Solutions_CompilationResultId",
-                table: "Solutions",
-                column: "CompilationResultId",
-                unique: true,
-                filter: "[CompilationResultId] IS NOT NULL");
+                name: "IX_Logs_SolutionId",
+                table: "Logs",
+                column: "SolutionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_TestId",
+                table: "Logs",
+                column: "TestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Solutions_IdentityUserId",
@@ -419,19 +463,22 @@ namespace Algenic.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CompilationResults");
+
+            migrationBuilder.DropTable(
+                name: "Logs");
+
+            migrationBuilder.DropTable(
                 name: "ScoreRules");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Solutions");
 
             migrationBuilder.DropTable(
                 name: "Tests");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "CompilationResults");
 
             migrationBuilder.DropTable(
                 name: "Tasks");

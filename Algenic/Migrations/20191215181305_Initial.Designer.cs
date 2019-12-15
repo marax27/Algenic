@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Algenic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191209115556_initial")]
-    partial class initial
+    [Migration("20191215181305_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace Algenic.Migrations
 
             modelBuilder.Entity("Algenic.Data.Models.CompilationResult", b =>
                 {
-                    b.Property<int>("SolutionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -35,7 +35,15 @@ namespace Algenic.Migrations
 
                     b.Property<string>("Output");
 
-                    b.HasKey("SolutionId");
+                    b.Property<int>("SolutionId");
+
+                    b.Property<int>("TestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolutionId");
+
+                    b.HasIndex("TestId");
 
                     b.ToTable("CompilationResults");
                 });
@@ -59,6 +67,29 @@ namespace Algenic.Migrations
                     b.HasIndex("IdentityUserId");
 
                     b.ToTable("Contests");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ErrorMessage");
+
+                    b.Property<int>("SolutionId");
+
+                    b.Property<string>("StatusCode");
+
+                    b.Property<int>("TestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolutionId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Algenic.Data.Models.ScorePolicy", b =>
@@ -96,9 +127,9 @@ namespace Algenic.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompilationResultId");
-
                     b.Property<string>("IdentityUserId");
+
+                    b.Property<string>("Language");
 
                     b.Property<decimal?>("PointCount");
 
@@ -110,10 +141,6 @@ namespace Algenic.Migrations
                     b.Property<DateTime>("TimeStamp");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompilationResultId")
-                        .IsUnique()
-                        .HasFilter("[CompilationResultId] IS NOT NULL");
 
                     b.HasIndex("IdentityUserId");
 
@@ -136,7 +163,7 @@ namespace Algenic.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("ScorePolicyId");
+                    b.Property<int?>("ScorePolicyId");
 
                     b.HasKey("Id");
 
@@ -197,24 +224,17 @@ namespace Algenic.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "159be99b-fbec-49c3-b919-585fed505d40",
-                            ConcurrencyStamp = "31347c4d-3566-4a65-adaf-cd4f3f111f63",
+                            Id = "94f677aa-e487-4f78-b7df-4bb77032936a",
+                            ConcurrencyStamp = "56f4f7d8-7411-489f-8935-3af6db23718e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "23b4d357-46d2-4f31-9112-ba48da551022",
-                            ConcurrencyStamp = "e5937065-4ed8-4132-b8a2-1046b9bd2bae",
+                            Id = "c2465a25-c198-441c-8a05-dd1c63dca511",
+                            ConcurrencyStamp = "2879422b-5361-4aea-9d02-324a17068210",
                             Name = "Examiner",
                             NormalizedName = "EXAMINER"
-                        },
-                        new
-                        {
-                            Id = "36a7bc45-5960-46e6-bf5f-419e0ec63c28",
-                            ConcurrencyStamp = "1903238d-f32f-4358-94da-e9a09f2decb0",
-                            Name = "Regular",
-                            NormalizedName = "REGULAR"
                         });
                 });
 
@@ -359,11 +379,37 @@ namespace Algenic.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Algenic.Data.Models.CompilationResult", b =>
+                {
+                    b.HasOne("Algenic.Data.Models.Solution", "Solution")
+                        .WithMany("CompilationResults")
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Algenic.Data.Models.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Algenic.Data.Models.Contest", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
+                });
+
+            modelBuilder.Entity("Algenic.Data.Models.Log", b =>
+                {
+                    b.HasOne("Algenic.Data.Models.Solution", "Solution")
+                        .WithMany("Logs")
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Algenic.Data.Models.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Algenic.Data.Models.ScoreRule", b =>
@@ -376,10 +422,6 @@ namespace Algenic.Migrations
 
             modelBuilder.Entity("Algenic.Data.Models.Solution", b =>
                 {
-                    b.HasOne("Algenic.Data.Models.CompilationResult", "CompilationResult")
-                        .WithOne("Solution")
-                        .HasForeignKey("Algenic.Data.Models.Solution", "CompilationResultId");
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
@@ -399,8 +441,7 @@ namespace Algenic.Migrations
 
                     b.HasOne("Algenic.Data.Models.ScorePolicy", "ScorePolicy")
                         .WithMany("Tasks")
-                        .HasForeignKey("ScorePolicyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ScorePolicyId");
                 });
 
             modelBuilder.Entity("Algenic.Data.Models.Test", b =>

@@ -1,4 +1,4 @@
-@page
+﻿@page
 @using Algenic.Data.Models
 @model Algenic.Areas.Contests.Pages.IndexModel
 @{
@@ -14,8 +14,7 @@
                 <form asp-page-handler="create" method="post" id="form-add-group">
                     <h6>Create a new contest</h6>
                     <div class="form-group">
-                        <label>Contest Name</label>
-                        <input asp-for="ContestName" class="form-control" />
+                        <input asp-for="ContestName" class="form-control" placeholder="Contest name"/>
                     </div>
                     <input type="submit" value="Send" class="btn btn-outline-dark" />
                 </form>

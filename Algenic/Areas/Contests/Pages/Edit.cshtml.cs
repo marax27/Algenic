@@ -123,7 +123,8 @@ namespace Algenic.Areas.Contests.Pages
             => new EditContestViewModel
             {
                 Name = contest.Name,
-                Status = ContestStatusNames.GetReadableName(contest.Status)
+                Status = ContestStatusNames.GetReadableName(contest.Status),
+                HasBegun = contest.Status != ContestState.NotStarted
             };
 
         private DisplayTaskViewModel MapToDisplayViewModel(Data.Models.Task model)

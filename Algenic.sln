@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic.FunctionalTests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic.Compilation", "Algenic.Compilation\Algenic.Compilation.csproj", "{BC79FF98-8FB3-4D8C-83CE-997D03A81465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algenic.Commons", "Algenic.Commons\Algenic.Commons.csproj", "{4580B896-4BB6-40E8-BF3C-AC0923625AF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algenic.Commons", "Algenic.Commons\Algenic.Commons.csproj", "{4580B896-4BB6-40E8-BF3C-AC0923625AF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

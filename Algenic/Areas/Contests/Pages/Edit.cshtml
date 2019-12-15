@@ -77,6 +77,12 @@
                     <td width="50%">
                         @task.Description
                     </td>
+                    <td width="20%">
+                        <form asp-page-handler="EditTask" method="post">
+                            <input type="submit" value="Edit" class="btn btn-outline-dark" />
+                            <input type="hidden" name="taskId" value="@task.Id" />
+                        </form>
+                    </td>
                 </tr>
             }
         </table>

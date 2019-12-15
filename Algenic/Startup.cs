@@ -1,5 +1,7 @@
 using Algenic.Commands.CreateContest;
 using Algenic.Commons;
+using Algenic.Compilation;
+using Algenic.Compilation.Outputs;
 using Algenic.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -51,6 +53,8 @@ namespace Algenic
             services.AddTransient<ICommandHandler<CreateContestCommand>, CreateContestCommandHandler>();
 
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
+
+            services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

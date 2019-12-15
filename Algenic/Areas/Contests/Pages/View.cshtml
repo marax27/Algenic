@@ -14,8 +14,11 @@
                 @foreach (var task in Model.Contest.Tasks ?? new List<Algenic.Data.Models.Task>())
                 {
                     <tr>
-                        <td width="80%">
+                        <td width="40%">
                             @task.Name
+                        </td>
+                        <td width="40%">
+                            @task.Description
                         </td>
                         <td width="20%">
                             <form asp-page-handler="solve" method="post">

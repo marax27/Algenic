@@ -14,23 +14,25 @@
 </style>
 
 <div class="col-12">
-    <h4>Edit Contest</h4>
+    <h2>Edit @Model.ContestViewModel.Name</h2>
     <hr />
 
     <div class="row page-section">
         <div class="col-6">
+            <h5>Rename contest</h5>
             <form asp-page-handler="save" method="post">
-                <div class="form-group">
-                    <label>Contest Name</label>
-                    <input asp-for="ContestViewModel.Name" class="form-control" />
-                    <!--<input type="hidden" asp-for="ContestId" />-->
-                </div>
-                <input type="submit" value="Save" asp-page-handler="Rename" class="btn btn-outline-dark" />
+                <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled": null)'>
+                    <div class="form-group">
+                        <input asp-for="ContestViewModel.Name" class="form-control"/>
+                        <!--<input type="hidden" asp-for="ContestId" />-->
+                    </div>
+                    <input type="submit" value="Save" asp-page-handler="Rename" class="btn btn-outline-dark"/>
+                </fieldset>
             </form>
         </div>
 
         <div class="col-6">
-            Status: <strong>@Model.ContestViewModel.Status</strong>
+            <h5>Status: <strong>@Model.ContestViewModel.Status</strong></h5>
             <div class="row multiple-choices-row">
                 @foreach (var statusButton in Model.StatusButtons)
                 {
@@ -48,15 +50,17 @@
         <h5>Add a new task</h5>
         <div class="row">
             <form asp-page-handler="AddTask" method="post">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input asp-for="FormTask.Name" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea asp-for="FormTask.Description" class="form-control" cols="40" rows="5"></textarea>
-                </div>
-                <input type="submit" value="Add" class="btn btn-outline-dark" />
+                <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled": null)'>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input asp-for="FormTask.Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea asp-for="FormTask.Description" class="form-control" cols="40" rows="5"></textarea>
+                    </div>
+                    <input type="submit" value="Add" class="btn btn-outline-dark" />
+                </fieldset>
             </form>
         </div>
     </div>
@@ -79,8 +83,10 @@
                     </td>
                     <td width="20%">
                         <form asp-page-handler="EditTask" method="post">
-                            <input type="submit" value="Edit" class="btn btn-outline-dark" />
-                            <input type="hidden" name="taskId" value="@task.Id" />
+                            <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled": null)'>
+                                <input type="submit" value="Edit" class="btn btn-outline-dark"/>
+                                <input type="hidden" name="taskId" value="@task.Id"/>
+                            </fieldset>
                         </form>
                     </td>
                 </tr>

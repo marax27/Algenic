@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using Algenic.Data.Models
 @model Algenic.Areas.Contests.Pages.IndexModel
 @{
@@ -23,16 +23,16 @@
         }
         <table class="table" id="contest-table">
             <tr>
-                <th width="60%">Name</th>
+                <th width="50%">Name</th>
                 <th width="20%">Author</th>
                 <th width="10%">Status</th>
-                <th width="10%"></th>
+                <th width="20%"></th>
             </tr>
 
             @foreach (var contest in Model.Contests)
             {
                 <tr>
-                    <td width="60%">
+                    <td width="50%">
                         @contest.Name
                     </td>
                     <td width="20%">
@@ -43,7 +43,7 @@
                     </td>
                     @if (contest.CanJoin)
                     {
-                        <td width="10%">
+                        <td width="20%">
                             <form asp-page-handler="join" method="post">
                                 <input type="submit" value="Join" class="btn btn-outline-dark" />
                                 <input type="hidden" name="contestId" value="@contest.Id" />
@@ -56,6 +56,12 @@
                             <form asp-page-handler="edit" method="post">
                                 <input type="submit" value="Edit" class="btn btn-outline-dark" />
                                 <input type="hidden" name="contestId" value="@contest.Id" />
+                            </form>
+                        </td>
+                        <td width="10%">
+                            <form asp-page-handler="delete" method="post">
+                                <input type="submit" value="Delete" class="btn btn-outline-danger"/>
+                                <input type="hidden" name="contestId" value="@contest.Id"/>
                             </form>
                         </td>
                     }

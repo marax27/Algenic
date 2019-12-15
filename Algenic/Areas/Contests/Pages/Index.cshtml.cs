@@ -72,6 +72,14 @@ namespace Algenic.Areas.Contests.Pages
             return RedirectToPage("View", new { id = contestId });
         }
 
+        public async Task<IActionResult> OnPostDeleteAsync(int contestId)
+        {
+            var contest = await _context.Contests.FindAsync(contestId);
+            _context.Contests.Remove(contest);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("Index");
+        }
+
         private ContestViewModel MapToViewModel(Contest contest)
         {
             var query = ContestOwnerQuery.Create(contest.Id, User);

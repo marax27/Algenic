@@ -1,0 +1,25 @@
+﻿@page "{id:int}"
+@model Algenic.Areas.Pages.Tasks.ViewModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h4>@Model.Task.Name</h4>
+        @Model.Task.Description
+        <hr />
+        <h5>Add Solution</h5>
+        <div class="row">
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="btn btn-outline-dark">
+                        Choose file
+                        <input type="file" asp-for="SourceCodeFile" style="display: none;" />
+                    </label>
+                </div>
+                <input type="submit" class="btn btn-outline-dark" value="Send" />
+            </form>
+        </div>
+    </div>
+</div>

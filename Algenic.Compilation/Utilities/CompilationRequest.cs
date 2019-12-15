@@ -5,6 +5,7 @@
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string Script { get; set; }
+        public string Stdin { get; set; }
         public string Language { get; set; }
         public int VersionIndex { get; set; }
     }
@@ -14,6 +15,7 @@
         private string _clientId;
         private string _clientSecret;
         private string _script;
+        private string _stdin;
         private string _language;
         private int _versionIndex;
 
@@ -27,6 +29,12 @@
         public CompilationRequestBuilder WithSourceCode(string sourceCode)
         {
             _script = sourceCode;
+            return this;
+        }
+
+        public CompilationRequestBuilder WithStandardInput(string standardInput)
+        {
+            _stdin = standardInput;
             return this;
         }
 
@@ -44,6 +52,7 @@
                 ClientSecret = _clientSecret,
                 Language = _language,
                 Script = _script,
+                Stdin = _stdin,
                 VersionIndex = _versionIndex
             };
     }

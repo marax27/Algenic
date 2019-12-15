@@ -26,12 +26,13 @@ namespace Algenic.Compilation
             _httpClient = new HttpClient();
         }
 
-        public async Task CompileAsync(string sourceCode, ProgrammingLanguage programmingLanguage)
+        public async Task CompileAsync(string sourceCode, string input, ProgrammingLanguage programmingLanguage)
         {
             var compilationRequest = new CompilationRequestBuilder()
                 .WithClient(_clientConfiguration)
                 .WithProgrammingLanguage(programmingLanguage)
                 .WithSourceCode(sourceCode)
+                .WithStandardInput(input)
                 .Build();
 
             var requestJson = JsonConvert.SerializeObject(compilationRequest, new JsonSerializerSettings()

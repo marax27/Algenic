@@ -1,0 +1,93 @@
+﻿@page "{id:int}"
+@model Algenic.Areas.Tasks.Pages.EditModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<style>
+    .page-section {
+        margin-bottom: 30px;
+    }
+
+    .textbox-margin {
+        margin-right: 10px;
+    }
+</style>
+
+<div class="col-12">
+    <h4>Edit Task</h4>
+    <hr />
+    <div class="row page-section">
+        <div class="col-12">
+            <form asp-page-handler="Change" method="post">
+                <div class="form-group">
+                    <label>Task Name</label>
+                    <input asp-for="FormTask.Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea asp-for="FormTask.Description" class="form-control" cols="40" rows="8"></textarea>
+                </div>
+                <input type="submit" value="Save" class="btn btn-outline-dark" />
+            </form>
+        </div>
+    </div>
+
+    <h5>Add test</h5>
+    <div class="page-section">
+        <form asp-page-handler="AddTest" method="post">
+            <div class="row">
+                <div class="form-group textbox-margin">
+                    <label>Test Name</label>
+                    <input asp-for="FormTest.Name" class="form-control" />
+                </div>
+                <div class="form-group textbox-margin">
+                    <label>Input</label>
+                    <textarea asp-for="FormTest.Input" class="form-control" cols="20" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Expected Output</label>
+                    <textarea asp-for="FormTest.ExpectedOutput" class="form-control" cols="20" rows="5"></textarea>
+                </div>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-outline-dark" />
+        </form>
+    </div>
+
+    <h5>Tests</h5>
+    <div class="row page-section">
+        <table class="table">
+            <tr>
+                <th width="30%">
+                    Name
+                </th>
+                <th width="30%">
+                    Input
+                </th>
+                <th width="30%">
+                    Expected Output
+                </th>
+            </tr>
+            @foreach (var test in Model.FormTask.Tests)
+            {
+                <tr>
+                    <td width="30%">
+                        @test.Name
+                    </td>
+                    <td width="30%">
+                        @test.Input
+                    </td>
+                    <td width="30%">
+                        @test.ExpectedOutput
+                    </td>
+                    <td width="10%">
+                        <form asp-page-handler="RemoveTest" method="post">
+                            <input type="submit" value="Remove" class="btn btn-outline-dark" />
+                            <input type="hidden" name="testId" value="@test.Id" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

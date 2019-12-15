@@ -79,7 +79,7 @@ namespace Algenic.Areas.Contests.Pages
             return RedirectToPage(ContestId);
         }
 
-        public async Task<IActionResult> OnPostAddTask()
+        public async Task<IActionResult> OnPostAddTaskAsync()
         {
             var mapper = new TaskMapper(FormTask);
             var taskModel = mapper.Map();
@@ -88,6 +88,11 @@ namespace Algenic.Areas.Contests.Pages
             contest.Tasks.Add(taskModel);
             await _context.SaveChangesAsync();
             return RedirectToPage(ContestId);
+        }
+
+        public async Task<IActionResult> OnPostEditTaskAsync(int taskId)
+        {
+            return RedirectToPage("Edit", new { area = "Tasks", id = taskId });
         }
 
         private IEnumerable<StatusButtonViewModel> CreateStatusButtons(ContestState contestStatus)
@@ -125,7 +130,8 @@ namespace Algenic.Areas.Contests.Pages
             => new DisplayTaskViewModel
             {
                 Name = model.Name,
-                Description = model.Description
+                Description = model.Description,
+                Id = model.Id
             };
     }
 }

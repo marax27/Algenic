@@ -11,6 +11,7 @@ using System.Linq;
 using Algenic.Mappers;
 using Algenic.ViewModels;
 using static Algenic.Data.Models.Contest;
+using Task = System.Threading.Tasks.Task;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -93,6 +94,15 @@ namespace Algenic.Areas.Contests.Pages
         public async Task<IActionResult> OnPostEditTaskAsync(int taskId)
         {
             return RedirectToPage("Edit", new { area = "Tasks", id = taskId });
+        }
+
+        public async Task<IActionResult> OnPostRemoveTaskAsync(int taskId)
+        {
+            var contest = await _context.Contests.FindAsync(ContestId);
+            var task = await _context.Tasks.FindAsync(taskId);
+            contest.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
+            return RedirectToPage(ContestId);
         }
 
         private IEnumerable<StatusButtonViewModel> CreateStatusButtons(ContestState contestStatus)

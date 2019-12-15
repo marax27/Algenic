@@ -82,12 +82,21 @@
                         @task.Description
                     </td>
                     <td width="20%">
-                        <form asp-page-handler="EditTask" method="post">
-                            <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled": null)'>
-                                <input type="submit" value="Edit" class="btn btn-outline-dark"/>
-                                <input type="hidden" name="taskId" value="@task.Id"/>
-                            </fieldset>
-                        </form>
+                        <div class="row multiple-choices-row">
+                            <form asp-page-handler="EditTask" method="post">
+                                <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled": null)'>
+                                    <input type="submit" value="Edit" class="btn btn-outline-dark"/>
+                                    <input type="hidden" name="taskId" value="@task.Id"/>
+                                </fieldset>
+                            </form>
+                        
+                            <form asp-page-handler="RemoveTask" method="post">
+                                <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled": null)'>
+                                    <input type="submit" value="Remove" class="btn btn-outline-danger"/>
+                                    <input type="hidden" name="taskId" value="@task.Id"/>
+                                </fieldset>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             }

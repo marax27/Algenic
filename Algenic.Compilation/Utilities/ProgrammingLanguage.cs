@@ -1,4 +1,6 @@
-﻿namespace Algenic.Compilation.Utilities
+﻿using System;
+
+namespace Algenic.Compilation.Utilities
 {
     public class ProgrammingLanguage
     {
@@ -19,5 +21,29 @@
 
         public static ProgrammingLanguage PlainC() =>
             new ProgrammingLanguage("c", 4);
+    }
+
+    public static class ProgrammingLanguageFactory
+    {
+        public static ProgrammingLanguage Get(string programmingLanguage)
+        {
+            switch (programmingLanguage.ToUpper())
+            {
+                case "CPP":
+                case "C++":
+                    return ProgrammingLanguage.CPlusPlus();
+                case "C":
+                    return ProgrammingLanguage.PlainC();
+                case "JAVA":
+                    return ProgrammingLanguage.Java();
+                default: throw new ProgrammingLanguageNotFoundException(programmingLanguage);
+            }
+        }
+    }
+
+    public class ProgrammingLanguageNotFoundException : Exception
+    {
+        public ProgrammingLanguageNotFoundException(string language)
+            : base($"Cannot associate any supported language with '{language}'.") { }
     }
 }

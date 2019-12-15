@@ -8,17 +8,13 @@
     .page-section {
         margin-bottom: 30px;
     }
-
-    .textbox-margin {
-        margin-right: 10px;
-    }
 </style>
 
 <div class="col-12">
-    <h4>Edit Task</h4>
-    <hr />
+
     <div class="row page-section">
-        <div class="col-12">
+        <div class="col-6">
+            <h5>Edit task</h5>
             <form asp-page-handler="Change" method="post">
                 <div class="form-group">
                     <label>Task Name</label>
@@ -31,27 +27,35 @@
                 <input type="submit" value="Save" class="btn btn-outline-dark" />
             </form>
         </div>
-    </div>
 
-    <h5>Add test</h5>
-    <div class="page-section">
-        <form asp-page-handler="AddTest" method="post">
-            <div class="row">
-                <div class="form-group textbox-margin">
-                    <label>Test Name</label>
-                    <input asp-for="FormTest.Name" class="form-control" />
-                </div>
-                <div class="form-group textbox-margin">
-                    <label>Input</label>
-                    <textarea asp-for="FormTest.Input" class="form-control" cols="20" rows="5"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Expected Output</label>
-                    <textarea asp-for="FormTest.ExpectedOutput" class="form-control" cols="20" rows="5"></textarea>
-                </div>
+        <div class="col-6">
+            <div class="col-12">
+                <h5>Add test</h5>
             </div>
-            <input type="submit" value="Submit" class="btn btn-outline-dark" />
-        </form>
+            <div class="page-section">
+                <form asp-page-handler="AddTest" method="post">
+                    <div class="col-12">
+                        <div class="row col-12 form-group">
+                            <label>Test Name</label>
+                            <input asp-for="FormTest.Name" class="form-control" />
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label>Input</label>
+                                <textarea asp-for="FormTest.Input" class="form-control" cols="20" rows="5"></textarea>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Expected Output</label>
+                                <textarea asp-for="FormTest.ExpectedOutput" class="form-control" cols="20" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <input type="submit" value="Submit" class="btn btn-outline-dark" />
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <h5>Tests</h5>

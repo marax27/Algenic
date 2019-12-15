@@ -6,6 +6,7 @@ using Algenic.Compilation.Utilities;
 using Algenic.Data;
 using Algenic.Data.Mappers;
 using Algenic.Mappers;
+using Algenic.Queries.Compilation;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
 
@@ -14,12 +15,12 @@ namespace Algenic.Commands.VerifySolution
     public class VerifySolutionCommandHandler : ICommandHandler<VerifySolutionCommand>
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IRemoteCompiler<JDoodleOutput, JDoodleError> _compiler;
+        private readonly IQueryHandler<CompilationQuery, CompilationQueryResult> _compilationQueryHandler;
 
         public VerifySolutionCommandHandler(ApplicationDbContext dbContext,
-            IRemoteCompiler<JDoodleOutput, JDoodleError> compiler)
+            IQueryHandler<CompilationQuery, CompilationQueryResult> compilationQueryHandler)
         {
-            _compiler = compiler;
+            _compilationQueryHandler = compilationQueryHandler;
         }
 
         public async Task HandleAsync(VerifySolutionCommand command)
@@ -30,14 +31,16 @@ namespace Algenic.Commands.VerifySolution
 
             foreach (var test in tests)
             {
-                await _compiler.CompileAsync(solution.SourceCode, test.Input, programmingLanguage);
-                if (_compiler.IsSuccessful)
+                var query = CompilationQuery.Create(solution.SourceCode, test.Input, programmingLanguage);
+                var queryResult = await _compilationQueryHandler.HandleAsync(query);
+
+                if (queryResult.ExecutionSuccessful)
                 {
-                    var compilationResult = new CompilationResultMapper(_compiler.Output).Map();
+                    var compilationResult = new CompilationResultMapper(queryResult.Output).Map();
                 }
                 else
                 {
-                    var log = new LogMapper(_compiler.ErrorOutput).Map();
+                    var log = new LogMapper(queryResult.Error).Map();
                 }
             }
         }

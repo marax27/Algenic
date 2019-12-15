@@ -20,6 +20,7 @@ namespace Algenic.Commands.VerifySolution
         public VerifySolutionCommandHandler(ApplicationDbContext dbContext,
             IQueryHandler<CompilationQuery, CompilationQueryResult> compilationQueryHandler)
         {
+            _dbContext = dbContext;
             _compilationQueryHandler = compilationQueryHandler;
         }
 

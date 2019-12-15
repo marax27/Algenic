@@ -21,7 +21,7 @@ namespace Algenic.Migrations
 
             modelBuilder.Entity("Algenic.Data.Models.CompilationResult", b =>
                 {
-                    b.Property<int>("SolutionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -33,7 +33,15 @@ namespace Algenic.Migrations
 
                     b.Property<string>("Output");
 
-                    b.HasKey("SolutionId");
+                    b.Property<int>("SolutionId");
+
+                    b.Property<int>("TestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SolutionId");
+
+                    b.HasIndex("TestId");
 
                     b.ToTable("CompilationResults");
                 });
@@ -75,8 +83,7 @@ namespace Algenic.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SolutionId")
-                        .IsUnique();
+                    b.HasIndex("SolutionId");
 
                     b.HasIndex("TestId");
 
@@ -118,13 +125,9 @@ namespace Algenic.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompilationResultId");
-
                     b.Property<string>("IdentityUserId");
 
                     b.Property<string>("Language");
-
-                    b.Property<int?>("LogId");
 
                     b.Property<decimal?>("PointCount");
 
@@ -136,10 +139,6 @@ namespace Algenic.Migrations
                     b.Property<DateTime>("TimeStamp");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompilationResultId")
-                        .IsUnique()
-                        .HasFilter("[CompilationResultId] IS NOT NULL");
 
                     b.HasIndex("IdentityUserId");
 
@@ -223,15 +222,15 @@ namespace Algenic.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f3682a71-4048-48ce-adb6-5c578497328d",
-                            ConcurrencyStamp = "e0f2d005-a5d0-45ed-a646-aab331c2eb30",
+                            Id = "94f677aa-e487-4f78-b7df-4bb77032936a",
+                            ConcurrencyStamp = "56f4f7d8-7411-489f-8935-3af6db23718e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8d892c5b-a796-471b-a316-0e8de3daffb9",
-                            ConcurrencyStamp = "0c65ca5e-6c0a-48f1-8b20-84bc637db6db",
+                            Id = "c2465a25-c198-441c-8a05-dd1c63dca511",
+                            ConcurrencyStamp = "2879422b-5361-4aea-9d02-324a17068210",
                             Name = "Examiner",
                             NormalizedName = "EXAMINER"
                         });
@@ -378,6 +377,19 @@ namespace Algenic.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Algenic.Data.Models.CompilationResult", b =>
+                {
+                    b.HasOne("Algenic.Data.Models.Solution", "Solution")
+                        .WithMany("CompilationResults")
+                        .HasForeignKey("SolutionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Algenic.Data.Models.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Algenic.Data.Models.Contest", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
@@ -388,8 +400,8 @@ namespace Algenic.Migrations
             modelBuilder.Entity("Algenic.Data.Models.Log", b =>
                 {
                     b.HasOne("Algenic.Data.Models.Solution", "Solution")
-                        .WithOne("Log")
-                        .HasForeignKey("Algenic.Data.Models.Log", "SolutionId")
+                        .WithMany("Logs")
+                        .HasForeignKey("SolutionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Algenic.Data.Models.Test", "Test")
@@ -408,10 +420,6 @@ namespace Algenic.Migrations
 
             modelBuilder.Entity("Algenic.Data.Models.Solution", b =>
                 {
-                    b.HasOne("Algenic.Data.Models.CompilationResult", "CompilationResult")
-                        .WithOne("Solution")
-                        .HasForeignKey("Algenic.Data.Models.Solution", "CompilationResultId");
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");

@@ -27,6 +27,12 @@
     <Compile Remove="Migrations\20191209114709_Initial.Designer.cs" />
     <Compile Remove="Migrations\20191214182300_AddLogTable.cs" />
     <Compile Remove="Migrations\20191214182300_AddLogTable.Designer.cs" />
+    <Compile Remove="Migrations\20191215153049_AddLanguageColumnToSolution.cs" />
+    <Compile Remove="Migrations\20191215153049_AddLanguageColumnToSolution.Designer.cs" />
+    <Compile Remove="Migrations\20191215172541_ChangeCompilationResultLogSolutionRelations.cs" />
+    <Compile Remove="Migrations\20191215172541_ChangeCompilationResultLogSolutionRelations.Designer.cs" />
+    <Compile Remove="Migrations\20191215180517_Initial.cs" />
+    <Compile Remove="Migrations\20191215180517_Initial.Designer.cs" />
   </ItemGroup>
 
 

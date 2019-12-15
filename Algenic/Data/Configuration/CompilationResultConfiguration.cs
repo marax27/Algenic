@@ -12,11 +12,16 @@ namespace Algenic.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<CompilationResult> builder)
         {
-            builder.HasKey(c => c.SolutionId);
+            builder.HasKey(c => c.Id);
 
             builder.HasOne(c => c.Solution)
-                .WithOne(s => s.CompilationResult)
-                .HasForeignKey<CompilationResult>(c => c.SolutionId);
+                .WithMany(s => s.CompilationResults)
+                .HasForeignKey(c => c.SolutionId);
+
+            builder.HasOne(l => l.Test)
+                .WithMany()
+                .HasForeignKey(l => l.TestId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

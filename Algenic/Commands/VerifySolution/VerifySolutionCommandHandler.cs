@@ -1,10 +1,13 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using Algenic.Commons;
 using Algenic.Compilation;
 using Algenic.Compilation.Outputs;
+using Algenic.Compilation.Utilities;
 using Algenic.Data;
+using Algenic.Data.Mappers;
+using Algenic.Mappers;
 using Microsoft.EntityFrameworkCore;
+using Task = System.Threading.Tasks.Task;
 
 namespace Algenic.Commands.VerifySolution
 {
@@ -23,6 +26,20 @@ namespace Algenic.Commands.VerifySolution
         {
             var solution = await _dbContext.Solutions.SingleAsync(s => s.Id == command.SolutionId);
             var tests = solution.Task.Tests.ToList();
+            var programmingLanguage = ProgrammingLanguageFactory.Get(solution.Language);
+
+            foreach (var test in tests)
+            {
+                await _compiler.CompileAsync(solution.SourceCode, test.Input, programmingLanguage);
+                if (_compiler.IsSuccessful)
+                {
+                    var compilationResult = new CompilationResultMapper(_compiler.Output).Map();
+                }
+                else
+                {
+                    var log = new LogMapper(_compiler.ErrorOutput).Map();
+                }
+            }
         }
     }
 }

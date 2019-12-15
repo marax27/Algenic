@@ -9,15 +9,16 @@ using Newtonsoft.Json.Serialization;
 
 namespace Algenic.Compilation
 {
-    public class JDoodleCompiler
+    public class JDoodleCompiler : IRemoteCompiler<JDoodleOutput, JDoodleError>
     {
         private static readonly string apiUrl = @"https://api.jdoodle.com/v1/execute";
 
         private readonly ClientConfiguration _clientConfiguration;
         private readonly HttpClient _httpClient;
-        public JDoodleOutput JDoodleOutput { get; set; }
-        public JDoodleError JDoodleError { get; set; }
-        public bool Flag { get; set; }
+
+        public JDoodleOutput Output { get; private set; }
+        public JDoodleError ErrorOutput { get; private set; }
+        public bool IsSuccessful { get; set; }
 
         public JDoodleCompiler(ClientConfiguration clientConfiguration)
         {
@@ -25,7 +26,7 @@ namespace Algenic.Compilation
             _httpClient = new HttpClient();
         }
 
-        public async Task Compile(string sourceCode, ProgrammingLanguage programmingLanguage)
+        public async Task CompileAsync(string sourceCode, ProgrammingLanguage programmingLanguage)
         {
             var compilationRequest = new CompilationRequestBuilder()
                 .WithClient(_clientConfiguration)
@@ -48,27 +49,27 @@ namespace Algenic.Compilation
             {
                 var response = await _httpClient.PostAsync(new Uri(apiUrl), content);
                 var jsonCode = response.Content.ReadAsStringAsync();
-                JDoodleOutput = JsonConvert.DeserializeObject<JDoodleOutput>(jsonCode.Result);
-                Flag = true;
+                Output = JsonConvert.DeserializeObject<JDoodleOutput>(jsonCode.Result);
+                IsSuccessful = true;
             }
             catch (ArgumentNullException)
             {
-                JDoodleError.Error = "offline";
-                JDoodleError.StatusCode = "400";
-                Flag = false;
+                ErrorOutput.Error = "offline";
+                ErrorOutput.StatusCode = "400";
+                IsSuccessful = false;
             }
             catch (HttpRequestException)
             {
-                JDoodleError.Error = "offline";
-                JDoodleError.StatusCode = "400";
-                Flag = false;
+                ErrorOutput.Error = "offline";
+                ErrorOutput.StatusCode = "400";
+                IsSuccessful = false;
             }
             catch (JsonException)
             {
                 var response = await _httpClient.PostAsync(new Uri(apiUrl), content);
                 var jsonCode = response.Content.ReadAsStringAsync();
-                JDoodleError = JsonConvert.DeserializeObject<JDoodleError>(jsonCode.Result);
-                Flag = false;
+                ErrorOutput = JsonConvert.DeserializeObject<JDoodleError>(jsonCode.Result);
+                IsSuccessful = false;
             }
         }
     }

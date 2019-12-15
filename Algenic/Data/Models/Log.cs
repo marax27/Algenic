@@ -11,6 +11,7 @@ namespace Algenic.Data.Models
         public int SolutionId { get; set; }
         public int TestId { get; set; }
         public string ErrorMessage { get; set; }
+        public string StatusCode { get; set; }
 
         public virtual Solution Solution { get; set; }
         public virtual Test Test { get; set; }

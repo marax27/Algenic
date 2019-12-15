@@ -15,8 +15,8 @@ namespace Algenic.Data.Configuration
             builder.HasKey(l => l.Id);
 
             builder.HasOne(l => l.Solution)
-                .WithOne(s => s.Log)
-                .HasForeignKey<Log>(l => l.SolutionId);
+                .WithMany(s => s.Logs)
+                .HasForeignKey(l => l.SolutionId);
 
             builder.HasOne(l => l.Test)
                 .WithMany()

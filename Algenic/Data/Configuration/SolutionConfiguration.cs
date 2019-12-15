@@ -15,13 +15,13 @@ namespace Algenic.Data.Configuration
         {
             builder.HasKey(s => s.Id);
 
-            builder.HasOne(s => s.CompilationResult)
+            builder.HasMany(s => s.CompilationResults)
                 .WithOne(c => c.Solution)
-                .HasForeignKey<Solution>(s => s.CompilationResultId);
+                .HasForeignKey(c => c.SolutionId);
 
-            builder.HasOne(s => s.Log)
+            builder.HasMany(s => s.Logs)
                 .WithOne(l => l.Solution)
-                .HasForeignKey<Solution>(s => s.LogId);
+                .HasForeignKey(l => l.SolutionId);
 
             builder.HasOne(s => s.Task)
                 .WithMany(t => t.Solutions)

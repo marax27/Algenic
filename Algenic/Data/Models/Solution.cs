@@ -11,18 +11,14 @@ namespace Algenic.Data.Models
     {
         public int Id { get; set; }
         public int TaskId { get; set; }
-        public int? CompilationResultId { get; set; }
-        public int? LogId { get; set; }
         public string SourceCode { get; set; }
         public string Language { get; set; }
         public decimal? PointCount { get; set; }
         public DateTime TimeStamp { get; set; }
 
         public virtual Task Task { get; set; }
-
         public virtual IdentityUser IdentityUser { get; set; }
-
-        public virtual CompilationResult CompilationResult { get; set; }
-        public virtual Log Log { get; set; }
+        public virtual ICollection<CompilationResult> CompilationResults { get; set; }
+        public virtual ICollection<Log>Logs { get; set; }
     }
 }

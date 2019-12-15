@@ -9,27 +9,6 @@
         <h4>@Model.Task.Name</h4>
         @Model.Task.Description
         <hr />
-        <div class="col-12">
-            <h5>Tests</h5>
-            <table class="table">
-                <tr>
-                    <th width="50%">Input</th>
-                    <th width="50%">Expected Output</th>
-                </tr>
-
-                @foreach (var test in Model.Task.Tests ?? new List<Algenic.Data.Models.Test>())
-                {
-                    <tr>
-                        <td width="50%">
-                            @test.Input
-                        </td>
-                        <td width="50%">
-                            @test.ExpectedOutput
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
         <h5>Add Solution</h5>
         <div class="row">
             <form method="post" enctype="multipart/form-data">

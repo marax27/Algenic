@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Algenic.Commons;
+using Algenic.Commons.DesignByContract;
 using Algenic.Data;
 using Algenic.Data.Models;
 
@@ -20,20 +21,26 @@ namespace Algenic.Queries.CalculateScore
             var solution = await _dbContext.Solutions.FindAsync(query.SolutionId);
             var percentagePassed = await GetPassedTestPercentage(solution);
 
-            var rules = solution.Task.ScorePolicy.ScoreRules
+            return new CalculateScoreResult(GetScore(percentagePassed, solution.Task.ScorePolicy));
+        }
+
+        public static int GetScore(decimal percentagePassed, ScorePolicy scorePolicy)
+        {
+            Fail.IfNull(scorePolicy);
+            Fail.IfNullOrEmpty(scorePolicy.ScoreRules);
+
+            var rules = scorePolicy.ScoreRules
                 .OrderBy(sr => sr.Threshold)
                 .ToList();
 
-            int score = 0;
-            for (int i = 0; i != rules.Count - 1; ++i)
+            var score = 0;
+            foreach (var rule in rules)
             {
-                var rule = rules[i];
                 if (percentagePassed < rule.Threshold)
                     break;
                 score = rule.Score;
             }
-
-            return new CalculateScoreResult(score);
+            return score;
         }
 
         private async Task<decimal> GetPassedTestPercentage(Solution solution)

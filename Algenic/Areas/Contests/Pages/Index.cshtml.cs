@@ -8,21 +8,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Algenic.Data.Models;
 using Algenic.Data;
 using Algenic.Queries.ContestOwner;
+using Algenic.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using static Algenic.Data.Models.Contest;
 
 namespace Algenic.Areas.Contests.Pages
 {
-    public class ContestViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public bool CanJoin { get; set; }
-        public bool CanEdit { get; set; }
-        public ContestState Status { get; set; }
-    }
-
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;

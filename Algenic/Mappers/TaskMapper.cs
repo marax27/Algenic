@@ -1,5 +1,5 @@
-﻿using Algenic.Areas.Contests.Pages;
-using Algenic.Data.Models;
+﻿using Algenic.Data.Models;
+using Algenic.ViewModels;
 
 namespace Algenic.Mappers
 {

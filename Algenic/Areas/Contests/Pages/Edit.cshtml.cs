@@ -6,40 +6,14 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Algenic.Routing;
 using Algenic.Data.Models;
-using System;
 using System.ComponentModel;
 using System.Linq;
 using Algenic.Mappers;
+using Algenic.ViewModels;
 using static Algenic.Data.Models.Contest;
-using Task = System.Threading.Tasks.Task;
 
 namespace Algenic.Areas.Contests.Pages
 {
-    public class EditContestViewModel
-    { 
-        public string Name { get; set; }
-        public string Status { get; set; }
-    }
-
-    public class StatusButtonViewModel
-    {
-        public string Label { get; set; }
-        public ContestState NewState { get; set; }
-    }
-
-    public class AddTaskViewModel
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class DisplayTaskViewModel
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-    }
-
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;

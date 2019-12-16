@@ -43,6 +43,16 @@
 %------------------------------------------------------------
 \maketitle
 %------------------------------------------------------------
+\section{Wstęp}
+System z konkursami algorytmicznymi Algenic służy do hostowania konkursów algorytmicznych. Umożliwia zdalną kompilację przysłanych rozwiązań zadań oraz wyświetlanie wyników tej kompilacji.
+
+\section{Architektura}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{project_modules.png}
+	\caption{Ogólny diagram modułów}
+\end{figure}
 
 \section{Baza danych}
 \begin{figure}[H]
@@ -53,6 +63,36 @@
 Baza danych jest generowana za pomocą narzędzi dostarczanych przez Entity Framework Core. Przy uprzednim utworzeniu modelu oraz klas konfigurujących własności tabel (n.p. klucze obce), można wygenerować migrację funkcją add-migration i utworzyć lub dokonać zmian w istniejącej bazie danych funkcją update-database. Obie te czynności muszą być wykonane z poziomu konsoli. 
 
 W razie wszelkich błędów przy aktualizacji bazy danych, istnieje możliwość ręcznego modyfikowania migracji.
+
+\section{Role użytkowników}
+\subsection{Wspólne}
+\begin{itemize}
+    \item Każdy użytkownik ma możliwość zarejestrowania się w aplikacji i zalogowania
+    \item Każdy użytkownik może zobaczyć aktualnie trwające lub zakończone konkursy
+\end{itemize}
+
+\subsection{Podstawowy użytkownik}
+\begin{itemize}
+    \item Może dołączyć do konkursu
+    \item Po dołączeniu do konkursu może wyświetlać znajdujące się w nim zadania i przesyłać rozwiązania do nich
+\end{itemize}
+
+\subsection{Egzaminator}
+\begin{itemize}
+    \item Posiada możliwości podstawowego użytkownika
+    \item Może tworzyć konkursy
+    \item Po utworzeniu konkursu może dodawać do niego zadania
+    \item Po dodaniu zadania może dodawać do niego testy
+    \item Ma możliwośc zmiany stanu swoich konkursów (n.p. po dodaniu zadań może go wystartować, a później zakończyć)
+    \item Uruchamia kompilację rozwiązań zadań konkursowych po zakończeniu swojego konkursu (WIP)
+    \item Dodaje listę par postaci (próg procentowy, ilość punktów), według której ocenianie jest zadanie (WIP)
+\end{itemize}
+
+\subsection{Administrator}
+\begin{itemize}
+    \item Posiada możliwości podstawowego użytkownika oraz egzaminatora
+    \item Może modyfikować uprawnienia innych użytkowników (WIP)
+\end{itemize}
 
 \section{Technologia i~narzędzia}
 
@@ -102,33 +142,34 @@ Macierz ryzyka tworzymy w celu określenia poziomu ryzyka związanego z~produkcj
 	\caption{Lista ryzyk}
 \end{figure}
 
-\section{Działania użytkowników}
-\subsection{Wspólne}
+\section{Implementacja}
+\subsection{Stany konkursu}
 \begin{itemize}
-    \item Każdy użytkownik ma możliwość zarejestrowania się w aplikacji i zalogowania
-    \item Każdy użytkownik może zobaczyć aktualnie trwające lub zakończone konkursy
+    \item Nierozpoczęty
+    \begin{itemize}
+        \item Egzaminator może zmienić stan konkursu na Rozpoczęty
+        \item Egzaminator może dodawać i edytować zadania
+        \item Użytkownicy mogą obejrzeć konkurs, ale nie mogą przejrzeć zadań
+    \end{itemize}
+
+    \item Rozpoczęty
+    \begin{itemize}
+        \item Egzaminator może zmienić stan konkursu na Nierozpoczęty lub Zakończony
+        \item Egzaminator może dodawać i edytować zadania
+        \item Użytkownicy mogą rozwiązywać zadania
+    \end{itemize}
+
+    \item Zakończony
+    \begin{itemize}
+        \item Egzaminator może zmienić stan konkursu na Rozpoczęty
+        \item Nie można dodawać ani modyfikować zadań
+    \end{itemize}
 \end{itemize}
 
-\subsection{Podstawowy użytkownik}
+\subsection{Wspierane języki programowania}
 \begin{itemize}
-    \item Może dołączyć do konkursu
-    \item Po dołączeniu do konkursu może wyświetlać znajdujące się w nim zadania i przesyłać rozwiązania do nich
-\end{itemize}
-
-\subsection{Egzaminator}
-\begin{itemize}
-    \item Posiada możliwości podstawowego użytkownika
-    \item Może tworzyć konkursy
-    \item Po utworzeniu konkursu może dodawać do niego zadania
-    \item Po dodaniu zadania może dodawać do niego testy
-    \item Ma możliwośc zmiany stanu konkursu (n.p. po dodaniu zadań może go wystartować, a później zakończyć)
-    \item Uruchamia kompilację rozwiązań zadań konkursowych po zakończeniu konkursu (WIP)
-    \item Dodaje listę par postaci (próg procentowy, ilość punktów), według której ocenianie jest zadanie (WIP)
-\end{itemize}
-
-\subsection{Administrator}
-\begin{itemize}
-    \item Posiada możliwości podstawowego użytkownika oraz egzaminatora
-    \item Może zmieniać role innych użytkowników (WIP)
+    \item C++ (GCC 9.1.0)
+    \item C (GCC 9.1.0)
+    \item Java (JDK 11.0.4)
 \end{itemize}
 \end{document}

@@ -21,6 +21,17 @@ namespace Algenic.Compilation.Utilities
 
         public static ProgrammingLanguage PlainC() =>
             new ProgrammingLanguage("c", 4);
+
+        public override bool Equals(object other)
+        {
+            if (other is ProgrammingLanguage otherLanguage)
+            {
+                return LanguageCode == otherLanguage.LanguageCode
+                    && VersionIndex == otherLanguage.VersionIndex;
+            }
+
+            return false;
+        }
     }
 
     public static class ProgrammingLanguageFactory

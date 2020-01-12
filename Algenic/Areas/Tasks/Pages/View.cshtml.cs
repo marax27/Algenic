@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Algenic.Commands.CreateSolution;
+using Algenic.Commons;
 using Algenic.Compilation.Utilities;
 using Algenic.Data;
 using Algenic.Data.Models;
@@ -21,16 +22,21 @@ namespace Algenic.Areas.Pages.Tasks
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
+        private readonly ICommandHandler<CreateSolutionCommand> _createSolutionCommandHandler;
+
         [BindProperty]
         public Data.Models.Task Task { get; set; }
 
         [BindProperty]
         public IFormFile SourceCodeFile { get; set; }
 
-        public ViewModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ViewModel(ApplicationDbContext context, 
+            UserManager<IdentityUser> userManager,
+            ICommandHandler<CreateSolutionCommand> createSolutionCommandHandler)
         {
             _context = context;
             _userManager = userManager;
+            _createSolutionCommandHandler = createSolutionCommandHandler;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -74,9 +80,7 @@ namespace Algenic.Areas.Pages.Tasks
                 }
 
                 var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, Task.Id, User);
-                var commandHandler = new CreateSolutionCommandHandler(_context, _userManager);
-
-                await commandHandler.HandleAsync(command);
+                await _createSolutionCommandHandler.HandleAsync(command);
             }
 
             return RedirectToPage();

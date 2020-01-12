@@ -14,6 +14,7 @@ using Algenic.Queries.Compilation;
 using Algenic.Queries.ContestOwner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Algenic.Commands.CreateSolution;
 
 namespace Algenic
 {
@@ -53,6 +54,7 @@ namespace Algenic
             services.ConfigureMvc();
 
             services.AddTransient<ICommandHandler<CreateContestCommand>, CreateContestCommandHandler>();
+            services.AddTransient<ICommandHandler<CreateSolutionCommand>, CreateSolutionCommandHandler>();
             services.AddTransient<ICommandHandler<VerifySolutionCommand>, VerifySolutionCommandHandler>();
 
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();

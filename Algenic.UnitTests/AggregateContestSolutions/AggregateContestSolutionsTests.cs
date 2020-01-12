@@ -31,7 +31,7 @@ namespace Algenic.UnitTests.AggregateContestSolutions
             {
                 Contest = givenContest,
                 Description = "",
-                Name = "",
+                Name = "task-name",
             };
             Context.Tasks.Add(givenTask);
             var givenSolution = new Solution
@@ -55,7 +55,8 @@ namespace Algenic.UnitTests.AggregateContestSolutions
             var actualValue = aggregate.Users.Values.Single();
 
             actualKey.Should().Be(givenUser.Id);
-            actualValue.Tasks.Should().HaveCount(1).And.Contain(givenTask.Id);
+            actualValue.Tasks.Should().HaveCount(1)
+                .And.ContainSingle(dto => dto.Name == givenTask.Name);
         }
     }
 }

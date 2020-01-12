@@ -31,7 +31,8 @@ namespace Algenic.Queries.AggregateContestSolutions
                     aggregate.Users[userId] = new UserSolutionAggregate();
                 }
 
-                aggregate.Users[userId].Tasks.Add(solution.TaskId);
+                var task = solution.Task;
+                aggregate.Users[userId].Tasks.Add(new TaskDto(task.Id, task.Name));
             }
 
             return new AggregateContestSolutionsResult(aggregate);

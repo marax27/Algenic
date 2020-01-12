@@ -8,27 +8,35 @@
     <div class="col-12">
         <h4>@Model.Contest.Name</h4>
         <hr />
-        <div class="col-12">
-            <h6>Tasks</h6>
-            <table class="table">
-                @foreach (var task in Model.Contest.Tasks ?? new List<Algenic.Data.Models.Task>())
-                {
-                    <tr>
-                        <td width="40%">
-                            @task.Name
-                        </td>
-                        <td width="40%">
-                            @task.Description
-                        </td>
-                        <td width="20%">
-                            <form asp-page-handler="solve" method="post">
-                                <input type="submit" value="Solve" class="btn btn-outline-dark" />
-                                <input type="hidden" name="taskId" value="@task.Id" />
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
+        @if (Model.Contest.NotStarted)
+        {
+            <label>Tasks will be available once the contest starts.</label>
+        }
+        else
+        {
+            <div class="col-12">
+                <h6>Tasks</h6>
+
+                <table class="table">
+                    @foreach (var task in Model.Contest.Tasks ?? new List<Algenic.Data.Models.Task>())
+                    {
+                        <tr>
+                            <td width="40%">
+                                @task.Name
+                            </td>
+                            <td width="40%">
+                                @task.Description
+                            </td>
+                            <td width="20%">
+                                <form asp-page-handler="solve" method="post">
+                                    <input type="submit" value="Solve" class="btn btn-outline-dark" />
+                                    <input type="hidden" name="taskId" value="@task.Id" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
     </div>
 </div>

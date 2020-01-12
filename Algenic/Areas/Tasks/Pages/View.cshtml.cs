@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Algenic.Commands.CreateSolution;
+using Algenic.Compilation.Utilities;
 using Algenic.Data;
 using Algenic.Data.Models;
 using Algenic.Routing;
@@ -49,7 +53,33 @@ namespace Algenic.Areas.Pages.Tasks
 
         public async Task<IActionResult> OnPostAsync()
         {
-            throw new NotImplementedException();
+            if (SourceCodeFile != null && SourceCodeFile.Length > 0)
+            {
+                var stream = SourceCodeFile.OpenReadStream();
+                var bytes = new byte[stream.Length];
+                stream.Read(bytes, 0, Convert.ToInt32(stream.Length));
+                var sourceCode = Encoding.UTF8.GetString(bytes);
+
+                var fileName = Path.GetFileName(SourceCodeFile.FileName);
+                var extension = Path.GetExtension(fileName).Substring(1);
+
+                ProgrammingLanguage language;
+                try
+                {
+                    language = ProgrammingLanguageFactory.Get(extension);
+                }
+                catch
+                {
+                    return RedirectToPage();
+                }
+
+                var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, Task.Id, User);
+                var commandHandler = new CreateSolutionCommandHandler(_context, _userManager);
+
+                await commandHandler.HandleAsync(command);
+            }
+
+            return RedirectToPage();
         }
     }
 }

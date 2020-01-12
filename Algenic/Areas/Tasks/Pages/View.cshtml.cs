@@ -41,7 +41,7 @@ namespace Algenic.Areas.Pages.Tasks
             var taskCreatorId = Task.Contest.IdentityUser.Id;
             var currentUserId = _userManager.GetUserId(User);
 
-            if (currentUserId == taskCreatorId)
+            if (currentUserId == taskCreatorId || Task.Contest.Status == Contest.ContestState.NotStarted)
                 return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
 
             return Page();

@@ -8,7 +8,9 @@ using Algenic.Routing;
 using Algenic.Data.Models;
 using System.ComponentModel;
 using System.Linq;
+using Algenic.Commons;
 using Algenic.Mappers;
+using Algenic.Queries.AggregateContestSolutions;
 using Algenic.ViewModels;
 using static Algenic.Data.Models.Contest;
 using Task = System.Threading.Tasks.Task;
@@ -20,6 +22,9 @@ namespace Algenic.Areas.Contests.Pages
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
+        private readonly IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult>
+            _aggregateContestSolutionsQueryHandler;
+
         [TempData]
         public int ContestId { get; set; }
         [BindProperty]
@@ -30,11 +35,16 @@ namespace Algenic.Areas.Contests.Pages
         public IEnumerable<DisplayTaskViewModel> TasksToDisplay { get; set; }
         [BindProperty]
         public IEnumerable<StatusButtonViewModel> StatusButtons { get; set; }
+        [BindProperty]
+        public ContestSolutionAggregate ContestSolutions { get; set; }
 
-        public EditModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public EditModel(ApplicationDbContext context,
+                         UserManager<IdentityUser> userManager,
+                         IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult> aggregateContestSolutionsQueryHandler)
         {
             _context = context;
             _userManager = userManager;
+            _aggregateContestSolutionsQueryHandler = aggregateContestSolutionsQueryHandler;
         }
 
         public async System.Threading.Tasks.Task<IActionResult> OnGetAsync(int id)
@@ -58,6 +68,10 @@ namespace Algenic.Areas.Contests.Pages
 
             ContestId = id; 
             TempData.Keep(nameof(ContestId));
+
+            var query = AggregateContestSolutionsQuery.Create(ContestId);
+            var queryResult = await _aggregateContestSolutionsQueryHandler.HandleAsync(query);
+            ContestSolutions = queryResult.Aggregate;
 
             return Page();
         }

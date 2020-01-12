@@ -1,4 +1,5 @@
 ﻿@page "{id:int}"
+@using Castle.Core.Internal
 @model Algenic.Areas.Contests.Pages.EditModel
 @{
     Layout = "/Pages/Shared/_Layout.cshtml";
@@ -45,23 +46,39 @@
         </div>
     </div>
 
-    <h4>Tasks</h4>
-    <div class="col-12 page-section">
-        <h5>Add a new task</h5>
-        <div class="row">
+    <div class="row page-section">
+        <div class="col-6">
+            <h5>Add a new task</h5>
             <form asp-page-handler="AddTask" method="post">
-                <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled": null)'>
+                <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled" : null)'>
                     <div class="form-group">
                         <label>Name</label>
-                        <input asp-for="FormTask.Name" class="form-control" />
+                        <input asp-for="FormTask.Name" class="form-control"/>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
                         <textarea asp-for="FormTask.Description" class="form-control" cols="40" rows="5"></textarea>
                     </div>
-                    <input type="submit" value="Add" class="btn btn-outline-dark" />
+                    <input type="submit" value="Add" class="btn btn-outline-dark"/>
                 </fieldset>
             </form>
+        </div>
+
+        <div class="col-6">
+            <h5>Already uploaded solutions@(Model.ContestSolutions.Users.IsNullOrEmpty() ? ": None!" : "")</h5>
+            <ul>
+                @foreach (var keyValue in Model.ContestSolutions.Users)
+                {
+                    <li>Solved by @keyValue.Value.UserName:
+                        <ul>
+                            @foreach (var task in keyValue.Value.Tasks)
+                            {
+                                <li>"@task.Name"</li>
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 

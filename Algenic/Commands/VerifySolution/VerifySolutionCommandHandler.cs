@@ -38,12 +38,20 @@ namespace Algenic.Commands.VerifySolution
                 if (queryResult.ExecutionSuccessful)
                 {
                     var compilationResult = new CompilationResultMapper(queryResult.Output).Map();
+                    compilationResult.Solution = solution;
+                    compilationResult.Test = test;
+                    await _dbContext.CompilationResults.AddAsync(compilationResult);
                 }
                 else
                 {
                     var log = new LogMapper(queryResult.Error).Map();
+                    log.Solution = solution;
+                    log.Test = test;
+                   await _dbContext.Logs.AddAsync(log);
                 }
             }
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

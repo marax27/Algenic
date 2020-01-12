@@ -5,7 +5,7 @@ namespace Algenic.Compilation
 {
     public interface IRemoteCompiler<out TOutput, out TErrorOutput>
     {
-        Task CompileAsync(string sourceCode, ProgrammingLanguage programmingLanguage);
+        Task CompileAsync(string sourceCode, string input, ProgrammingLanguage programmingLanguage);
 
         TOutput Output { get; }
         TErrorOutput ErrorOutput { get; }

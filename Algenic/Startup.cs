@@ -1,4 +1,5 @@
 using Algenic.Commands.CreateContest;
+using Algenic.Commands.VerifySolution;
 using Algenic.Commons;
 using Algenic.Compilation;
 using Algenic.Compilation.Outputs;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Algenic.Data;
 using Algenic.Data.Initializers;
+using Algenic.Queries.Compilation;
 using Algenic.Queries.ContestOwner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,8 +53,10 @@ namespace Algenic
             services.ConfigureMvc();
 
             services.AddTransient<ICommandHandler<CreateContestCommand>, CreateContestCommandHandler>();
+            services.AddTransient<ICommandHandler<VerifySolutionCommand>, VerifySolutionCommandHandler>();
 
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
+            services.AddTransient<IQueryHandler<CompilationQuery, CompilationQueryResult>, CompilationQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

@@ -26,9 +26,10 @@ namespace Algenic.Queries.AggregateContestSolutions
             foreach (var solution in solutions)
             {
                 var userId = solution.IdentityUser.Id;
+                var userName = solution.IdentityUser.UserName;
                 if (!aggregate.Users.ContainsKey(userId))
                 {
-                    aggregate.Users[userId] = new UserSolutionAggregate();
+                    aggregate.Users[userId] = new UserSolutionAggregate(userName);
                 }
 
                 var task = solution.Task;

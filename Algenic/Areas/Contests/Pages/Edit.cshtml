@@ -69,7 +69,7 @@
             <ul>
                 @foreach (var keyValue in Model.ContestSolutions.Users)
                 {
-                    <li>Solved by @keyValue.Key:
+                    <li>Solved by @keyValue.Value.UserName:
                         <ul>
                             @foreach (var task in keyValue.Value.Tasks)
                             {

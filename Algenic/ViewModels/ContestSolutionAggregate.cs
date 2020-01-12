@@ -9,7 +9,11 @@ namespace Algenic.ViewModels
 
     public class UserSolutionAggregate
     {
+        public string UserName { get; }
         public ISet<TaskDto> Tasks { get; } = new HashSet<TaskDto>();
+
+        public UserSolutionAggregate(string userName)
+            => UserName = userName;
     }
 
     public class TaskDto

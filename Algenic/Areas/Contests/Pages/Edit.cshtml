@@ -46,7 +46,6 @@
         </div>
     </div>
 
-    <h4>Tasks</h4>
     <div class="row page-section">
         <div class="col-6">
             <h5>Add a new task</h5>
@@ -70,14 +69,14 @@
             <ul>
                 @foreach (var keyValue in Model.ContestSolutions.Users)
                 {
-                    <li>User: @keyValue.Key</li>
-                    <ul>
-                        @foreach (var task in keyValue.Value.Tasks)
-                        {
-                            <li>task</li>
-                        }
-                    </ul>
-
+                    <li>User: @keyValue.Key
+                        <ul>
+                            @foreach (var task in keyValue.Value.Tasks)
+                            {
+                                <li>task</li>
+                            }
+                        </ul>
+                    </li>
                 }
             </ul>
         </div>

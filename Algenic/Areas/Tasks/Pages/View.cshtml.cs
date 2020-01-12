@@ -30,7 +30,7 @@ namespace Algenic.Areas.Pages.Tasks
         [BindProperty]
         public IFormFile SourceCodeFile { get; set; }
 
-        public ViewModel(ApplicationDbContext context, 
+        public ViewModel(ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
             ICommandHandler<CreateSolutionCommand> createSolutionCommandHandler)
         {
@@ -59,31 +59,39 @@ namespace Algenic.Areas.Pages.Tasks
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (SourceCodeFile != null && SourceCodeFile.Length > 0)
+            if (SourceCodeFile == null || SourceCodeFile.Length == 0)
+                return RedirectToPage();
+
+            string sourceCode;
+            using (var stream = SourceCodeFile.OpenReadStream())
+                sourceCode = GetSourceCode(stream);
+
+            var fileName = Path.GetFileName(SourceCodeFile.FileName);
+            var extension = Path.GetExtension(fileName).Substring(1);
+
+            ProgrammingLanguage language;
+            try
             {
-                var stream = SourceCodeFile.OpenReadStream();
-                var bytes = new byte[stream.Length];
-                stream.Read(bytes, 0, Convert.ToInt32(stream.Length));
-                var sourceCode = Encoding.UTF8.GetString(bytes);
-
-                var fileName = Path.GetFileName(SourceCodeFile.FileName);
-                var extension = Path.GetExtension(fileName).Substring(1);
-
-                ProgrammingLanguage language;
-                try
-                {
-                    language = ProgrammingLanguageFactory.Get(extension);
-                }
-                catch
-                {
-                    return RedirectToPage();
-                }
-
-                var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, Task.Id, User);
-                await _createSolutionCommandHandler.HandleAsync(command);
+                language = ProgrammingLanguageFactory.Get(extension);
+            }
+            catch
+            {
+                return RedirectToPage();
             }
 
+            var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, Task.Id, User);
+            await _createSolutionCommandHandler.HandleAsync(command);
+
             return RedirectToPage();
+        }
+
+        private string GetSourceCode(Stream stream)
+        {
+            var bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, Convert.ToInt32(stream.Length));
+            var sourceCode = Encoding.UTF8.GetString(bytes);
+
+            return sourceCode;
         }
     }
 }

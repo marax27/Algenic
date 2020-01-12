@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Algenic.Data;
 using Algenic.Data.Initializers;
+using Algenic.Queries.AggregateContestSolutions;
 using Algenic.Queries.Compilation;
 using Algenic.Queries.ContestOwner;
 using Microsoft.Extensions.Configuration;
@@ -57,6 +58,8 @@ namespace Algenic
 
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
             services.AddTransient<IQueryHandler<CompilationQuery, CompilationQueryResult>, CompilationQueryHandler>();
+            services.AddTransient<IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult>,
+                    AggregateContestSolutionsQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

@@ -1,4 +1,5 @@
-﻿using Algenic.Data;
+﻿using Algenic.Commons;
+using Algenic.Data;
 using Algenic.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Algenic.Commands.CreateSolution
 {
-    public class CreateSolutionCommandHandler
+    public class CreateSolutionCommandHandler : ICommandHandler<CreateSolutionCommand>
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;

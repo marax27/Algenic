@@ -35,7 +35,7 @@ namespace Algenic.Commands.CreateSolution
             await _dbContext.Solutions.AddAsync(solution);
 
             var previousSolutions = _dbContext.Solutions
-                .Where(s => s.TaskId == command.TaskId && s.IdentityUser == user && s != solution);
+                .Where(s => s.TaskId == command.TaskId && s.IdentityUser.Id == user.Id && s.Id != solution.Id);
 
             _dbContext.Solutions.RemoveRange(previousSolutions);
 

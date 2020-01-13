@@ -8,7 +8,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Xunit;
 
-namespace Algenic.UnitTests.AggregateContestSolutions
+namespace Algenic.UnitTests.Queries
 {
     public class AggregateContestSolutionsTests : BaseDatabaseTest
     {

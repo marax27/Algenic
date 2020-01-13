@@ -10,7 +10,7 @@ using Algenic.UnitTests.Setup;
 using FluentAssertions;
 using Xunit;
 
-namespace Algenic.UnitTests.VerifySolution
+namespace Algenic.UnitTests.Commands
 { 
     public class VerifySolutionTests : BaseDatabaseTest
     {

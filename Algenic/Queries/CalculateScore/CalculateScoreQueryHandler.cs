@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Algenic.Commons;
 using Algenic.Commons.DesignByContract;
@@ -19,6 +20,10 @@ namespace Algenic.Queries.CalculateScore
         public async Task<CalculateScoreResult> HandleAsync(CalculateScoreQuery query)
         {
             var solution = await _dbContext.Solutions.FindAsync(query.SolutionId);
+
+            if (solution.Task.Tests.Count != solution.CompilationResults.Count + solution.Logs.Count)
+                throw new ArgumentException("Not all tests have been performed");
+
             var percentagePassed = await GetPassedTestPercentage(solution);
 
             return new CalculateScoreResult(GetScore(percentagePassed, solution.Task.ScorePolicy));

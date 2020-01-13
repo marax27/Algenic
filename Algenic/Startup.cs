@@ -16,6 +16,7 @@ using Algenic.Queries.ContestOwner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Algenic.Commands.CreateSolution;
+using Algenic.Queries.NewestSolutions;
 
 namespace Algenic
 {
@@ -61,7 +62,9 @@ namespace Algenic
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
             services.AddTransient<IQueryHandler<CompilationQuery, CompilationQueryResult>, CompilationQueryHandler>();
             services.AddTransient<IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult>,
-                    AggregateContestSolutionsQueryHandler>();
+                AggregateContestSolutionsQueryHandler>();
+            services.AddTransient<IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult>,
+                NewestSolutionsQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

@@ -3,6 +3,7 @@ using Algenic.Commons;
 using Algenic.Data;
 using Algenic.Data.Models;
 using Algenic.Queries.AggregateContestSolutions;
+using Algenic.Queries.NewestSolutions;
 using Algenic.UnitTests.Setup;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
@@ -44,8 +45,11 @@ namespace Algenic.UnitTests.Queries
             Context.Solutions.Add(givenSolution);
             Context.SaveChanges();
 
+            IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult> newestSolutionQueryHandler =
+                new NewestSolutionsQueryHandler(Context);
+
             IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult> sut =
-                new AggregateContestSolutionsQueryHandler(Context);
+                new AggregateContestSolutionsQueryHandler(Context, newestSolutionQueryHandler);
 
             var givenQuery = AggregateContestSolutionsQuery.Create(givenContest.Id);
 

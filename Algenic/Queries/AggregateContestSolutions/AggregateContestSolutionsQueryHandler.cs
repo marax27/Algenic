@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Algenic.Commons;
 using Algenic.Data;
+using Algenic.Data.Models;
+using Algenic.Queries.NewestSolutions;
 using Algenic.ViewModels;
 
 namespace Algenic.Queries.AggregateContestSolutions
@@ -9,18 +13,18 @@ namespace Algenic.Queries.AggregateContestSolutions
     public class AggregateContestSolutionsQueryHandler : IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult>
     {
         private ApplicationDbContext _dbContext;
+        private IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult> _newestSolutionsQueryHandler;
 
-        public AggregateContestSolutionsQueryHandler(ApplicationDbContext dbContext)
+        public AggregateContestSolutionsQueryHandler(ApplicationDbContext dbContext,
+            IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult> newestSolutionsQueryHandler)
         {
             _dbContext = dbContext;
+            _newestSolutionsQueryHandler = newestSolutionsQueryHandler;
         }
 
         public async Task<AggregateContestSolutionsResult> HandleAsync(AggregateContestSolutionsQuery query)
         {
-            var contest = await _dbContext.Contests.FindAsync(query.ContestId);
-            var solutions = _dbContext.Solutions
-                .Where(s => s.Task.Contest == contest)
-                .ToHashSet();
+            var solutions = await GetSolutions(query.ContestId);
 
             var aggregate = new ContestSolutionAggregate();
             foreach (var solution in solutions)
@@ -37,6 +41,15 @@ namespace Algenic.Queries.AggregateContestSolutions
             }
 
             return new AggregateContestSolutionsResult(aggregate);
+        }
+
+        private async Task<IEnumerable<Solution>> GetSolutions(int contestId)
+        {
+            var newestSolutionsQuery = NewestSolutionsQuery.Create(contestId);
+            var result = await _newestSolutionsQueryHandler.HandleAsync(newestSolutionsQuery);
+            var solutionIds = result.SolutionIds;
+
+            return solutionIds.Select(id => _dbContext.Solutions.Find(id));
         }
     }
 }

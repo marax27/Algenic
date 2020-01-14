@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Algenic.Commons;
 using Algenic.Commons.DesignByContract;
@@ -23,9 +24,9 @@ namespace Algenic.Commands.CreateScorePolicy
 
         public static CreateScorePolicyCommand Create(string name, string description, List<ScoreRuleDto> scoreRules)
         {
-            Fail.IfNull(name);
-            Fail.IfNull(description);
-            Fail.IfNull(scoreRules);
+            Fail.IfNullOrEmpty(name);
+            Fail.IfNullOrEmpty(description);
+            Fail.IfNullOrEmpty(scoreRules);
             return new CreateScorePolicyCommand(name,description,scoreRules);
         }
     }
@@ -53,16 +54,13 @@ namespace Algenic.Commands.CreateScorePolicy
 
         public async System.Threading.Tasks.Task HandleAsync(CreateScorePolicyCommand command)
         {
-            List<ScoreRule> scoreRules = new List<ScoreRule>();
-            foreach(ScoreRuleDto scoreRoleDto in command.ScoreRules)
-            {
-                scoreRules.Add(new ScoreRule() { Threshold = scoreRoleDto.Threshold, Score = scoreRoleDto.Score});
-            }
+            // scoreRules = new List<ScoreRule>();
+            var scoreRules = command.ScoreRules.Select(dto => new ScoreRule() { Threshold = dto.Threshold, Score = dto.Score });
             ScorePolicy scorePolicy = new ScorePolicy()
             {
                 Name = command.Name,
                 Description = command.Description,
-                ScoreRules = scoreRules
+                ScoreRules = new List<ScoreRule>(scoreRules)
 
             };
             await _dbContext.ScorePolicies.AddAsync(scorePolicy);

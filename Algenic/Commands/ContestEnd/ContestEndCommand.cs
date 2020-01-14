@@ -1,9 +1,4 @@
 ﻿using Algenic.Commons.DesignByContract;
-using Algenic.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Algenic.Commands.ContestEnd
 {
@@ -18,6 +13,8 @@ namespace Algenic.Commands.ContestEnd
 
         public static ContestEndCommand Create(int contestId)
         {
+            Fail.If(contestId <= 0);
+
             return new ContestEndCommand(contestId);
         }
     }

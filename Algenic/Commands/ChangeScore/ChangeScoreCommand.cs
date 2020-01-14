@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Algenic.Commons.DesignByContract;
 
 namespace Algenic.Commands.ChangeScore
 {
@@ -18,6 +15,8 @@ namespace Algenic.Commands.ChangeScore
 
         public static ChangeScoreCommand Create(int solutionId, int score)
         {
+            Fail.If(solutionId <= 0);
+
             return new ChangeScoreCommand(solutionId, score);
         }
     }

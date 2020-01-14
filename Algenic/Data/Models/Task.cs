@@ -13,8 +13,8 @@ namespace Algenic.Data.Models
         public int? ScorePolicyId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public virtual ICollection<Solution> Solutions { get; set; }
-        public virtual ICollection<Test> Tests { get; set; }
+        public virtual ICollection<Solution> Solutions { get; set; } = new HashSet<Solution>();
+        public virtual ICollection<Test> Tests { get; set; } = new HashSet<Test>();
 
         public virtual Contest Contest { get; set; }
 

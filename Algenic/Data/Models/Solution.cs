@@ -18,7 +18,7 @@ namespace Algenic.Data.Models
 
         public virtual Task Task { get; set; }
         public virtual IdentityUser IdentityUser { get; set; }
-        public virtual ICollection<CompilationResult> CompilationResults { get; set; }
-        public virtual ICollection<Log>Logs { get; set; }
+        public virtual ICollection<CompilationResult> CompilationResults { get; set; } = new HashSet<CompilationResult>();
+        public virtual ICollection<Log> Logs { get; set; } = new HashSet<Log>();
     }
 }

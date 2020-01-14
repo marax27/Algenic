@@ -1,17 +1,32 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Algenic.Commons;
+using Algenic.Commons.DesignByContract;
 using Algenic.Data;
+using Algenic.Data.Models;
 
 namespace Algenic.Commands.CreateScorePolicy
 {
     public class CreateScorePolicyCommand
     {
-        private CreateScorePolicyCommand() { }
+        public string Name { get; }
+        public string Description { get; }
+        public List<ScoreRule> ScoreRules {get;}
+        public readonly ScorePolicy ScorePolicy = new ScorePolicy();
 
-        public static CreateScorePolicyCommand Create()
+        private CreateScorePolicyCommand(string name, string description, List<ScoreRule> scoreRules)
         {
-            // Validation.
-            return new CreateScorePolicyCommand();
+            ScorePolicy.Name = name;
+            ScorePolicy.Description = description;
+            ScorePolicy.ScoreRules = scoreRules;
+        }
+
+        public static CreateScorePolicyCommand Create(string name, string description, List<ScoreRule> scoreRules)
+        {
+            Fail.IfNull(name);
+            Fail.IfNull(description);
+            Fail.IfNull(scoreRules);
+            return new CreateScorePolicyCommand(name,description,scoreRules);
         }
     }
 
@@ -36,9 +51,10 @@ namespace Algenic.Commands.CreateScorePolicy
             _dbContext = dbContext;
         }
 
-        public Task HandleAsync(CreateScorePolicyCommand command)
+        public async System.Threading.Tasks.Task HandleAsync(CreateScorePolicyCommand command)
         {
-            throw new System.NotImplementedException();
+            await _dbContext.ScorePolicies.AddAsync(command.ScorePolicy);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

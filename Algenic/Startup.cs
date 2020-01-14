@@ -17,6 +17,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Algenic.Commands.CreateSolution;
 using Algenic.Queries.NewestSolutions;
+using Algenic.Commands.ContestEnd;
+using Algenic.Commands.ChangeScore;
+using Algenic.Queries.CalculateScore;
 
 namespace Algenic
 {
@@ -58,6 +61,8 @@ namespace Algenic
             services.AddTransient<ICommandHandler<CreateContestCommand>, CreateContestCommandHandler>();
             services.AddTransient<ICommandHandler<CreateSolutionCommand>, CreateSolutionCommandHandler>();
             services.AddTransient<ICommandHandler<VerifySolutionCommand>, VerifySolutionCommandHandler>();
+            services.AddTransient<ICommandHandler<ContestEndCommand>, ContestEndCommandHandler>();
+            services.AddTransient<ICommandHandler<ChangeScoreCommand>, ChangeScoreCommandHandler>();
 
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
             services.AddTransient<IQueryHandler<CompilationQuery, CompilationQueryResult>, CompilationQueryHandler>();
@@ -65,6 +70,7 @@ namespace Algenic
                 AggregateContestSolutionsQueryHandler>();
             services.AddTransient<IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult>,
                 NewestSolutionsQueryHandler>();
+            services.AddTransient<IQueryHandler<CalculateScoreQuery, CalculateScoreResult>, CalculateScoreQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

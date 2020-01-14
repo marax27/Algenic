@@ -11,17 +11,17 @@ namespace Algenic.Commands.CreateScorePolicy
     {
         public string Name { get; }
         public string Description { get; }
-        public List<ScoreRule> ScoreRules {get;}
-        public readonly ScorePolicy ScorePolicy = new ScorePolicy();
+        public List<ScoreRuleDto> ScoreRules {get;}
+        //public readonly ScorePolicy ScorePolicy = new ScorePolicy();
 
-        private CreateScorePolicyCommand(string name, string description, List<ScoreRule> scoreRules)
+        private CreateScorePolicyCommand(string name, string description, List<ScoreRuleDto> scoreRules)
         {
-            ScorePolicy.Name = name;
-            ScorePolicy.Description = description;
-            ScorePolicy.ScoreRules = scoreRules;
+            Name = name;
+            Description = description;
+            ScoreRules = scoreRules;
         }
 
-        public static CreateScorePolicyCommand Create(string name, string description, List<ScoreRule> scoreRules)
+        public static CreateScorePolicyCommand Create(string name, string description, List<ScoreRuleDto> scoreRules)
         {
             Fail.IfNull(name);
             Fail.IfNull(description);
@@ -53,7 +53,19 @@ namespace Algenic.Commands.CreateScorePolicy
 
         public async System.Threading.Tasks.Task HandleAsync(CreateScorePolicyCommand command)
         {
-            await _dbContext.ScorePolicies.AddAsync(command.ScorePolicy);
+            List<ScoreRule> scoreRules = new List<ScoreRule>();
+            foreach(ScoreRuleDto scoreRoleDto in command.ScoreRules)
+            {
+                scoreRules.Add(new ScoreRule() { Threshold = scoreRoleDto.Threshold, Score = scoreRoleDto.Score});
+            }
+            ScorePolicy scorePolicy = new ScorePolicy()
+            {
+                Name = command.Name,
+                Description = command.Description,
+                ScoreRules = scoreRules
+
+            };
+            await _dbContext.ScorePolicies.AddAsync(scorePolicy);
             await _dbContext.SaveChangesAsync();
         }
     }

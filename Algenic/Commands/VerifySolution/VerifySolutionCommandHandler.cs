@@ -27,6 +27,10 @@ namespace Algenic.Commands.VerifySolution
         public async Task HandleAsync(VerifySolutionCommand command)
         {
             var solution = await _dbContext.Solutions.SingleAsync(s => s.Id == command.SolutionId);
+
+            if (solution.CompilationResults.Count > 0 || solution.Logs.Count > 0)
+                return;
+
             var tests = solution.Task.Tests.ToList();
             var programmingLanguage = ProgrammingLanguageFactory.Get(solution.Language);
 

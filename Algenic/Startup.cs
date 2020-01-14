@@ -19,6 +19,7 @@ using Algenic.Commands.CreateSolution;
 using Algenic.Queries.NewestSolutions;
 using Algenic.Commands.ContestEnd;
 using Algenic.Commands.ChangeScore;
+using Algenic.Commands.CreateScorePolicy;
 using Algenic.Queries.CalculateScore;
 
 namespace Algenic
@@ -63,6 +64,7 @@ namespace Algenic
             services.AddTransient<ICommandHandler<VerifySolutionCommand>, VerifySolutionCommandHandler>();
             services.AddTransient<ICommandHandler<ContestEndCommand>, ContestEndCommandHandler>();
             services.AddTransient<ICommandHandler<ChangeScoreCommand>, ChangeScoreCommandHandler>();
+            services.AddTransient<ICommandHandler<CreateScorePolicyCommand>, CreateScorePolicyCommandHandler>();
 
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
             services.AddTransient<IQueryHandler<CompilationQuery, CompilationQueryResult>, CompilationQueryHandler>();

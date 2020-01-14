@@ -14,6 +14,7 @@ using Algenic.Queries.AggregateContestSolutions;
 using Algenic.ViewModels;
 using static Algenic.Data.Models.Contest;
 using Task = System.Threading.Tasks.Task;
+using Algenic.Commands.ContestEnd;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -24,6 +25,8 @@ namespace Algenic.Areas.Contests.Pages
 
         private readonly IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult>
             _aggregateContestSolutionsQueryHandler;
+
+        private readonly ICommandHandler<ContestEndCommand> _contestEndCommandHandler;
 
         [TempData]
         public int ContestId { get; set; }
@@ -40,11 +43,13 @@ namespace Algenic.Areas.Contests.Pages
 
         public EditModel(ApplicationDbContext context,
                          UserManager<IdentityUser> userManager,
-                         IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult> aggregateContestSolutionsQueryHandler)
+                         IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult> aggregateContestSolutionsQueryHandler,
+                         ICommandHandler<ContestEndCommand> contestEndCommandHandler)
         {
             _context = context;
             _userManager = userManager;
             _aggregateContestSolutionsQueryHandler = aggregateContestSolutionsQueryHandler;
+            _contestEndCommandHandler = contestEndCommandHandler;
         }
 
         public async System.Threading.Tasks.Task<IActionResult> OnGetAsync(int id)
@@ -90,6 +95,12 @@ namespace Algenic.Areas.Contests.Pages
             var contest = await _context.Contests.FindAsync(ContestId);
             contest.Status = newStatus;
             await _context.SaveChangesAsync();
+
+            if(newStatus == ContestState.Completed)
+            {
+                var contestEndCommand = ContestEndCommand.Create(contest.Id);
+                await _contestEndCommandHandler.HandleAsync(contestEndCommand);
+            }
 
             return RedirectToPage(ContestId);
         }

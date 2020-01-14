@@ -13,8 +13,9 @@ using Algenic.Mappers;
 using Algenic.Queries.AggregateContestSolutions;
 using Algenic.ViewModels;
 using static Algenic.Data.Models.Contest;
-using Task = System.Threading.Tasks.Task;
 using Algenic.Commands.ContestEnd;
+using Algenic.Queries.AllScorePolicies;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Algenic.Areas.Contests.Pages
 {
@@ -25,6 +26,8 @@ namespace Algenic.Areas.Contests.Pages
 
         private readonly IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult>
             _aggregateContestSolutionsQueryHandler;
+        private readonly IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult>
+            _allScorePoliciesQueryHandler;
 
         private readonly ICommandHandler<ContestEndCommand> _contestEndCommandHandler;
 
@@ -40,15 +43,19 @@ namespace Algenic.Areas.Contests.Pages
         public IEnumerable<StatusButtonViewModel> StatusButtons { get; set; }
         [BindProperty]
         public ContestSolutionAggregate ContestSolutions { get; set; }
+        [BindProperty]
+        public IEnumerable<SelectListItem> ScorePolicyOptions { get; set; }
 
         public EditModel(ApplicationDbContext context,
                          UserManager<IdentityUser> userManager,
                          IQueryHandler<AggregateContestSolutionsQuery, AggregateContestSolutionsResult> aggregateContestSolutionsQueryHandler,
+                         IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult> allScorePoliciesQueryHandler,
                          ICommandHandler<ContestEndCommand> contestEndCommandHandler)
         {
             _context = context;
             _userManager = userManager;
             _aggregateContestSolutionsQueryHandler = aggregateContestSolutionsQueryHandler;
+            _allScorePoliciesQueryHandler = allScorePoliciesQueryHandler;
             _contestEndCommandHandler = contestEndCommandHandler;
         }
 
@@ -74,9 +81,8 @@ namespace Algenic.Areas.Contests.Pages
             ContestId = id; 
             TempData.Keep(nameof(ContestId));
 
-            var query = AggregateContestSolutionsQuery.Create(ContestId);
-            var queryResult = await _aggregateContestSolutionsQueryHandler.HandleAsync(query);
-            ContestSolutions = queryResult.Aggregate;
+            UpdateContestSolutions();
+            UpdateScorePolicies();
 
             return Page();
         }
@@ -169,5 +175,24 @@ namespace Algenic.Areas.Contests.Pages
                 Description = model.Description,
                 Id = model.Id
             };
+
+        private void UpdateContestSolutions()
+        {
+            var query = AggregateContestSolutionsQuery.Create(ContestId);
+            var queryResult = _aggregateContestSolutionsQueryHandler.HandleAsync(query).Result;
+            ContestSolutions = queryResult.Aggregate;
+        }
+
+        private void UpdateScorePolicies()
+        {
+            var query = AllScorePoliciesQuery.Create();
+            var queryResult = _allScorePoliciesQueryHandler.HandleAsync(query).Result;
+            ScorePolicyOptions = queryResult.ScorePolicies.Select(
+                policy => new SelectListItem
+                {
+                    Value = policy.Id.ToString(),
+                    Text = $"{policy.Name} ({policy.Description})"
+                });
+        }
     }
 }

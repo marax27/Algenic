@@ -20,6 +20,7 @@ using Algenic.Queries.NewestSolutions;
 using Algenic.Commands.ContestEnd;
 using Algenic.Commands.ChangeScore;
 using Algenic.Commands.CreateScorePolicy;
+using Algenic.Queries.AllScorePolicies;
 using Algenic.Queries.CalculateScore;
 
 namespace Algenic
@@ -73,6 +74,7 @@ namespace Algenic
             services.AddTransient<IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult>,
                 NewestSolutionsQueryHandler>();
             services.AddTransient<IQueryHandler<CalculateScoreQuery, CalculateScoreResult>, CalculateScoreQueryHandler>();
+            services.AddTransient<IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult>, AllScorePoliciesQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

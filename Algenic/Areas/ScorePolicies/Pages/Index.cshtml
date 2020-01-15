@@ -1,0 +1,39 @@
+﻿@page
+@model Algenic.Areas.ScorePolicies.Pages.IndexModel
+@{
+	Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="col-12">
+	<div class="row page-section">
+		<form asp-page-handler="Create" method="post">
+			<div class="form-group">
+				<label>Name</label>
+				<input asp-for="FormPolicy.Name" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label>Description</label>
+				<textarea asp-for="FormPolicy.Description" class="form-control" cols="40" rows="8"></textarea>
+			</div>
+			
+			<table class="form-group">
+				<tr><th>Threshold (in %)</th><th>Points</th></tr>
+				@for (int i = 0; i != Model.FormPolicy?.Values?.Count; ++i)
+				{
+					<tr>
+						<td><input asp-for="FormPolicy.Values[i].Threshold" class="form-control" /></td>
+						<td><input asp-for="FormPolicy.Values[i].Points" class="form-control" /></td>
+					</tr>
+				}
+			</table>
+			<input type="submit" value="Add Policy" class="btn btn-outline-dark" />
+		</form>
+	</div>
+	<div class="row page-section">
+		<form asp-page-handler="AddRule" method="post" id="form-add-policy">
+			<h6>Set number of rules</h6>
+			<input type="number" asp-for="@Model.RuleCount" class="btn btn-outline-dark" />
+			<input type="submit" value="Add Rule" class="btn btn-outline-dark" />
+		</form>
+	</div>
+</div>

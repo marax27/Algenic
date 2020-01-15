@@ -25,7 +25,6 @@ namespace Algenic.Commands.CreateScorePolicy
         public static CreateScorePolicyCommand Create(string name, string description, List<ScoreRuleDto> scoreRules)
         {
             Fail.IfNullOrEmpty(name);
-            Fail.IfNullOrEmpty(description);
             Fail.IfNullOrEmpty(scoreRules);
             return new CreateScorePolicyCommand(name,description,scoreRules);
         }

@@ -1,0 +1,26 @@
+﻿@page "{id:int}"
+@model Algenic.Areas.Contests.Pages.ResultsModel
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <ul>
+            @foreach (var user in Model.UsersResults)
+            {
+                <li>Username: @user.Username</li>
+                <li>Total score: @user.UserScore</li>
+                <li>
+                    Tasks:
+                    <ul>
+                        @foreach (var task in user.TaskScores)
+                        {
+                            <li>@task.TaskName: @task.Score</li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

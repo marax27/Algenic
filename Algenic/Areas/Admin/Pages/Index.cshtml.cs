@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Algenic.Commands.ExaminerRole;
 using Algenic.Commons;
 using Algenic.Queries.AllUsers;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,13 @@ namespace Algenic.Areas.Admin.Pages
     public class IndexModel : PageModel
     {
         private IQueryHandler<AllUsersQuery, AllUsersResult> _allUsersQueryHandler;
+        private ICommandHandler<ExaminerRoleCommand> _examinerRoleCommandHandler;
 
-        public IndexModel(IQueryHandler<AllUsersQuery, AllUsersResult> allUsersQueryHandler)
+        public IndexModel(IQueryHandler<AllUsersQuery, AllUsersResult> allUsersQueryHandler,
+            ICommandHandler<ExaminerRoleCommand> examinerRoleCommandHandler)
         {
             _allUsersQueryHandler = allUsersQueryHandler;
+            _examinerRoleCommandHandler = examinerRoleCommandHandler;
         }
 
         [BindProperty] public IEnumerable<UserDto> Users { get; set; }
@@ -27,6 +31,8 @@ namespace Algenic.Areas.Admin.Pages
 
         public async Task<IActionResult> OnPostAccess(string userId)
         {
+            var command = ExaminerRoleCommand.Create(userId);
+            await _examinerRoleCommandHandler.HandleAsync(command);
             return RedirectToPage();
         }
 

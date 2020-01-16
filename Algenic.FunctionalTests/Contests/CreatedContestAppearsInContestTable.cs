@@ -24,7 +24,6 @@ namespace Algenic.FunctionalTests.Contests
             var givenContestName = Guid.NewGuid().ToString();
 
             Login();
-            GoToContestPage();
             CreateContest(givenContestName);
             AssertContestPresence(givenContestName);
         }
@@ -32,17 +31,8 @@ namespace Algenic.FunctionalTests.Contests
         private void Login()
             => _driver.LoginAs(_indexUrl, Examiner);
 
-        private void GoToContestPage()
-            => _driver.Navigate().GoToUrl(new Uri(_indexUrl, "/Contests"));
-
         private void CreateContest(string contestName)
-        {
-            var form = _driver.FindElement(By.Id("form-add-group"));
-            AuthorizationExtensions.FillForm(form, new Dictionary<string, string>
-            {
-                { "ContestName", contestName }
-            });
-        }
+            => _driver.CreateContest(_indexUrl, contestName);
 
         private void AssertContestPresence(string phrase)
         {

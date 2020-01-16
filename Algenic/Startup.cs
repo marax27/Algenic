@@ -21,6 +21,7 @@ using Algenic.Commands.ContestEnd;
 using Algenic.Commands.ChangeScore;
 using Algenic.Commands.CreateScorePolicy;
 using Algenic.Queries.AllScorePolicies;
+using Algenic.Queries.AllUsers;
 using Algenic.Queries.CalculateScore;
 
 namespace Algenic
@@ -75,6 +76,7 @@ namespace Algenic
                 NewestSolutionsQueryHandler>();
             services.AddTransient<IQueryHandler<CalculateScoreQuery, CalculateScoreResult>, CalculateScoreQueryHandler>();
             services.AddTransient<IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult>, AllScorePoliciesQueryHandler>();
+            services.AddTransient<IQueryHandler<AllUsersQuery, AllUsersResult>, AllUsersQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

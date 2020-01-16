@@ -20,6 +20,12 @@ namespace Algenic.FunctionalTests.Setup
             });
         }
 
+        internal static void LogOut(this IWebDriver driver, Uri baseUrl)
+        {
+            var logoutUrl = new Uri(baseUrl, "/Identity/Account/Logout");
+            driver.Navigate().GoToUrl(logoutUrl);
+        }
+
         internal static void FillForm(IWebElement formElement, IDictionary<string, string> fieldValues)
         {
             foreach (var pair in fieldValues)

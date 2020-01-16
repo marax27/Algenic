@@ -4,8 +4,52 @@
 	Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
+<div class="row">
 	<h1 class="display-4">Admin panel</h1>
-	<p>...</p>
+	<div class="col-12 page-section">
+		<table class="col-8 table" style="margin:0 auto">
+			<thead>
+			<tr>
+				<th>User</th>
+				<th>Examiner rights</th>
+				<th>Action</th>
+			</tr>
+			</thead>
+				
+			<tbody>
+			@foreach (var user in Model.Users)
+			{
+				<tr>
+					<td>@user.Name</td>
+					@if (user.IsExaminer)
+					{
+						<td>Granted</td>
+						<td>
+							<form asp-page-handler="Access" method="post">
+								<input type="hidden" name="userId" value="@user.Id" class="btn btn-outline-dark" />
+								<input type="submit"
+								       value="Revoke"
+								       data-toggle="tooltip"
+								       title="Warning: all contests of this Examiner will be transferred to the Administrator"
+									   data-placement="right"
+								       class="btn btn-outline-dark" />
+							</form>
+						</td>
+					}
+					else
+					{
+						<td>Not granted</td>
+						<td>
+							<form asp-page-handler="Access" method="post">
+								<input type="hidden" name="userId" value="@user.Id" class="btn btn-outline-dark" />
+								<input type="submit" value="Grant" class="btn btn-outline-dark" />
+							</form>
+						</td>
+					}
+				</tr>
+			}
+			</tbody>
+		</table>
+	</div>
 </div>
 

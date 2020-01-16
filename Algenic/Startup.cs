@@ -20,7 +20,9 @@ using Algenic.Queries.NewestSolutions;
 using Algenic.Commands.ContestEnd;
 using Algenic.Commands.ChangeScore;
 using Algenic.Commands.CreateScorePolicy;
+using Algenic.Commands.ExaminerRole;
 using Algenic.Queries.AllScorePolicies;
+using Algenic.Queries.AllUsers;
 using Algenic.Queries.CalculateScore;
 
 namespace Algenic
@@ -66,6 +68,7 @@ namespace Algenic
             services.AddTransient<ICommandHandler<ContestEndCommand>, ContestEndCommandHandler>();
             services.AddTransient<ICommandHandler<ChangeScoreCommand>, ChangeScoreCommandHandler>();
             services.AddTransient<ICommandHandler<CreateScorePolicyCommand>, CreateScorePolicyCommandHandler>();
+            services.AddTransient<ICommandHandler<ExaminerRoleCommand>, ExaminerRoleCommandHandler>();
 
             services.AddTransient<IQueryHandler<ContestOwnerQuery, ContestOwnerResult>, ContestOwnerQueryHandler>();
             services.AddTransient<IQueryHandler<CompilationQuery, CompilationQueryResult>, CompilationQueryHandler>();
@@ -75,6 +78,7 @@ namespace Algenic
                 NewestSolutionsQueryHandler>();
             services.AddTransient<IQueryHandler<CalculateScoreQuery, CalculateScoreResult>, CalculateScoreQueryHandler>();
             services.AddTransient<IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult>, AllScorePoliciesQueryHandler>();
+            services.AddTransient<IQueryHandler<AllUsersQuery, AllUsersResult>, AllUsersQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

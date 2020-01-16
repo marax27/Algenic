@@ -42,7 +42,7 @@ namespace Algenic.Areas.ScorePolicies.Pages
                 FormPolicy.Description,
                 scoreRules);
             await _createScorePolicyCommandHandler.HandleAsync(command);
-            return Page();
+            return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostAddRuleAsync()

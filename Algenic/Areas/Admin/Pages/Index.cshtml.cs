@@ -22,7 +22,8 @@ namespace Algenic.Areas.Admin.Pages
             _examinerRoleCommandHandler = examinerRoleCommandHandler;
         }
 
-        [BindProperty] public IEnumerable<UserDto> Users { get; set; }
+        [BindProperty]
+        public IEnumerable<UserDto> Users { get; set; }
 
         public void OnGet()
         {

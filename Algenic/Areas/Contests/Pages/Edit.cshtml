@@ -50,6 +50,10 @@
                         <label>Description</label>
                         <textarea asp-for="FormTask.Description" class="form-control" cols="40" rows="5"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label>Score policy</label>
+                        <select asp-for="FormTask.ScorePolicyId" asp-items="Model.ScorePolicyOptions" class="form-control"></select>
+                    </div>
                     <input type="submit" value="Add" class="btn btn-outline-dark"/>
                 </fieldset>
             </form>

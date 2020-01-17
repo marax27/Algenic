@@ -10,13 +10,33 @@
             @foreach (var user in Model.UsersResults)
             {
                 <li>Username: @user.Username</li>
-                <li>Total score: @user.UserScore</li>
+                <li>Position: @user.Position</li>
+                <li>Total score: @user.UserScore points</li>
                 <li>
                     Tasks:
                     <ul>
-                        @foreach (var task in user.TaskScores)
+                        @foreach (var taskResult in user.TaskResults)
                         {
-                            <li>@task.TaskName: @task.Score</li>
+                            <li>
+                                @taskResult.TaskScore.TaskName: @taskResult.TaskScore.Score points
+                                <ul>
+                                    @foreach (var testResult in taskResult.TestResults)
+                                    {
+                                        <li>
+                                            Test: @testResult.TestName
+                                            <ul>
+                                                <li>Input: @testResult.Input</li>
+                                                <li>Output: @testResult.Output</li>
+                                                <li>CPU time: @testResult.CpuTime</li>
+                                                <li>Memory usage: @testResult.MemoryUsage</li>
+                                                <li>Execution successful: @testResult.ExecutionSuccessful</li>
+                                                <li>Status code: @testResult.StatusCode</li>
+                                                <li>Error message: @testResult.ErrorMessage</li>
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
                         }
                     </ul>
                 </li>

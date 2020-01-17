@@ -12,24 +12,24 @@ namespace Algenic.Commands.CreateSolution
         public string SourceCode { get; }
         public string LanguageCode { get; }
         public int TaskId { get; }
-        public ClaimsPrincipal User { get; }
+        public string Username { get; }
 
-        private CreateSolutionCommand(string sourceCode, string languageCode, int taskId, ClaimsPrincipal user)
+        private CreateSolutionCommand(string sourceCode, string languageCode, int taskId, string username)
         {
             SourceCode = sourceCode;
             LanguageCode = languageCode;
             TaskId = taskId;
-            User = user;
+            Username = username;
         }
 
-        public static CreateSolutionCommand Create(string sourceCode, string languageCode, int taskId, ClaimsPrincipal user)
+        public static CreateSolutionCommand Create(string sourceCode, string languageCode, int taskId, string username)
         {
             Fail.IfNullOrEmpty(sourceCode);
             Fail.IfNullOrEmpty(languageCode);
             Fail.IfNull(taskId);
-            Fail.IfNull(user);
+            Fail.IfNull(username);
 
-            return new CreateSolutionCommand(sourceCode, languageCode, taskId, user);
+            return new CreateSolutionCommand(sourceCode, languageCode, taskId, username);
         }
     }
 }

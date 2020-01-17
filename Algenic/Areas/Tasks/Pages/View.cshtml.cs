@@ -88,7 +88,8 @@ namespace Algenic.Areas.Pages.Tasks
                 return RedirectToPage();
             }
 
-            var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, task.Id, User);
+            var username = User.Identity.Name;
+            var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, task.Id, username);
             await _createSolutionCommandHandler.HandleAsync(command);
 
             return RedirectToPage();

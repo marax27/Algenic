@@ -28,7 +28,7 @@ namespace Algenic.Queries.TestResults
         }
     }
 
-    public class TestResultsQueryHandler : IQueryHandler<TestResultsQuery, TestResultsResult>
+    public class TestResultsQueryHandler : IQueryHandler<TestResultsQuery, TestResultsQueryResult>
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -37,36 +37,56 @@ namespace Algenic.Queries.TestResults
             _dbContext = dbContext;
         }
 
-        public async Task<TestResultsResult> HandleAsync(TestResultsQuery query)
+        public async Task<TestResultsQueryResult> HandleAsync(TestResultsQuery query)
         {
             var test = await _dbContext.Tests.FindAsync(query.TestId);
             var compilationResults = _dbContext.CompilationResults
                 .Where(cr => cr.TestId == query.TestId && cr.SolutionId == query.SolutionId)
                 .SingleOrDefault();
+            var logs = _dbContext.Logs
+                ?.Where(l => l.TestId == query.TestId && l.SolutionId == query.SolutionId)
+                .SingleOrDefault();
 
-            return new TestResultsResult(test.Name,
+            return new TestResultsQueryResult(query.TestId, 
+                query.SolutionId,
+                test.Name,
+                test.Input,
                 compilationResults.Output,
                 compilationResults.CpuTime,
                 compilationResults.MemoryUsage,
-                compilationResults.ExecutionSuccessful);
+                compilationResults.ExecutionSuccessful,
+                logs?.StatusCode,
+                logs?.ErrorMessage);
         }
     }
 
-    public class TestResultsResult
+    public class TestResultsQueryResult
     {
+        public int TestId { get; }
+        public int SolutionId { get; }
         public string TestName { get; }
+        public string Input { get; }
         public string Output { get; }
         public string CpuTime { get; }
         public string MemoryUsage { get; }
         public bool ExecutionSuccessful { get; }
+        public string StatusCode { get; }
+        public string ErrorMessage { get; }
 
-        public TestResultsResult(string testName, string output, string cpuTime, string memoryUsage, bool executionSuccessful)
+        public TestResultsQueryResult(int testId, int solutionId, string testName, 
+            string input, string output, string cpuTime, string memoryUsage, bool executionSuccessful,
+            string statusCode, string errorMessage)
         {
+            TestId = testId;
+            SolutionId = solutionId;
             TestName = testName;
-            Output = output;
-            CpuTime = cpuTime;
-            MemoryUsage = memoryUsage;
+            Input = input;
+            Output = output ?? "null";
+            CpuTime = cpuTime ?? "null";
+            MemoryUsage = memoryUsage ?? "null";
             ExecutionSuccessful = executionSuccessful;
+            StatusCode = statusCode ?? "null";
+            ErrorMessage = errorMessage ?? "null";
         }
     }
 }

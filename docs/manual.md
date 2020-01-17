@@ -15,4 +15,8 @@ Egzaminator może:
 - zmieniać stan swojego konkursu (Not started, In progress, Completed)
 - edytować swoje (nierozpoczęte) konkursy, w tym dodawać, edytować i usuwać zadania
 
+## Każdy użytkownik
+Może:
+- wysyłać rozwiązania do zadań z cudzych konkursów
+- przeglądać wyniki swoich rozwiązań (po zakończeniu konkursu)
 

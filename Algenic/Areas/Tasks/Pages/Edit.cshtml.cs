@@ -77,7 +77,7 @@ namespace Algenic.Areas.Tasks.Pages
         {
             var test = new Test
             {
-                Name = FormTest.Name,
+                Name = String.IsNullOrWhiteSpace(FormTest.Name) ? "" : FormTest.Name,
                 Input = FormTest.Input,
                 ExpectedOutput = FormTest.ExpectedOutput
             };

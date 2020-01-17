@@ -16,7 +16,7 @@ namespace Algenic.UnitTests.Commands
         protected override ApplicationDbContext PrepareContext(ApplicationDbContext context)
             => context;
         [Fact]
-        public void Test1()
+        public void SampleVerification_ExpectedScoreChangeInDataBase()
         {
             var givenContest = new Contest
             {
@@ -46,24 +46,6 @@ namespace Algenic.UnitTests.Commands
             };
             Context.Solutions.Add(givenSolution);
             Context.SaveChanges();
-
-            var givenApiOutput = new JDoodleOutput
-            {
-                CpuTime = "1",
-                Memory = "2",
-                Output = "expected-output",
-                StatusCode = "200"
-            };
-            var givenQuery = CompilationQuery.Create("given-source-code", "given-input", ProgrammingLanguage.Java());
-            var givenResult = new CompilationQueryResult
-            {
-                ExecutionSuccessful = true,
-                Output = givenApiOutput
-            };
-
-            IQueryHandler<CompilationQuery, CompilationQueryResult> compilationMock =
-                new CompilationMockQueryHandler()
-                    .On(givenQuery).Returns(givenResult);
 
             ICommandHandler<ChangeScoreCommand> sut =
                 new ChangeScoreCommandHandler(Context);

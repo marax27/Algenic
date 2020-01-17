@@ -14,7 +14,14 @@ namespace Algenic.UnitTests.Queries
         private ScorePolicyDto ScorePolicyDto { get; set; }
 
         protected override ApplicationDbContext PrepareContext(ApplicationDbContext context)
-            => context;
+        {
+            foreach (var entity in context.ScorePolicies)
+            {
+                context.ScorePolicies.Remove(entity);
+            }
+            context.SaveChanges();
+            return context;
+        }
       
         [Fact]
         public void NoScorePolicyInDatabase_NoPolicyReturned()

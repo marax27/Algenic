@@ -28,7 +28,6 @@ namespace Algenic.UnitTests.Queries
         {
             var expectedScorePolicyIds = new List<ScorePolicyDto>();
             var givenQuery = AllScorePoliciesQuery.Create();
-            AllScorePoliciesQuery.Create();
             IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult> sut =
                             new AllScorePoliciesQueryHandler(Context);
             var result = sut.HandleAsync(givenQuery).Result;
@@ -58,7 +57,6 @@ namespace Algenic.UnitTests.Queries
                 secondScorePolicyDto
             };
             var givenQuery = AllScorePoliciesQuery.Create();
-            AllScorePoliciesQuery.Create();
             IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult> sut =
                             new AllScorePoliciesQueryHandler(Context);
             Context.ScorePolicies.AddRange(firstScorePolicy, secondScorePolicy);

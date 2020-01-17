@@ -9,20 +9,10 @@ namespace Algenic.ViewModels
 {
     public class UserResultsViewModel
     {
-        public string Username { get; }
-        public int UserScore { get; }
-        public int Position { get; }
-        public IEnumerable<TaskWithTestResults> TaskResults { get; }
-
-        public UserResultsViewModel(string username, int position, IEnumerable<TaskWithTestResults> taskResults)
-        {
-            Username = username;
-            Position = position;
-            TaskResults = taskResults;
-            UserScore = taskResults
-                .Select(t => t.TaskScore.Score)
-                .Sum();
-        }
+        public string Username { get; set; }
+        public int UserScore { get; set; }
+        public int Position { get; set; }
+        public IEnumerable<TaskWithTestResults> TaskResults { get; set; }
     }
 
     public class TaskWithTestResults

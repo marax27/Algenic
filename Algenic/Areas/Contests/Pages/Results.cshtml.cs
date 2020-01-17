@@ -104,7 +104,7 @@ namespace Algenic.Areas.Contests.Pages
                 taskResults.Add(new TaskWithTestResults(taskScore, testResults));
             }
 
-            return new UserResultsViewModel(user.UserName, userRanking[userId], taskResults);
+            return MapToUserResultsViewModel(user.UserName, userRanking[userId], taskResults);
         }
 
         private async Task<IDictionary<string, int>> ContestRanking(IEnumerable<string> userIds)
@@ -130,5 +130,16 @@ namespace Algenic.Areas.Contests.Pages
 
             return userRanking;
         }
+
+        private UserResultsViewModel MapToUserResultsViewModel(string username, int position, IEnumerable<TaskWithTestResults> taskResults)
+            => new UserResultsViewModel()
+            {
+                Username = username,
+                Position = position,
+                TaskResults = taskResults,
+                UserScore = taskResults
+                .Select(t => t.TaskScore.Score)
+                .Sum(),
+            };
     }
 }

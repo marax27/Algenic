@@ -27,13 +27,17 @@
 				}
 			</table>
 			<input type="submit" value="Add Policy" class="btn btn-outline-dark" />
+			@if (Model.RuleCountFail)
+			{
+				<p class="text-danger">The score policy must have at least 1 rule assigned.</p>
+			}
 		</form>
 	</div>
 	<div class="row page-section">
 		<form asp-page-handler="AddRule" method="post" id="form-add-policy">
 			<h6>Set number of rules</h6>
 			<input type="number" asp-for="@Model.RuleCount" class="btn btn-outline-dark" />
-			<input type="submit" value="Add Rule" class="btn btn-outline-dark" />
+			<input type="submit" value="Set" class="btn btn-outline-dark" />
 		</form>
 	</div>
 </div>

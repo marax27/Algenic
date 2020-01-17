@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Algenic.Commons;
 using Algenic.Commons.DesignByContract;
 using Algenic.Data;
@@ -30,7 +30,7 @@ namespace Algenic.Commands.CreateScorePolicy
         }
     }
 
-    public class ScoreRuleDto
+    public class ScoreRuleDto : IEquatable<ScoreRuleDto>
     {
         public decimal Threshold { get; }
         public int Score { get; set; }
@@ -40,6 +40,15 @@ namespace Algenic.Commands.CreateScorePolicy
             Threshold = threshold;
             Score = score;
         }
+
+        public override int GetHashCode()
+            => 31 * (int)Threshold + 17 * Score;
+
+        public override bool Equals(object obj)
+            => obj is ScoreRuleDto dto && Equals(dto);
+
+        public bool Equals(ScoreRuleDto other)
+            => Threshold == other?.Threshold && other.Score == Score;
     }
 
     public class CreateScorePolicyCommandHandler : ICommandHandler<CreateScorePolicyCommand>

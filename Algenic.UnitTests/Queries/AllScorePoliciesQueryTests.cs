@@ -36,18 +36,20 @@ namespace Algenic.UnitTests.Queries
 
         }
         [Fact]
-        public void TwoScorePolicyInDatabase_TwoPolicyReturned()
+        public void TwoScorePoliciesInDatabase_TwoPoliciesReturned()
         {
             ScorePolicy firstScorePolicy = new ScorePolicy {
                 Id = 1,
                 Name = "test1",
-                Description = "FirstScorePolicyTest"
+                Description = "FirstScorePolicyTest",
+                ScoreRules = new List<ScoreRule>(new[] { new ScoreRule { Score = 1, Threshold = 0.9m } })
             };
             ScorePolicy secondScorePolicy = new ScorePolicy
             {
                 Id = 2,
                 Name = "test2",
-                Description = "SecondScorePolicyTest"
+                Description = "SecondScorePolicyTest",
+                ScoreRules = new List<ScoreRule>(new[]{ new ScoreRule { Score = 1, Threshold = 0.9m } })
             };
             ScorePolicyDto firstScorePolicyDto = new ScorePolicyDto(1, "test1", "FirstScorePolicyTest");
             ScorePolicyDto secondScorePolicyDto = new ScorePolicyDto(2, "test2", "SecondScorePolicyTest");

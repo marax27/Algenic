@@ -27,6 +27,7 @@ using Algenic.Queries.CalculateScore;
 using Algenic.Queries.ContestsUsers;
 using Algenic.Queries.TaskScore;
 using Algenic.Queries.TestResults;
+using Algenic.Queries.ContestScoreQuery;
 
 namespace Algenic
 {
@@ -80,14 +81,12 @@ namespace Algenic
             services.AddTransient<IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult>,
                 NewestSolutionsQueryHandler>();
             services.AddTransient<IQueryHandler<CalculateScoreQuery, CalculateScoreResult>, CalculateScoreQueryHandler>();
-<<<<<<< HEAD
             services.AddTransient<IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult>, AllScorePoliciesQueryHandler>();
             services.AddTransient<IQueryHandler<AllUsersQuery, AllUsersResult>, AllUsersQueryHandler>();
-=======
             services.AddTransient<IQueryHandler<ContestsUsersQuery, ContestsUsersQueryResult>, ContestsUsersQueryHandler>();
             services.AddTransient<IQueryHandler<TaskScoreQuery, TaskScoreQueryResult>, TaskScoreQueryHandler>();
-            services.AddTransient<IQueryHandler<TestResultsQuery, TestResultsResult>, TestResultsQueryHandler>();
->>>>>>> Modify startup to include new queries as transient
+            services.AddTransient<IQueryHandler<TestResultsQuery, TestResultsQueryResult>, TestResultsQueryHandler>();
+            services.AddTransient<IQueryHandler<ContestScoreQuery, ContestScoreQueryResult>, ContestScoreQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

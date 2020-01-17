@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Algenic.Commons;
 using Algenic.Data;
 using Algenic.Data.Models;
+using Algenic.Queries.AllScorePolicies;
 using Algenic.Routing;
 using Algenic.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Algenic.Areas.Tasks.Pages
 {
@@ -16,6 +19,8 @@ namespace Algenic.Areas.Tasks.Pages
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult>
+            _allScorePoliciesQueryHandler;
 
         [TempData]
         public int TaskId { get; set; }
@@ -23,11 +28,15 @@ namespace Algenic.Areas.Tasks.Pages
         public EditTaskViewModel FormTask { get; set; }
         [BindProperty]
         public AddTestViewModel FormTest { get; set; }
+        [BindProperty]
+        public IEnumerable<SelectListItem> ScorePolicyOptions { get; set; }
 
-        public EditModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public EditModel(ApplicationDbContext context, UserManager<IdentityUser> userManager,
+            IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult> allScorePoliciesQueryHandler)
         {
             _context = context;
             _userManager = userManager;
+            _allScorePoliciesQueryHandler = allScorePoliciesQueryHandler;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -48,6 +57,8 @@ namespace Algenic.Areas.Tasks.Pages
             TaskId = id;
             TempData.Keep(nameof(TaskId));
 
+            UpdateScorePolicies();
+
             return Page();
         }
 
@@ -56,6 +67,7 @@ namespace Algenic.Areas.Tasks.Pages
             var task = await _context.Tasks.FindAsync(TaskId);
             task.Name = FormTask.Name;
             task.Description = FormTask.Description;
+            task.ScorePolicy = _context.ScorePolicies.Find(FormTask.ScorePolicyId);
             await _context.SaveChangesAsync();
 
             return RedirectToPage();
@@ -95,5 +107,22 @@ namespace Algenic.Areas.Tasks.Pages
                 Description = model.Description,
                 Tests = model.Tests
             };
+
+        private void UpdateScorePolicies()
+        {
+            var query = AllScorePoliciesQuery.Create();
+            var queryResult = _allScorePoliciesQueryHandler.HandleAsync(query).Result;
+
+            var currentPolicyId = _context.Tasks.Find(TaskId).ScorePolicyId;
+
+            ScorePolicyOptions = queryResult.ScorePolicies
+                .OrderBy(sp => sp.Id == currentPolicyId ? 0 : 1)
+                .Select(
+                    policy => new SelectListItem
+                    {
+                        Value = policy.Id.ToString(),
+                        Text = $"{policy.Name} ({policy.Description})"
+                    });
+        }
     }
 }

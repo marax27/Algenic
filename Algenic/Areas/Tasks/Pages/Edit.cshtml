@@ -24,7 +24,11 @@
                     <label>Description</label>
                     <textarea asp-for="FormTask.Description" class="form-control" cols="40" rows="8"></textarea>
                 </div>
-                <input type="submit" value="Save" class="btn btn-outline-dark" />
+                <div class="form-group">
+                    <label>Score policy</label>
+                    <select asp-for="FormTask.ScorePolicyId" asp-items="Model.ScorePolicyOptions" class="form-control"></select>
+                </div>
+                <input type="submit" value="Update" class="btn btn-outline-dark" />
             </form>
         </div>
 
@@ -51,7 +55,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <input type="submit" value="Submit" class="btn btn-outline-dark" />
+                        <input type="submit" value="Add test" class="btn btn-outline-dark" />
                     </div>
                 </form>
             </div>

@@ -136,6 +136,11 @@ namespace Algenic.Areas.Contests.Pages
             return RedirectToPage(ContestId);
         }
 
+        public async Task<IActionResult> OnPostCheckResultsAsync()
+        {
+            return RedirectToPage("Results", new { id = ContestId });
+        }
+
         private IEnumerable<StatusButtonViewModel> CreateStatusButtons(ContestState contestStatus)
         {
             switch (contestStatus)
@@ -165,7 +170,8 @@ namespace Algenic.Areas.Contests.Pages
             {
                 Name = contest.Name,
                 Status = ContestStatusNames.GetReadableName(contest.Status),
-                HasBegun = contest.Status != ContestState.NotStarted
+                HasBegun = contest.Status != ContestState.NotStarted,
+                IsCompleted = contest.Status == ContestState.Completed
             };
 
         private DisplayTaskViewModel MapToDisplayViewModel(Data.Models.Task model)

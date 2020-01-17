@@ -33,6 +33,7 @@ namespace Algenic.Queries.AllScorePolicies
         public async Task<AllScorePoliciesResult> HandleAsync(AllScorePoliciesQuery query)
         {
             var dtos = _dbContext.ScorePolicies
+                .Where(policy => policy.ScoreRules.Count > 0)
                 .Select(policy => new ScorePolicyDto(policy.Id, policy.Name, policy.Description))
                 .AsEnumerable();
             return new AllScorePoliciesResult(dtos);

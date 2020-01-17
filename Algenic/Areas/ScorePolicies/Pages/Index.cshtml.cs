@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Algenic.Commands.CreateScorePolicy;
 using Algenic.Commons;
 using Algenic.ViewModels;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -23,6 +25,8 @@ namespace Algenic.Areas.ScorePolicies.Pages
         public AddScorePolicyViewModel FormPolicy { get; set; } = new AddScorePolicyViewModel();
         [BindProperty]
         public int RuleCount { get; set; } = 1;
+        [BindProperty]
+        public bool RuleCountFail { get; set; } = false;
 
         public void OnGet()
         {
@@ -31,12 +35,12 @@ namespace Algenic.Areas.ScorePolicies.Pages
 
         public async Task<IActionResult> OnPostCreateAsync()
         {
-            var scoreRules = FormPolicy.Values
-                .Select(v => new ScoreRuleDto(
-                        v.Threshold > 1m ? v.Threshold / 100 : v.Threshold,
-                        v.Points
-                    )
-                ).ToList();
+            var scoreRules = GetScoreRulesFromForm().ToList();
+            if (scoreRules.IsNullOrEmpty()) { 
+                RuleCountFail = true;
+                return Page();
+            }
+
             var command = CreateScorePolicyCommand.Create(
                 FormPolicy.Name,
                 FormPolicy.Description,
@@ -55,5 +59,14 @@ namespace Algenic.Areas.ScorePolicies.Pages
         {
             FormPolicy.Values = Enumerable.Range(0, RuleCount).Select(_ => new ScoreRuleViewModel()).ToList();
         }
+
+        private IEnumerable<ScoreRuleDto> GetScoreRulesFromForm()
+            => FormPolicy.Values
+                .Where(x => !(x.Threshold == 0m && x.Points == 0))
+                .Select(v => new ScoreRuleDto(
+                        v.Threshold > 1m ? v.Threshold / 100 : v.Threshold,
+                        v.Points
+                    )
+                ).Distinct();
     }
 }

@@ -6,4 +6,37 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <hr />
+
+        <div class="row page-section">
+            <div class="col-12">
+                <table class="table">
+                    <tr>
+                        <th width="90%">
+                            Contest
+                        </th>
+                        <th width="10%">
+                            Results
+                        </th>
+                    </tr>
+                    @foreach (var contest in Model.StartingPageViewModel.Contests)
+                    {
+                        <tr>
+                            <td width="90%">
+                                @contest.name
+                            </td>
+                            <td width="10%">
+                                <form asp-page-handler="CheckResults" method="post">
+                                    <input type="submit" value="Results" class="btn btn-outline-dark" />
+                                    <input type="hidden" name="contestId" value="@contest.id" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
 </div>

@@ -24,6 +24,10 @@ using Algenic.Commands.ExaminerRole;
 using Algenic.Queries.AllScorePolicies;
 using Algenic.Queries.AllUsers;
 using Algenic.Queries.CalculateScore;
+using Algenic.Queries.ContestsUsers;
+using Algenic.Queries.TaskScore;
+using Algenic.Queries.TestResults;
+using Algenic.Queries.ContestScoreQuery;
 
 namespace Algenic
 {
@@ -79,6 +83,10 @@ namespace Algenic
             services.AddTransient<IQueryHandler<CalculateScoreQuery, CalculateScoreResult>, CalculateScoreQueryHandler>();
             services.AddTransient<IQueryHandler<AllScorePoliciesQuery, AllScorePoliciesResult>, AllScorePoliciesQueryHandler>();
             services.AddTransient<IQueryHandler<AllUsersQuery, AllUsersResult>, AllUsersQueryHandler>();
+            services.AddTransient<IQueryHandler<ContestsUsersQuery, ContestsUsersQueryResult>, ContestsUsersQueryHandler>();
+            services.AddTransient<IQueryHandler<TaskScoreQuery, TaskScoreQueryResult>, TaskScoreQueryHandler>();
+            services.AddTransient<IQueryHandler<TestResultsQuery, TestResultsQueryResult>, TestResultsQueryHandler>();
+            services.AddTransient<IQueryHandler<ContestScoreQuery, ContestScoreQueryResult>, ContestScoreQueryHandler>();
 
             services.AddTransient<IRemoteCompiler<JDoodleOutput, JDoodleError>, ConfigurableJDoodleCompiler>();
         }

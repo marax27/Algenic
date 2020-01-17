@@ -39,6 +39,8 @@
 
     <div class="row page-section">
         <div class="col-6">
+            @if (!Model.ContestViewModel.IsCompleted)
+            {
             <h5>Add a new task</h5>
             <form asp-page-handler="AddTask" method="post">
                 <fieldset disabled='@(Model.ContestViewModel.HasBegun ? "disabled" : null)'>
@@ -57,6 +59,13 @@
                     <input type="submit" value="Add" class="btn btn-outline-dark"/>
                 </fieldset>
             </form>
+            } else
+            {
+                <h5>Check contest's results</h5>
+                <form asp-page-handler="CheckResults" method="post">
+                    <input type="submit" value="Results" class="btn btn-outline-dark" />
+                </form>
+            }
         </div>
 
         <div class="col-6">

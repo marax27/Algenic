@@ -1,29 +1,24 @@
 ﻿using Algenic.Commons;
 using Algenic.Data;
 using Algenic.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Algenic.Commands.CreateSolution
 {
     public class CreateSolutionCommandHandler : ICommandHandler<CreateSolutionCommand>
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly UserManager<IdentityUser> _userManager;
     
-        public CreateSolutionCommandHandler(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager)
+        public CreateSolutionCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _userManager = userManager;
         }
 
         public async System.Threading.Tasks.Task HandleAsync(CreateSolutionCommand command)
         {
-            var user = await _userManager.GetUserAsync(command.User);
-            var solution = new Solution()
+            var user = _dbContext.Users.Single(u => u.UserName == command.Username);
+            var solution = new Solution
             {
                 SourceCode = command.SourceCode,
                 Language = command.LanguageCode,

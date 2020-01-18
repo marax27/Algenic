@@ -6,45 +6,51 @@
 
 <div class="row">
     <div class="col-12">
-        <ul>
-            @foreach (var user in Model.UsersResults)
-            {
-                <li>Username: @user.Username</li>
-                <li>Position: @user.Position</li>
-                <li>Total score: @user.UserScore points</li>
-                <li>
-                    Tasks:
-                    <ul>
+        
+        @foreach (var user in Model.UsersResults.OrderByDescending(u => u.Position))
+        {
+            <h4>#@user.Position @user.Username (Score: @user.UserScore)</h4>
+            <div class="row col-12">
+                <div class="col-10" style="margin-left: auto">
+                    <table class="table">
+                        <tr>
+                            <th>Status</th>
+                            <th>CPU time</th>
+                            <th>Memory usage</th>
+                            <th>Additional</th>
+                        </tr>
+
                         @foreach (var taskResult in user.TaskResults)
                         {
-                            <li>
-                                @taskResult.TaskScore.TaskName: @taskResult.TaskScore.Score points
-                                <ul>
-                                    @foreach (var testResult in taskResult.TestResults)
-                                    {
-                                        <li>
-                                            Test: @testResult.TestName
-                                            <ul>
-                                                <li>Input: @testResult.Input</li>
-                                                <li>Output: @testResult.Output</li>
-                                                <li>Passed: @testResult.Passed</li>
-                                                @if (!testResult.Passed)
-                                                {
-                                                    <li>Expected output: @testResult.ExpectedOutput</li>
-                                                }
-                                                <li>CPU time: @testResult.CpuTime</li>
-                                                <li>Memory usage: @testResult.MemoryUsage</li>
-                                                <li>Status code: @testResult.StatusCode</li>
-                                                <li>Error message: @testResult.ErrorMessage</li>
-                                            </ul>
-                                        </li>
-                                    }
-                                </ul>
-                            </li>
+                            <tr><td colspan="4">Task @taskResult.TaskScore.TaskName (@taskResult.TaskScore.Score points)</td></tr>
+                            @foreach (var testResult in taskResult.TestResults)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (testResult.Passed)
+                                        {
+                                            <span class="text-success">"@testResult.Input" &#8594; "@testResult.Output"</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">"@testResult.Input" &#8594; "@testResult.Output"</span>
+                                            <span>(expected output: "@testResult.ExpectedOutput)</span>
+                                        }
+                                    </td>
+                                    <td>@testResult.CpuTime</td>
+                                    <td>@testResult.MemoryUsage</td>
+                                    <td>
+                                        @if (testResult.ErrorMessage != "N/A" || testResult.StatusCode != "N/A")
+                                        {
+                                            <span>Compilation finished with status @testResult.StatusCode. Message: @testResult.ErrorMessage</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         }
-                    </ul>
-                </li>
-            }
-        </ul>
+                    </table>
+                </div>
+            </div>
+        }
     </div>
 </div>

@@ -17,7 +17,7 @@ namespace Algenic.UnitTests.Setup
         private void InitContext()
         {
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("Test");
+                .UseInMemoryDatabase("test-" + Guid.NewGuid());
 
             var context = new ApplicationDbContext(builder.Options);
             Context = PrepareContext(context);

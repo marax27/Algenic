@@ -62,7 +62,6 @@ namespace Algenic.Commands.CreateScorePolicy
 
         public async System.Threading.Tasks.Task HandleAsync(CreateScorePolicyCommand command)
         {
-            // scoreRules = new List<ScoreRule>();
             var scoreRules = command.ScoreRules.Select(dto => new ScoreRule() { Threshold = dto.Threshold, Score = dto.Score });
             ScorePolicy scorePolicy = new ScorePolicy()
             {

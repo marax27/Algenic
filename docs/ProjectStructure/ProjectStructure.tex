@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{tabularx}
+\usepackage{indentfirst}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{anysize}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+
+\usepackage{listings}
+\usepackage{color}
+\lstset{literate=%
+{ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1 {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1 }
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+	\posttitle{%
+	\par\end{center}
+	\begin{center}\small#1\end{center}
+	\vskip0.5em}%
+}
+
+\title{Algenic -- serwis z~konkursami algorytmicznymi\\
+    Dokumentacja techniczna}
+\subtitle{Akademia Górniczo-Hutnicza im. Stanisława Staszica w Krakowie\\
+	Wydział Elektrotechniki, Automatyki,\\
+	Informatyki i Inżynierii Biomedycznej}
+\author{Kacper Tonia\and
+		Sławomir Kalandyk\and
+		Mateusz Ruciński}
+\date{}
+
+\begin{document}
+%------------------------------------------------------------
+\maketitle
+
+\section{Struktura projektu}
+Algenic składa się z następujących projektów:
+\begin{itemize}
+    \item \textit{Algenic}: pliki aplikacji sieciowej (kod HTML, CSS itd.), logika aplikacji.
+    \item \textit{Algenic.Commons}: podstawowe interfejsy, narzędzia niebędące związane ze specyfiką aplikacji.
+    \item \textit{Algenic.Compilation}: stanowi warstwę abstrakcji w procesie kompilacji kodu. Zawiera przede wszystkim klasy pozwalające na komunikację z API serwisu JDoodle.
+    \item \textit{Algenic.UnitTests}: testy jednostkowe.
+    \item \textit{Algenic.FunctionalTests}: testy Selenium.
+\end{itemize}
+
+\section{Struktura strony internetowej}
+\begin{itemize}
+    \item Strona główna: zalogowany użytkownik może tutaj obejrzeć wyniki konkursów, w których brał udział.
+    \item \emph{/ScorePolicies}: służy tworzeniu nowych polityk oceniania. Dostęp tylko dla egzaminatorów.
+    \item \emph{/Contests}: umożliwia przeglądanie, dołączanie do istniejących konkursów. Egzaminatorzy mogą dodatkowo tworzyć nowe konkursy bądź edytować istniejące.
+    \item \emph{/Admin}: panel administratora
+\end{itemize}
+
+\section{Testy automatyczne}
+Testy automatyczne w projekcie dzielą się na 2 grupy: jednostkowe i funkcjonalne.
+\subsection{Testy jednostkowe}
+Aby ułatwić testowanie, operacje na bazie danych zostały wydzielone i zawarte w tzw. handlerach. QueryHandler ma za zadanie pobrać dane z bazy i zwrócić wynik, natomaist CommandHandler dodaje nowe dane bądź modyfikuje istniejące wpisy. Dla każdego testu tworzona jest w pamięci operacyjnej (in-memory) tymczasowa baza danych, zatem testy nie wpływają ani na siebie, ani na oryginalną bazę.
+\subsection{Testy funkcjonalne}
+Testy funkcjonalne wykorzystują 3 konta użytkowników, tworzonych domyślnie, gdy aplikacja jest uruchamiana w trybie developerskim.
+
+Obecne testy funkcjonalne badają następujące funkcjonalności programu:
+\begin{enumerate}
+    \item Dostęp do panelu administratora
+    \begin{itemize}
+        \item jako zwykły użytkownik (brak dostępu)
+        \item jako egzaminator (brak dostępu)
+        \item jako administrator (dostęp przyznany)
+    \end{itemize}
+    \item Dodawanie konkursów
+    \begin{itemize}
+        \item egzaminator tworzy nowy konkurs
+        \item dane nowego konkursu powinny pojawić się w tabeli konkursów
+    \end{itemize}
+    \item Uprawnienia do dodawania konkursów
+    \begin{itemize}
+        \item jako egzaminator (pojawia się odpowiedni formularz)
+        \item jako zwykły użytkownik (brak formularza na stronie)
+    \end{itemize}
+    \item Zmiana właściciela konkursu przy odebraniu uprawnień egzaminatora obecnemu właścicielowi konkursu
+\end{enumerate}
+
+\end{document}

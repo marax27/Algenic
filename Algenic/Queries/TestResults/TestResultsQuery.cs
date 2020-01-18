@@ -52,7 +52,7 @@ namespace Algenic.Queries.TestResults
                 test.Name,
                 test.Input,
                 compilationResults.Output,
-                compilationResults.Output == test.ExpectedOutput,
+                compilationResults.Output == test.ExpectedOutput && compilationResults.ExecutionSuccessful,
                 test.ExpectedOutput,
                 compilationResults.CpuTime,
                 compilationResults.MemoryUsage,
@@ -83,13 +83,13 @@ namespace Algenic.Queries.TestResults
             SolutionId = solutionId;
             TestName = testName;
             Input = input;
-            Output = output ?? "null";
+            Output = output ?? "N/A";
             Passed = passed;
             ExpectedOutput = expectedOutput;
-            CpuTime = cpuTime ?? "null";
-            MemoryUsage = memoryUsage ?? "null";
-            StatusCode = statusCode ?? "null";
-            ErrorMessage = errorMessage ?? "null";
+            CpuTime = cpuTime ?? "N/A";
+            MemoryUsage = memoryUsage ?? "N/A";
+            StatusCode = statusCode ?? "N/A";
+            ErrorMessage = errorMessage ?? "N/A";
         }
     }
 }

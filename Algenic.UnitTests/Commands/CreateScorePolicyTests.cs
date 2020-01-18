@@ -16,7 +16,7 @@ namespace Algenic.UnitTests.Commands
         protected override ApplicationDbContext PrepareContext(ApplicationDbContext context)
             => context;
         [Fact]
-        public void SampleVerification_ExpectedNewScirePolicyInDatabase()
+        public void SampleVerification_ExpectedNewScorePolicyInDatabase()
         {
             var givenContest = new Contest
             {

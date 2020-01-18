@@ -59,7 +59,7 @@ namespace Algenic.Areas.Pages.Tasks
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (SourceCodeFile == null || SourceCodeFile.Length == 0)
+            if (SourceCodeFile == null || SourceCodeFile.Length == 0 || Task.Contest.Status == Contest.ContestState.Completed)
                 return RedirectToPage();
 
             string sourceCode;

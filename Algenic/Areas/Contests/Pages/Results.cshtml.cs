@@ -7,6 +7,7 @@ using Algenic.Data;
 using Algenic.Data.Models;
 using Algenic.Queries.ContestScoreQuery;
 using Algenic.Queries.ContestsUsers;
+using Algenic.Queries.NewestSolutions;
 using Algenic.Queries.TaskScore;
 using Algenic.Queries.TestResults;
 using Algenic.Routing;
@@ -26,6 +27,7 @@ namespace Algenic.Areas.Contests.Pages
         private readonly IQueryHandler<TaskScoreQuery, TaskScoreQueryResult> _taskScoreQueryHandler;
         private readonly IQueryHandler<TestResultsQuery, TestResultsQueryResult> _testResultsQueryHandler;
         private readonly IQueryHandler<ContestScoreQuery, ContestScoreQueryResult> _contestScoreQueryHandler;
+        private readonly IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult> _newestSolutionsQueryHandler;
 
         public int ContestId { get; set; }
         [BindProperty]
@@ -36,7 +38,8 @@ namespace Algenic.Areas.Contests.Pages
             IQueryHandler<ContestsUsersQuery, ContestsUsersQueryResult> contestsUsersQueryHandler,
             IQueryHandler<TaskScoreQuery, TaskScoreQueryResult> taskScoreQueryHandler,
             IQueryHandler<TestResultsQuery, TestResultsQueryResult> testResultsQueryHandler,
-            IQueryHandler<ContestScoreQuery, ContestScoreQueryResult> contestScoreQueryHandler)
+            IQueryHandler<ContestScoreQuery, ContestScoreQueryResult> contestScoreQueryHandler,
+            IQueryHandler<NewestSolutionsQuery, NewestSolutionsResult> newestSolutionsQueryHandle)
         {
             _context = context;
             _userManager = userManager;
@@ -44,6 +47,7 @@ namespace Algenic.Areas.Contests.Pages
             _taskScoreQueryHandler = taskScoreQueryHandler;
             _testResultsQueryHandler = testResultsQueryHandler;
             _contestScoreQueryHandler = contestScoreQueryHandler;
+            _newestSolutionsQueryHandler = newestSolutionsQueryHandle;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
@@ -65,7 +69,7 @@ namespace Algenic.Areas.Contests.Pages
 
             UsersResults = new List<UserResultsViewModel>();
 
-            IEnumerable<string> usersToIterateOver = contestOwnerId == currentUserId ? 
+            IEnumerable<string> usersToIterateOver = contestOwnerId == currentUserId ?
                 contestsUsers.UserIds : new[] { currentUserId };
 
             var ranking = await ContestRanking(contestsUsers.UserIds);
@@ -86,19 +90,27 @@ namespace Algenic.Areas.Contests.Pages
             var taskScoreQueries = contest.Tasks.Select(t => TaskScoreQuery.Create(t.Id, user.Id));
             var taskResults = new List<TaskWithTestResults>();
             var taskScores = new List<TaskScoreQueryResult>();
-            var testResults = new List<TestResultsQueryResult>();
 
             foreach (var query in taskScoreQueries)
             {
                 var taskScore = await _taskScoreQueryHandler.HandleAsync(query);
                 var task = await _context.Tasks.FindAsync(query.TaskId);
-                var solutions = _context.Solutions.Where(s => s.TaskId == task.Id && s.IdentityUser.Id == userId);
+                var tests = _context.Tests.Where(t => t.TaskId == task.Id);
 
-                foreach (var solution in solutions)
+                var solution = await _context.Solutions
+                    .Where(s => s.TaskId == task.Id && s.IdentityUser.Id == userId)
+                    .DefaultIfEmpty()
+                    .SingleAsync();
+                var testResults = new List<TestResultsQueryResult>();
+
+                if (solution != null)
                 {
-                    var testResultsQuery = TestResultsQuery.Create(task.Id, solution.Id);
-                    var testResult = await _testResultsQueryHandler.HandleAsync(testResultsQuery);
-                    testResults.Add(testResult);
+                    foreach (var test in tests)
+                    {
+                        var testResultsQuery = TestResultsQuery.Create(test.Id, solution.Id);
+                        var testResult = await _testResultsQueryHandler.HandleAsync(testResultsQuery);
+                        testResults.Add(testResult);
+                    }
                 }
 
                 taskResults.Add(new TaskWithTestResults(taskScore, testResults));
@@ -111,7 +123,7 @@ namespace Algenic.Areas.Contests.Pages
         {
             var userRanking = new Dictionary<string, int>();
 
-            foreach(var userId in userIds)
+            foreach (var userId in userIds)
             {
                 var contestScoreQuery = ContestScoreQuery.Create(userId, ContestId);
                 var contestScore = await _contestScoreQueryHandler.HandleAsync(contestScoreQuery);
@@ -122,9 +134,10 @@ namespace Algenic.Areas.Contests.Pages
 
             userRanking = userRanking
                 .OrderByDescending(k => k.Value)
-                .Select(v => { 
-                    ++position; 
-                    return (v.Key, position); 
+                .Select(v =>
+                {
+                    ++position;
+                    return (v.Key, position);
                 })
                 .ToDictionary(v => v.Key, v => v.position);
 

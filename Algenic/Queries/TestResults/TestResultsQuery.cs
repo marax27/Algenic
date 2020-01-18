@@ -52,9 +52,10 @@ namespace Algenic.Queries.TestResults
                 test.Name,
                 test.Input,
                 compilationResults.Output,
+                compilationResults.Output == test.ExpectedOutput && compilationResults.ExecutionSuccessful,
+                test.ExpectedOutput,
                 compilationResults.CpuTime,
                 compilationResults.MemoryUsage,
-                compilationResults.ExecutionSuccessful,
                 logs?.StatusCode,
                 logs?.ErrorMessage);
         }
@@ -67,26 +68,28 @@ namespace Algenic.Queries.TestResults
         public string TestName { get; }
         public string Input { get; }
         public string Output { get; }
+        public bool Passed { get; }
+        public string ExpectedOutput { get; }
         public string CpuTime { get; }
         public string MemoryUsage { get; }
-        public bool ExecutionSuccessful { get; }
         public string StatusCode { get; }
         public string ErrorMessage { get; }
 
         public TestResultsQueryResult(int testId, int solutionId, string testName, 
-            string input, string output, string cpuTime, string memoryUsage, bool executionSuccessful,
-            string statusCode, string errorMessage)
+            string input, string output, bool passed, string expectedOutput, 
+            string cpuTime, string memoryUsage, string statusCode, string errorMessage)
         {
             TestId = testId;
             SolutionId = solutionId;
             TestName = testName;
             Input = input;
-            Output = output ?? "null";
-            CpuTime = cpuTime ?? "null";
-            MemoryUsage = memoryUsage ?? "null";
-            ExecutionSuccessful = executionSuccessful;
-            StatusCode = statusCode ?? "null";
-            ErrorMessage = errorMessage ?? "null";
+            Output = output ?? "N/A";
+            Passed = passed;
+            ExpectedOutput = expectedOutput;
+            CpuTime = cpuTime ?? "N/A";
+            MemoryUsage = memoryUsage ?? "N/A";
+            StatusCode = statusCode ?? "N/A";
+            ErrorMessage = errorMessage ?? "N/A";
         }
     }
 }

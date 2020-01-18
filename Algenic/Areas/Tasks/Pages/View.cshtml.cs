@@ -10,6 +10,7 @@ using Algenic.Compilation.Utilities;
 using Algenic.Data;
 using Algenic.Data.Models;
 using Algenic.Routing;
+using Algenic.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,11 @@ namespace Algenic.Areas.Pages.Tasks
 
         private readonly ICommandHandler<CreateSolutionCommand> _createSolutionCommandHandler;
 
+        [TempData]
+        public int TaskId { get; set; }
+
         [BindProperty]
-        public Data.Models.Task Task { get; set; }
+        public SolveTaskViewModel SolveTaskViewModel { get; set; }
 
         [BindProperty]
         public IFormFile SourceCodeFile { get; set; }
@@ -46,12 +50,15 @@ namespace Algenic.Areas.Pages.Tasks
             if (!User.Identity.IsAuthenticated)
                 return defaultRedirections.ToLoginPage(HttpContext.Request.Path);
 
-            Task = await _context.Tasks.FindAsync(id);
+            var task = await _context.Tasks.FindAsync(id);
+            SolveTaskViewModel = MapToSolveTaskViewModel(task);
+            TaskId = task.Id;
+            TempData.Keep(nameof(TaskId));
 
-            var taskCreatorId = Task.Contest.IdentityUser.Id;
+            var taskCreatorId = task.Contest.IdentityUser.Id;
             var currentUserId = _userManager.GetUserId(User);
 
-            if (currentUserId == taskCreatorId || Task.Contest.Status == Contest.ContestState.NotStarted)
+            if (currentUserId == taskCreatorId || task.Contest.Status == Contest.ContestState.NotStarted)
                 return defaultRedirections.ToAccessDeniedPage(HttpContext.Request.Path);
 
             return Page();
@@ -59,7 +66,9 @@ namespace Algenic.Areas.Pages.Tasks
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (SourceCodeFile == null || SourceCodeFile.Length == 0)
+            var task = await _context.Tasks.FindAsync(TaskId);
+
+            if (SourceCodeFile == null || SourceCodeFile.Length == 0 || task.Contest.Status == Contest.ContestState.Completed)
                 return RedirectToPage();
 
             string sourceCode;
@@ -79,7 +88,7 @@ namespace Algenic.Areas.Pages.Tasks
                 return RedirectToPage();
             }
 
-            var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, Task.Id, User);
+            var command = CreateSolutionCommand.Create(sourceCode, language.LanguageCode, task.Id, User);
             await _createSolutionCommandHandler.HandleAsync(command);
 
             return RedirectToPage();
@@ -93,5 +102,15 @@ namespace Algenic.Areas.Pages.Tasks
 
             return sourceCode;
         }
+
+        private SolveTaskViewModel MapToSolveTaskViewModel(Algenic.Data.Models.Task task)
+            => new SolveTaskViewModel()
+            {
+                TaskId = task.Id,
+                TaskName = task.Name,
+                TaskDescription = task.Description,
+                ContestOwnerId = task.Contest.IdentityUser.Id,
+                ContestStatus = task.Contest.Status
+            };
     }
 }

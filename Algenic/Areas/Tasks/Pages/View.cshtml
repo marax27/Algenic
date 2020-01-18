@@ -6,17 +6,24 @@
 
 <div class="row">
     <div class="col-12">
-        <h4>@Model.Task.Name</h4>
-        <p style="white-space: pre-line">@Model.Task.Description</p>
+        <h4>@Model.SolveTaskViewModel.TaskName</h4>
+        <p style="white-space: pre-line">@Model.SolveTaskViewModel.TaskName</p>
         <hr />
-        <h5>Add Solution</h5>
-        <div class="row">
-            <form method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input value="Choose file" type="file" asp-for="SourceCodeFile" />
-                </div>
-                <input type="submit" class="btn btn-outline-dark" value="Send" />
-            </form>
-        </div>
+        @if (Model.SolveTaskViewModel.ContestStatus == Algenic.Data.Models.Contest.ContestState.InProgress)
+        {
+            <h5>Add Solution</h5>
+            <div class="row">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input value="Choose file" type="file" asp-for="SourceCodeFile" />
+                    </div>
+                    <input type="submit" class="btn btn-outline-dark" value="Send" />
+                </form>
+            </div>
+        }
+        else
+        {
+            <p>Solution cannot be uploaded once contest has ended.</p>
+        }
     </div>
 </div>

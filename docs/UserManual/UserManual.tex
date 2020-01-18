@@ -32,7 +32,7 @@
 
 \title{Algenic -- serwis z~konkursami algorytmicznymi\\
 Instrukcja użytkowania}
-\subtitle{Akademia Górniczo-Hutnicza im. Stanisława Staszica w Krakowie\\
+\subtitle{Akademia Górniczo-Hutnicza im. Stanisława Staszica w~Krakowie\\
 	Wydział Elektrotechniki, Automatyki,\\
 	Informatyki i Inżynierii Biomedycznej}
 \author{Kacper Tonia\and
@@ -44,35 +44,38 @@ Instrukcja użytkowania}
 
 \maketitle
 
-\section{Słowniczek}
+\section{Wstęp}
+Istotą projektu jest udostępnienie możliwości tworzenia oraz rozwiązywania konkursów~algorytmicznych. Zadaniem egzaminatora jest stworzyć zestaw~testów~badających standardowe wyjście aplikacji uczestnika konkursu. Im więcej testów~zostanie zaliczonych, tym wyżej punktowane będzie rozwiązanie.
+
+\section{Słownik pojęć}
 \begin{itemize}
 	\item Konkurs (Contest) - konkurs utworzony przez użytkownika z uprawnieniami egzaminatora. 
-	\item Zadanie (Task)- zadanie dodane w ramach konkretnego konkursu, użytkownicy mogą przesyłać jego rozwiązania.
-	\item Test (Test) - stanowi parę (wejście, spodziewane wyjście), jest przypisany do konkretnego zadania.
-	\item Polityka punktowania (Score policy) - zbiór zasad punktowania. Wyznacza ile punktów w ramach zadania zdobywa użytkownik zależnie od ilości zaliczonych testów.
-	\item Zasada punktowania (Score rule) - stanowi parę (próg, ilość punktów). Oznacza to, jaki próg musi przekroczyć użytkownik, aby zdobyć daną liczbę punktów za rozwiązane zadanie.
+	\item Zadanie (Task) - zadanie dodane w~ramach konkretnego~konkursu, użytkownicy mogą przesyłać jego~rozwiązania.
+	\item Test (Test) - stanowi parę (standardowe wejście programu, oczekiwane wyjście), jest przypisany do~konkretnego~zadania.
+	\item Polityka punktowania (Score policy) - zbiór zasad punktowania. Wyznacza ile punktów~w~ramach zadania zdobywa użytkownik zależnie od ilości zaliczonych testów.
+	\item Zasada punktowania (Score rule) - stanowi parę (próg, ilość punktów). Oznacza to, jaki próg musi przekroczyć użytkownik, aby zdobyć daną liczbę punktów~za rozwiązane zadanie.
 \end{itemize}
 
 \section{Role}
 \subsection{Administrator}
-Podstawową czynnością administracyjną jest przydzielanie uprawnień Egzaminatora. Jest to możliwe z poziomu Panelu Administratora dostępnego przez pasek menu u góry strony (dostęp tylko dla zalogowanego Administratora). Aby przydzielić/odebrać użytkownikowi prawa Egzaminatora, należy nacisnąć odpowiedni przycisk obok nazwy użytkownika.
+Podstawową czynnością administracyjną jest przydzielanie uprawnień Egzaminatora. Jest to~możliwe z poziomu Panelu Administratora dostępnego~przez pasek menu u góry strony (dostęp tylko~dla zalogowanego~Administratora). Aby przydzielić/odebrać użytkownikowi prawa Egzaminatora, należy nacisnąć odpowiedni przycisk obok nazwy użytkownika.
 
-Uwaga: odbierając uprawnienia Egzaminatora wszystkie jego konkursy zmienią właściciela: nowym właścicielem zostanie Administrator. Odpowiednie ostrzeżenie wyświetli się po najechaniu na przycisk "Revoke".
+Uwaga: odbierając uprawnienia Egzaminatora wszystkie jego~konkursy zmienią właściciela: nowym właścicielem zostanie Administrator. Odpowiednie ostrzeżenie wyświetli się po~najechaniu na przycisk "Revoke".
 
 \subsection{Egzaminator}
 Egzaminator może:
 \begin{itemize}
     \item tworzyć konkursy
     \item usuwać swoje konkursy
-    \item zmieniać stan swojego konkursu (Not started, In progress, Completed)
-    \item edytować swoje (nierozpoczęte) konkursy, w tym dodawać, edytować i usuwać zadania
+    \item zmieniać stan swojego~konkursu (Not started, In progress, Completed)
+    \item edytować swoje (nierozpoczęte) konkursy, w~tym dodawać, edytować i usuwać zadania
 \end{itemize}
 
 \subsection{Każdy użytkownik}
 Każdy użytkownik może:
 \begin{itemize}
-    \item wysyłać rozwiązania do zadań z cudzych konkursów
-    \item przeglądać wyniki swoich rozwiązań (po zakończeniu konkursu)
+    \item wysyłać rozwiązania do~zadań z cudzych konkursów
+    \item przeglądać wyniki swoich rozwiązań, po~zakończeniu konkursu
 \end{itemize}
 
 \section{Tworzenie konkursu}
@@ -82,44 +85,44 @@ Wymagania:
 \end{itemize}
 Proces tworzenia konkursu:
 \begin{enumerate}
-	\item Wejdź w zakładkę Contests na pasku nawigacji.
-	\item Na szczycie strony powinno być dostępne pole tekstowe, w którym możesz wpisać nazwę nowego konkurs.
-	\item Po wpisaniu nazwy naciśnij przycisk "Send". Nowy konkurs pojawia się na liście konkursów, możesz go edytować - zmienić nazwę, dodawać zadania, rozpocząć go.
+	\item Wejdź w~zakładkę Contests na pasku nawigacji.
+	\item Na szczycie strony powinno~być dostępne pole tekstowe, w~którym możesz wpisać nazwę nowego~konkursu.
+	\item Po~wpisaniu nazwy naciśnij przycisk "Send". Nowy konkurs pojawia się na liście konkursów, możesz teraz go~edytować.
 \end{enumerate}
 
-\section{Edycja istniejącego konkursu}
+\section{Edycja istniejącego~konkursu}
 Wymagania:
 \begin{itemize}
 	\item uprawnienia egzaminatora
-	\item istnienie konkursu, który możesz edytować
+	\item musisz być właścicielem danego~konkursu
 \end{itemize}
-Proces edycji istniejącego konkursu:
+Proces edycji istniejącego~konkursu:
 \begin{enumerate}
-	\item Wejdź w zakładkę Contests na pasku nawigacji.
-	\item Wyszukaj na liście konkursów konkurs, który możesz edytować (wcześniej utworzony przez ciebie). Naciśnij dostępny przy nim przycisk "Edit"
+	\item Wejdź w~zakładkę Contests na pasku nawigacji.
+	\item Wyszukaj na liście konkursów~ten, który możesz edytować (wcześniej utworzony przez Ciebie). Naciśnij dostępny przy nim przycisk "Edit"
 	\item Możesz edytować konkurs. Dostępne jest kilka opcji:
 	\begin{itemize}
 		\item zmiana nazwy konkursu
-		\item dodanie nowego zadania
-		\item zmiana statusu konkursu, z "nierozpoczętego" (Not started) na "w trakcie" (In progress), a później na "zakończony" (Completed)
+		\item dodanie nowego~zadania
+		\item zmiana statusu konkursu, z "nierozpoczętego" (Not started) na "w~trakcie" (In progress), a później na "zakończony" (Completed)
 	\end{itemize}
 \end{enumerate}
 
-\section{Dodawanie nowego zadania}
+\section{Dodawanie nowego~zadania}
 Wymagania:
 \begin{itemize}
 	\item uprawnienia egzaminatora
 	\item istnienie konkursu, który możesz edytować
 \end{itemize}
-Proces dodawania nowego zadania:
+Proces dodawania nowego~zadania:
 \begin{enumerate}
-	\item Wejdź w zakładkę Contests na pasku nawigacji.
-	\item Wyszukaj na liście konkursów konkurs, który możesz edytować (wcześniej utworzony przez ciebie). Naciśnij dostępny przy nim przycisk "Edit".
-	\item Możesz edytować konkurs. Po lewej stronie dostępne są pola związane z dodawaniem nowego zadania:
+	\item Wejdź w~zakładkę Contests na pasku nawigacji.
+	\item Wyszukaj na liście konkursów~ten, który możesz edytować (wcześniej utworzony przez Ciebie). Naciśnij dostępny przy nim przycisk "Edit".
+	\item Możesz edytować konkurs. Po~lewej stronie dostępne są pola związane z dodawaniem nowego~zadania:
 	\begin{itemize}
 		\item nazwa zadania
 		\item opis zadania
-		\item polityka punktowania - możesz wybrać jedną z istniejących, lub utworzyć własną w zakładce Score policies
+		\item polityka punktowania - możesz wybrać jedną z istniejących, lub utworzyć własną w~zakładce Score policies
 	\end{itemize}
 \end{enumerate}
 
@@ -130,7 +133,7 @@ Wymagania:
 \end{itemize}
 Proces dodawania nowej polityki punktowania:
 \begin{enumerate}
-	\item Wejdź w zakładkę Score policies na pasku nawigacji.
+	\item Wejdź w~zakładkę Score policies na pasku nawigacji.
 	\item Możesz utworzyć nową politykę punktowania. Dostępne pola:
 	\begin{itemize}
 		\item nazwa
@@ -138,54 +141,54 @@ Proces dodawania nowej polityki punktowania:
 		\item zmiana ilości zasad punktowania
 		\item pola zasad punktowania
 	\end{itemize}
-	\item Po utworzeniu, nowa polityka punktowania będzie dostępna przy dodawaniu zadania do konkursu
+	\item Po~utworzeniu, nowa polityka punktowania będzie dostępna przy dodawaniu zadania do~konkursu
 \end{enumerate}
 
-\section{Dołączenie do konkursu}
+\section{Dołączenie do~konkursu}
 Wymagania:
 \begin{itemize}
 	\item jesteś zalogowanym użytkownikiem
 \end{itemize}
-Obecnie dołączenie do konkursu zachodzi poprzez wysłanie rozwiązania na jedno z zadań w nim zawartych. Gdy to zrobisz, jesteś automatycznie rozpatrywany jako uczestnik konkursu.
+Obecnie dołączenie do~konkursu zachodzi poprzez wysłanie rozwiązania na jedno~z zadań w~nim zawartych. Gdy to~zrobisz, jesteś automatycznie rozpatrywany jako~uczestnik konkursu.
 
 \section{Rozwiązanie zadania}
 Wymagania:
 \begin{itemize}
 	\item jesteś zalogowanym użytkownikiem
-	\item istnieje przynajmniej jeden konkurs o statusie "w trakcie" (In progress)
+	\item istnieje przynajmniej jeden konkurs o~statusie "w~trakcie" (In progress)
 \end{itemize}
 Proces rozwiązania zadania:
 \begin{enumerate}
-	\item Wejdź w zakładkę Contests na pasku nawigacji.
-	\item Wyszukaj na liście konkursów konkurs, którego zadanie chcesz rozwiązać (musi być w stanie In progress) i kliknij dostępny przy nim przycisk "View"
-	\item Powinieneś zobaczyć teraz listę zadań dostępnych w wybranym konkursie. Kliknij przycisk "Solve" przy zadaniu, którego rozwiązanie chcesz przesłać.
-	\item Teraz powinny być widoczne nazwa, opis zadania oraz przycisk służący do wyboru pliku. Wybierz plik zawierający rozwiązanie zadania z dysku i wciśnij przycisk "Send".
+	\item Wejdź w~zakładkę Contests na pasku nawigacji.
+	\item Wyszukaj na liście konkursów~ten, którego~zadanie chcesz rozwiązać (musi być w~stanie In progress) i kliknij dostępny przy nim przycisk "View"
+	\item Powinieneś zobaczyć teraz listę zadań dostępnych w~wybranym konkursie. Kliknij przycisk "Solve" przy zadaniu, którego~rozwiązanie chcesz przesłać.
+	\item Teraz powinny być widoczne nazwa, opis zadania oraz przycisk służący do~wyboru pliku. Wybierz plik zawierający rozwiązanie zadania z dysku i wciśnij przycisk "Send".
 \end{enumerate}
 
-\section{Wyświetlanie wyników konkursu przez jego twórcę}
+\section{Wyświetlanie wyników~konkursu przez jego~twórcę}
 Wymagania:
 \begin{itemize}
 	\item jesteś twórcą konkursu
 	\item ten konkurs został zakończony
 \end{itemize}
-Proces wyświetlania wyników konkursu przez jego twórcę:
+Proces wyświetlania wyników~konkursu przez jego~twórcę:
 \begin{enumerate}
-	\item Wejdź w zakładkę Contests na pasku nawigacji.
-	\item Wyszukaj zakończony konkurs utworzony przez ciebie na liście konkursów. Wciśnij dostępny przy nim przycisk "Edit".
-	\item Zamiast pól związanych z dodawaniem zadania, jest teraz dostępny przycisk "Results". Wciśnij go.
-	\item Możesz zobaczyć wyniki konkursu. Jako jego twórca widzisz wyniki każdego uczestnika konkursu.
+	\item Wejdź w~zakładkę Contests na pasku nawigacji.
+	\item Wyszukaj zakończony konkurs utworzony przez Ciebie na liście konkursów. Wciśnij dostępny przy nim przycisk "Edit".
+	\item Naciśnij przycisk "Results".
+	\item Możesz zobaczyć wyniki konkursu. Jako~jego~twórca widzisz wyniki każdego~uczestnika konkursu.
 \end{enumerate}
 
-\section{Wyświetlanie wyników konkursu przez jego uczestnika}
+\section{Wyświetlanie wyników~konkursu przez jego~uczestnika}
 Wymagania:
 \begin{itemize}
 	\item jesteś zalogowanym użytkownikiem
-	\item jesteś uczestnikiem zakończonego konkursu
+	\item jesteś uczestnikiem zakończonego~konkursu
 \end{itemize}
-Proces wyświetlania wyników konkursu przez jego uczestnika:
+Proces wyświetlania wyników~konkursu przez jego~uczestnika:
 \begin{enumerate}
 	\item Wejdź na stronę główną Algenic.
-	\item Dostępna jest tutaj lista zakończonych konkursów, w których uczestniczyłeś. Wciśij przycisk "Results" przy interesującym cię konkursie.
-	\item Możesz zobaczyć wyniki konkursu. Jako uczestnik widzisz tylko swoje własne wyniki zawierające m.in. zdobytą pozycję i sumę punktów.
+	\item Dostępna jest tutaj lista zakończonych konkursów, w~których uczestniczyłeś. Wciśij przycisk "Results" przy interesującym Cię konkursie.
+	\item Możesz zobaczyć wyniki konkursu. Jako~uczestnik widzisz tylko~swoje własne wyniki zawierające m.in. zdobytą pozycję i sumę punktów.
 \end{enumerate}
 \end{document}

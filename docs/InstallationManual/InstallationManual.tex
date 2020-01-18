@@ -32,46 +32,48 @@
 
 \title{Algenic -- serwis z~konkursami algorytmicznymi\\
 Instrukcja instalacji, konfiguracji}
-\subtitle{Akademia Górniczo-Hutnicza im. Stanisława Staszica w Krakowie\\
+\subtitle{Akademia Górniczo-Hutnicza im. Stanisława Staszica w~Krakowie\\
 	Wydział Elektrotechniki, Automatyki,\\
 	Informatyki i Inżynierii Biomedycznej}
 \author{Kacper Tonia\and
 		Sławomir Kalandyk\and
-		Mateusz Ruciński}
+		Mateusz~Ruciński}
 \date{}
 
 \begin{document}
 %------------------------------------------------------------
 \maketitle
 
-\section{Korzystanie z aplikacji}
+\section{Korzystanie z~aplikacji}
 \subsection{Instalacja}
 Wymagania:
 \begin{itemize}
     \item .NET Core SDK 2.2 lub nowszy
-    \item Visual Studio 2017 lub nowszy (opcjonalnie)
+    \item Visual Studio~2017 lub nowszy (opcjonalnie)
 \end{itemize}
 
 \subsection{Uruchomienie}
-Aby uruchomić aplikację, można skorzystać z konsolowego narzędzia dotnet. Należy w tym celu:
+Aby uruchomić aplikację, można skorzystać z~konsolowego~narzędzia dotnet. Należy w~tym celu:
 \begin{enumerate}
-    \item Przejść do katalogu, w którym znajduje się projekt.
-    \item Wejść do katalogu Algenic/Algenic.
+    \item Przejść do~katalogu, w~którym znajduje się projekt.
+    \item Wejść do~katalogu Algenic/Algenic.
     \item Wykonać polecenie "dotnet run".
 \end{enumerate}
 
 \subsection{Testy jednostkowe}
 \begin{enumerate}
-    \item Upewnić się, że aplikacja nie jest uruchomiona np. poprzez dotnet.
+    \item Upewnić się, że~aplikacja nie jest uruchomiona np.~poprzez~dotnet.
     \item Uruchomić Visual Studio.
-    \item Z poziomu okna Test Explorer wybrać Algenic.UnitTests > Run.
+    \item Z~poziomu okna Test Explorer wybrać Algenic.UnitTests $\rightarrow$ Run.
 \end{enumerate}
 
 \subsection{Testy funkcjonalne}
+Specyfika uruchamiania testów~funkcjonalnych w~projekcie sprawia, że~nie mogą być one uruchamiane razem z~testami jednostkowymi. Ponadto, konieczna jest już działająca instancja aplikacji Algenic w~momencie uruchamiania testów.
+
 \begin{enumerate}
-    \item Upewnić się, że co najmniej jedna ze wspieranych przeglądarek (Firefox, Chrome, Opera) jest zainstalowana. Wybrać odpowiednią z nich w pliku konfiguracyjnym\\Algenic/Algenic.FunctionalTests.testSettings.json.
-    \item Dla wybranej przeglądarki pobrać WebDriver, który pozwoli frameworkowi testowemu komunikować się z przeglądarką. Pobrany WebDriver (np. operadriver.exe) umieścić w katalogu Algenic/Algenic.FunctionalTests/bin/Debug/netcore2.2.
-    \item Uruchomić aplikację z poziomu narzędzia dotnet (dotnet run).
-    \item W Visual Studio, w oknie Test Explorer, wybrać Algenic.FunctionalTests > Run.
+    \item Upewnić się, że~co~najmniej jedna ze wspieranych przeglądarek (Firefox, Chrome, Opera) jest zainstalowana. Wybrać odpowiednią z~nich w~pliku konfiguracyjnym\\Algenic/Algenic.FunctionalTests.testSettings.json.
+    \item Dla wybranej przeglądarki pobrać WebDriver, który pozwoli frameworkowi testowemu komunikować się z~przeglądarką. Pobrany WebDriver (np.~operadriver.exe) umieścić w~katalogu Algenic/Algenic.FunctionalTests/bin/Debug/netcore2.2.
+    \item Uruchomić aplikację z~poziomu narzędzia dotnet (dotnet run).
+    \item W~Visual Studio, w~oknie Test Explorer, wybrać Algenic.FunctionalTests $\rightarrow$ Run.
 \end{enumerate}
 \end{document}

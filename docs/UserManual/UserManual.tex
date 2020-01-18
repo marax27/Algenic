@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{tabularx}
+\usepackage{indentfirst}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{anysize}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+
+\usepackage{listings}
+\usepackage{color}
+\lstset{literate=%
+{ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1 {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1 }
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+	\posttitle{%
+	\par\end{center}
+	\begin{center}\small#1\end{center}
+	\vskip0.5em}%
+}
+
+\title{Algenic -- serwis z~konkursami algorytmicznymi\\
+Instrukcja użytkowania}
+\subtitle{Akademia Górniczo-Hutnicza im. Stanisława Staszica w Krakowie\\
+	Wydział Elektrotechniki, Automatyki,\\
+	Informatyki i Inżynierii Biomedycznej}
+\author{Kacper Tonia\and
+		Sławomir Kalandyk\and
+		Mateusz Ruciński}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Role}
+\subsection{Administrator}
+Podstawową czynnością administracyjną jest przydzielanie uprawnień Egzaminatora. Jest to możliwe z poziomu Panelu Administratora dostępnego przez pasek menu u góry strony (dostęp tylko dla zalogowanego Administratora). Aby przydzielić/odebrać użytkownikowi prawa Egzaminatora, należy nacisnąć odpowiedni przycisk obok nazwy użytkownika.
+
+Uwaga: odbierając uprawnienia Egzaminatora wszystkie jego konkursy zmienią właściciela: nowym właścicielem zostanie Administrator. Odpowiednie ostrzeżenie wyświetli się po najechaniu na przycisk "Revoke".
+
+\subsection{Egzaminator}
+Egzaminator może:
+\begin{itemize}
+    \item tworzyć konkursy
+    \item usuwać swoje konkursy
+    \item zmieniać stan swojego konkursu (Not started, In progress, Completed)
+    \item edytować swoje (nierozpoczęte) konkursy, w tym dodawać, edytować i usuwać zadania
+\end{itemize}
+
+\subsection{Każdy użytkownik}
+Każdy użytkownik może:
+\begin{itemize}
+    \item wysyłać rozwiązania do zadań z cudzych konkursów
+    \item przeglądać wyniki swoich rozwiązań (po zakończeniu konkursu)
+\end{itemize}
+
+\section{Tworzenie konkursu}
+\begin{enumerate}
+\end{enumerate}
+
+
+\end{document}

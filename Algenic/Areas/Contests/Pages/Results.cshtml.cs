@@ -95,9 +95,6 @@ namespace Algenic.Areas.Contests.Pages
             {
                 var taskScore = await _taskScoreQueryHandler.HandleAsync(query);
                 var task = await _context.Tasks.FindAsync(query.TaskId);
-                //var solution = await _context.Solutions
-                //    .Where(s => s.TaskId == task.Id && s.IdentityUser.Id == userId)
-                //    .SingleAsync();
                 var tests = _context.Tests.Where(t => t.TaskId == task.Id);
 
                 var newestSolutionsQuery = NewestSolutionsQuery.Create(ContestId);

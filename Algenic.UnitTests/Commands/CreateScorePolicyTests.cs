@@ -15,60 +15,35 @@ namespace Algenic.UnitTests.Commands
     {
         protected override ApplicationDbContext PrepareContext(ApplicationDbContext context)
             => context;
+
         [Fact]
         public void SampleVerification_ExpectedNewScorePolicyInDatabase()
         {
-            var givenContest = new Contest
-            {
-                Name = "",
-                Status = Contest.ContestState.InProgress
-            };
-            Context.Contests.Add(givenContest);
-            var givenTask = new Task
-            {
-                Contest = givenContest,
-                Description = "",
-                Name = "",
-            };
-            Context.Tasks.Add(givenTask);
-            var givenTest = new Test
-            {
-                ExpectedOutput = "expected-output",
-                Input = "given-input",
-                Task = givenTask
-            };
-            Context.Tests.Add(givenTest);
-            var givenSolution = new Solution
-            {
-                SourceCode = "given-source-code",
-                Language = "java",
-                Task = givenTask
-            };
-
             var firstscoreRule = new ScoreRuleDto(1, 1);
             var secondscoreRule = new ScoreRuleDto(2, 2);
 
-            var scoreRulesDto = new List<ScoreRuleDto>();
-            scoreRulesDto.Add(firstscoreRule);
-            scoreRulesDto.Add(secondscoreRule);
-
-            Context.SaveChanges();
+            var givenScoreRulesDtos = new List<ScoreRuleDto>();
+            givenScoreRulesDtos.Add(firstscoreRule);
+            givenScoreRulesDtos.Add(secondscoreRule);
 
             ICommandHandler<CreateScorePolicyCommand> sut =
                 new CreateScorePolicyCommandHandler(Context);
 
-            string name = "ScorePolicy1";
-            string description = "description for ScorePolicy1";
+            string givenName = "ScorePolicy1";
+            string givenDescription = "description for ScorePolicy1";
             
-            var command = CreateScorePolicyCommand.Create(name, description,scoreRulesDto);
+            var command = CreateScorePolicyCommand.Create(givenName, givenDescription, givenScoreRulesDtos);
 
             sut.HandleAsync(command).Wait();
-            var scorePolicy = Context.ScorePolicies.Find(name);
+            var scorePolicy = Context.ScorePolicies.Single(p => p.Name == givenName);
 
-            scorePolicy.Name.Should().Be(name);
-            scorePolicy.Description.Should().Be(description);
-            var scoreRules = scoreRulesDto.Select(dto => new ScoreRule() { Threshold = dto.Threshold, Score = dto.Score });
-            scorePolicy.ScoreRules.Should().HaveCount(scoreRulesDto.Count()).And.BeEquivalentTo(scoreRules);
+            scorePolicy.Name.Should().Be(givenName);
+            scorePolicy.Description.Should().Be(givenDescription);
+            scorePolicy.ScoreRules.Should().HaveCount(2)
+                .And.Contain(rule =>
+                    rule.Threshold == firstscoreRule.Threshold && rule.Score == firstscoreRule.Score)
+                .And.Contain(rule =>
+                    rule.Threshold == secondscoreRule.Threshold && rule.Score == secondscoreRule.Score);
         }
     }
 }

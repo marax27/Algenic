@@ -90,7 +90,6 @@ namespace Algenic.Areas.Contests.Pages
             var taskScoreQueries = contest.Tasks.Select(t => TaskScoreQuery.Create(t.Id, user.Id));
             var taskResults = new List<TaskWithTestResults>();
             var taskScores = new List<TaskScoreQueryResult>();
-            var testResults = new List<TestResultsQueryResult>();
 
             foreach (var query in taskScoreQueries)
             {
@@ -109,6 +108,7 @@ namespace Algenic.Areas.Contests.Pages
                     .Where(s => s != null)
                     .SingleAsync();
 
+                var testResults = new List<TestResultsQueryResult>();
                 foreach (var test in tests)
                 {
                     var testResultsQuery = TestResultsQuery.Create(test.Id, solution.Id);

@@ -45,12 +45,13 @@ namespace Algenic.UnitTests.Commands
             var command = CreateSolutionCommand.Create(givenSourceCode, givenLanguage, givenTaskId, givenUsername);
 
             Sut.HandleAsync(command).Wait();
-            var solution = Context.Solutions
-                .Single(s => s.Task == SampleTask);
+            var solutions = Context.Solutions
+                .Where(s => s.Task == SampleTask);
 
-            solution.IdentityUser.Should().Be(SampleUser);
-            solution.SourceCode.Should().Be(givenSourceCode);
-            solution.Language.Should().Be(givenLanguage);
+            solutions.Any(s => s.IdentityUser == SampleUser
+                               && s.SourceCode == givenSourceCode
+                               && s.Language == givenLanguage)
+                .Should().BeTrue();
         }
     }
 }

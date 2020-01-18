@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Algenic.Commons;
 using Algenic.Compilation;
 using Algenic.Compilation.Outputs;
@@ -48,6 +49,9 @@ namespace Algenic.Commands.VerifySolution
                 }
                 else
                 {
+                    if (queryResult.Error.Error == "offline")
+                        throw new CompilationServiceOfflineException("Compilation service not available.");
+
                     var log = new LogMapper(queryResult.Error).Map();
                     log.Solution = solution;
                     log.Test = test;
@@ -56,6 +60,17 @@ namespace Algenic.Commands.VerifySolution
             }
 
             await _dbContext.SaveChangesAsync();
+        }
+    }
+
+    public class CompilationServiceOfflineException : Exception
+    {
+        public CompilationServiceOfflineException(string message) : base(message)
+        {
+        }
+
+        public CompilationServiceOfflineException(string message, Exception innerException) : base(message, innerException)
+        {
         }
     }
 }

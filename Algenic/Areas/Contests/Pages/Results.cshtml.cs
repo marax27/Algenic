@@ -97,20 +97,20 @@ namespace Algenic.Areas.Contests.Pages
                 var task = await _context.Tasks.FindAsync(query.TaskId);
                 var tests = _context.Tests.Where(t => t.TaskId == task.Id);
 
-                var newestSolutionsQuery = NewestSolutionsQuery.Create(ContestId);
-                var newestSolutionsQueryResult = await _newestSolutionsQueryHandler.HandleAsync(newestSolutionsQuery);
                 var solution = await _context.Solutions
                     .Where(s => s.TaskId == task.Id && s.IdentityUser.Id == userId)
-                    .Select(s => newestSolutionsQueryResult.SolutionIds.Contains(s.Id) ? s : null)
-                    .Where(s => s != null)
+                    .DefaultIfEmpty()
                     .SingleAsync();
-
                 var testResults = new List<TestResultsQueryResult>();
-                foreach (var test in tests)
+
+                if (solution != null)
                 {
-                    var testResultsQuery = TestResultsQuery.Create(test.Id, solution.Id);
-                    var testResult = await _testResultsQueryHandler.HandleAsync(testResultsQuery);
-                    testResults.Add(testResult);
+                    foreach (var test in tests)
+                    {
+                        var testResultsQuery = TestResultsQuery.Create(test.Id, solution.Id);
+                        var testResult = await _testResultsQueryHandler.HandleAsync(testResultsQuery);
+                        testResults.Add(testResult);
+                    }
                 }
 
                 taskResults.Add(new TaskWithTestResults(taskScore, testResults));
@@ -134,7 +134,8 @@ namespace Algenic.Areas.Contests.Pages
 
             userRanking = userRanking
                 .OrderByDescending(k => k.Value)
-                .Select(v => {
+                .Select(v =>
+                {
                     ++position;
                     return (v.Key, position);
                 })

@@ -56,7 +56,7 @@ Algenic składa się z następujących projektów:
 \subsection{Algenic.Algenic}
 Znajduje się tu plik Startup.cs, w którym jest kod wykonujący się przy starcie programu, gdzie duża jego część odpowiada za konfigurację, m.in umożliwienie na wstrzykiwanie podanych serwisów, ustanowienie połączenia z bazą danych itp.
 \subsubsection{Algenic.Algenic.Areas \& Algenic.Algenic.Pages}
-W modułach Areas i Pages znajduje się kod odpowiedzialny za warstwę graficzną aplikacji w postaci plików *.html, oraz ukryta za nimi logika aplikacji poprzez przypisany do każdego pliku *.html plik *.html.cs, który udostępnia widokowi dane poprzez data binding.
+W = Areas i Pages znajduje się kod odpowiedzialny za warstwę graficzną aplikacji w postaci plików *.cshtml, oraz ukryta za nimi logika aplikacji poprzez przypisany do każdego pliku *.cshtml plik *.cshtml.cs, który udostępnia widokowi dane poprzez data binding.
 \subsubsection{Algenic.Algenic.Commands}
 Zawierają się w nim polecenia wraz z odpowiadającymi im handlerami. Służą one do wykonywania operacji wnoszących zmiany w bazie danych.
 
@@ -64,7 +64,7 @@ Każdy handler implementuje interfejs ICommandHandler i metodę HandleAsync.
 
 Każde polecenie (command) zawiera dane posiadające pewne znaczenie dla wykonania konkretnej operacji. Ponadto, polecenia mogą być tworzone tylko poprzez statyczną metodę Create.
 \subsubsection{Algenic.Algenic.Queries}
-Moduł Queries zawiera klasy przypominające te, z modułu Commands, jednak służą one tylko do pobierania danych z bazy.
+= Queries zawiera klasy przypominające te z Commands, jednak służą one tylko do pobierania danych z bazy.
 
 Każdy handler implementuje interfejs IQueryHandler i metodę HandleAsync.
 
@@ -78,7 +78,7 @@ Na podstawie klas w Data/Models i ich konfiguracji, generowana jest baza danych 
 
 Ponadto znajduje się tam ApplicationDbContext, klasa reprezentująca całą bazę danych.
 \subsubsection{Algenic.Algenic.ViewModels}
-W ViewModels znajdują się klasy udostępniające wybrane dane do data binding dla widoku aplikacji. Jest to rozwiązanie, które pozwala na odseparowanie widoku od bezpośredniego połączenia z obiektami reprezentującymi dane w bazie, oraz wydzielenie z widoku (plików *.html) logiki aplikacji.
+W ViewModels znajdują się klasy udostępniające wybrane dane do data binding dla widoku aplikacji. Jest to rozwiązanie, które pozwala na odseparowanie widoku od bezpośredniego połączenia z obiektami reprezentującymi dane w bazie, oraz wydzielenie z widoku (plików *.cshtml) logiki aplikacji.
 \subsubsection{Algenic.Algenic.Routing}
 Znajduje się tam tylko jedna klasa, DefaultRedirections. Udostępnia ona stałe strony, na które użytkownik może zostać przekierowany np. w wypadku braku praw dostępu do elementów aplikacji.
 \subsubsection{Algenic.Algenic.Configuration}
@@ -121,6 +121,9 @@ Klient komunikuje się z aplikacją poprzez protokół HTTP, głównie za pomoc�
 
 \subsection{Komunikacja z bazą danych}
 Sama komunikacja z bazą danych została zrealizowana za pomocą mapowania obiektowo-relacyjnego przy użyciu Entity Framework Core. Wszelkie polecenia służące do wprowadzania zmian w bazie, a także pobieranie danych z bazy odbywa się za pośrednictwem obiektów modelu, na podstawie którego została wygenerowana baza danych przy pomocy migracji.
+
+\section{Autoryzacja i uwierzytelnianie}
+Za autoryzację i uwierzytelnianie odpowiada framework ASP .NET Core, który jest rdzeniem całego projektu. Pozwala on na utworzenie ról użytkowników i przypisywanie ich. Po uprzednim odpowiednim skonfigurowaniu modelu bazy danych, tworzy on relacje pomiędzy tabelami utworzonymi na bazie modelu, a utworzonymi przez siebie tabelami odpowiedzialnymi za wszelkie działania związane z użytkownikami.
 
 \section{Zdalna kompilacja}
 W celu kompilowania plików z kodem źródłowym przysyłanych przez użytkowników został użyty serwis JDoodle. Oferuje on REST-owe API do zdalnej kompilacji. Ogranicza to potencjalne zagrożenia związane z kompilacją niezaufanego kodu na serwerze.

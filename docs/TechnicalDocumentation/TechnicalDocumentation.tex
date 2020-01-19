@@ -53,6 +53,48 @@ Algenic składa się z następujących projektów:
     \item \textit{Algenic.UnitTests}: testy jednostkowe.
     \item \textit{Algenic.FunctionalTests}: testy Selenium.
 \end{itemize}
+\subsection{Algenic.Algenic}
+Znajduje się tu plik Startup.cs, w którym jest kod wykonujący się przy starcie programu, gdzie duża jego część odpowiada za konfigurację, m.in umożliwienie na wstrzykiwanie podanych serwisów, ustanowienie połączenia z bazą danych itp.
+\subsubsection{Algenic.Algenic.Areas \& Algenic.Algenic.Pages}
+W modułach Areas i Pages znajduje się kod odpowiedzialny za warstwę graficzną aplikacji w postaci plików *.html, oraz ukryta za nimi logika aplikacji poprzez przypisany do każdego pliku *.html plik *.html.cs, który udostępnia widokowi dane poprzez data binding.
+\subsubsection{Algenic.Algenic.Commands}
+Zawierają się w nim polecenia wraz z odpowiadającymi im handlerami. Służą one do wykonywania operacji wnoszących zmiany w bazie danych.
+
+Każdy handler implementuje interfejs ICommandHandler i metodę HandleAsync.
+
+Każde polecenie (command) zawiera dane posiadające pewne znaczenie dla wykonania konkretnej operacji. Ponadto, polecenia mogą być tworzone tylko poprzez statyczną metodę Create.
+\subsubsection{Algenic.Algenic.Queries}
+Moduł Queries zawiera klasy przypominające te, z modułu Commands, jednak służą one tylko do pobierania danych z bazy.
+
+Każdy handler implementuje interfejs IQueryHandler i metodę HandleAsync.
+
+Każde zapytanie (query) zawiera dane (np. identyfikatory) mające na celu umożliwienie pobrania tylko konkretnych danych.
+
+Do każdego zapytania jest również przypisana klasa kończąca się słowem Result, udostępniająca dane pobrane z bazy.
+\subsubsection{Algenic.Algenic.Data}
+W Data przechowywane są klasy związane z dostępem do bazy danych. Każda klasa w Data/Models odpowiada konkretnej tabeli w bazie, oraz ma przypisany plik konfiguracyjny z Data/Configurations ustanawiający relacje pomiędzy nią i innymi klasami.
+
+Na podstawie klas w Data/Models i ich konfiguracji, generowana jest baza danych przy pomocy migracji Entity Framework Core.
+
+Ponadto znajduje się tam ApplicationDbContext, klasa reprezentująca całą bazę danych.
+\subsubsection{Algenic.Algenic.ViewModels}
+W ViewModels znajdują się klasy udostępniające wybrane dane do data binding dla widoku aplikacji. Jest to rozwiązanie, które pozwala na odseparowanie widoku od bezpośredniego połączenia z obiektami reprezentującymi dane w bazie, oraz wydzielenie z widoku (plików *.html) logiki aplikacji.
+\subsubsection{Algenic.Algenic.Routing}
+Znajduje się tam tylko jedna klasa, DefaultRedirections. Udostępnia ona stałe strony, na które użytkownik może zostać przekierowany np. w wypadku braku praw dostępu do elementów aplikacji.
+\subsubsection{Algenic.Algenic.Configuration}
+Configuration posiada klasy wygenerowane przez ASP .NET Core związane z konfiguracją aplikacji.
+
+\subsection{Algenic.Compilation}
+Znajduje się tu m.in klasa JDoodleCompiler (implementująca IRemoteCompiler) służąca do wysłania zapytania do serwisu JDoodle i obsłużenie odpowiedzi na to zapytanie.
+\subsubsection{Algenic.Compilation.Outputs}
+W Outputs są klasy reprezentujące potencjalne dane zwracane przez REST-owe API JDoodle w odpowiedzi na wysyłane zapytanie HTTP.
+\subsubsection{Algenic.Compilation.Utilities}
+Utilities posiada m.in klasę CompilationRequest odpowiedzialną za budowanie zapytania do serwisu JDoodle.
+
+\subsection{Algenic.Commons}
+Znajdują się tu interfejsy ICommandHandler oraz IQueryHandler, implementowane odpowiednio przez handlery poleceń oraz zapytań do bazy danych.
+
+Klasa statyczna Fail udostępnia kilka prostych metod do sprawdzania podstawowych warunków, takich jak sprawdzenie, czy obiekt jest nullem, czy string jest pusty, lub sprawdzenie warunku podanego w argumencie metody. W wypadku nie spełnienia warunków, wyrzucany jest wyjątek wraz z odpowiednią wiadomością, która może być zmodyfikowana w argumencie metody.
 
 \section{Struktura strony internetowej}
 \begin{itemize}
@@ -60,7 +102,28 @@ Algenic składa się z następujących projektów:
     \item \emph{/ScorePolicies}: służy tworzeniu nowych polityk oceniania. Dostęp tylko dla egzaminatorów.
     \item \emph{/Contests}: umożliwia przeglądanie, dołączanie do istniejących konkursów. Egzaminatorzy mogą dodatkowo tworzyć nowe konkursy bądź edytować istniejące.
     \item \emph{/Admin}: panel administratora
+    \item \emph{/Tasks/X}: wyświetlanie zadania o id X
+    \item \emph{/Results/X}: wyświetlanie rezultatów konkursu o id X
 \end{itemize}
+
+\section{Połączenie z bazą danych}
+W celu maksymalnego odseparowania warstwy prezentacji od logiki domenowej, wykorzystaliśmy tzw. handlery, które przede wszystkim "opakowują" operacje na bazie danych.
+
+Command handler wprowadza pewne zmiany w bazie danych.
+
+Query handler pobiera dane z bazy danych, nie modyfikując jej zawartości.
+
+Wprowadzenie handlerów nie tylko redukuje ilość kodu w plikach bezpośrednio związanych z renderowaniem widoków, ale też ułatwia testowanie. Funkcjonalność pojedynczego handlera jest względnie łatwa w testowaniu.
+
+\section{Interfejsy}
+\subsection{Komunikacja z klientem}
+Klient komunikuje się z aplikacją poprzez protokół HTTP, głównie za pomocą zapytań typu GET i POST. 
+
+\subsection{Komunikacja z bazą danych}
+Sama komunikacja z bazą danych została zrealizowana za pomocą mapowania obiektowo-relacyjnego przy użyciu Entity Framework Core. Wszelkie polecenia służące do wprowadzania zmian w bazie, a także pobieranie danych z bazy odbywa się za pośrednictwem obiektów modelu, na podstawie którego została wygenerowana baza danych przy pomocy migracji.
+
+\section{Zdalna kompilacja}
+W celu kompilowania plików z kodem źródłowym przysyłanych przez użytkowników został użyty serwis JDoodle. Oferuje on REST-owe API do zdalnej kompilacji. Ogranicza to potencjalne zagrożenia związane z kompilacją niezaufanego kodu na serwerze.
 
 \section{Testy automatyczne}
 Testy automatyczne w projekcie dzielą się na 2 grupy: jednostkowe i funkcjonalne.
